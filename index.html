@@ -5,11 +5,56 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>My Octopress Blog</title>
-  <meta name="author" content="Your Name">
+  <title>Blog</title>
+  <meta name="author" content="mazgi">
 
   
-  <meta name="description" content=" Blog Archives Recent Posts ">
+  <meta name="description" content="とりあえずこんな流れでいいのだろうか…? 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -24,7 +69,7 @@
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="Blog" type="application/atom+xml">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -35,7 +80,7 @@
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">My Octopress Blog</a></h1>
+  <h1><a href="/">Blog</a></h1>
   
     <h2>A blogging framework for hackers.</h2>
   
@@ -65,6 +110,1916 @@
       <div class="blog-index">
   
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/05/07/rails3/">Rails3</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-07T22:16:00+09:00" pubdate data-updated="true">May 7<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>とりあえずこんな流れでいいのだろうか…?</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+<span class='line-number'>203</span>
+<span class='line-number'>204</span>
+<span class='line-number'>205</span>
+<span class='line-number'>206</span>
+<span class='line-number'>207</span>
+<span class='line-number'>208</span>
+<span class='line-number'>209</span>
+<span class='line-number'>210</span>
+<span class='line-number'>211</span>
+<span class='line-number'>212</span>
+<span class='line-number'>213</span>
+<span class='line-number'>214</span>
+<span class='line-number'>215</span>
+<span class='line-number'>216</span>
+<span class='line-number'>217</span>
+<span class='line-number'>218</span>
+<span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
+<span class='line-number'>224</span>
+<span class='line-number'>225</span>
+<span class='line-number'>226</span>
+<span class='line-number'>227</span>
+<span class='line-number'>228</span>
+<span class='line-number'>229</span>
+<span class='line-number'>230</span>
+<span class='line-number'>231</span>
+<span class='line-number'>232</span>
+<span class='line-number'>233</span>
+<span class='line-number'>234</span>
+<span class='line-number'>235</span>
+<span class='line-number'>236</span>
+<span class='line-number'>237</span>
+<span class='line-number'>238</span>
+<span class='line-number'>239</span>
+<span class='line-number'>240</span>
+<span class='line-number'>241</span>
+<span class='line-number'>242</span>
+<span class='line-number'>243</span>
+<span class='line-number'>244</span>
+<span class='line-number'>245</span>
+<span class='line-number'>246</span>
+<span class='line-number'>247</span>
+<span class='line-number'>248</span>
+<span class='line-number'>249</span>
+<span class='line-number'>250</span>
+<span class='line-number'>251</span>
+<span class='line-number'>252</span>
+<span class='line-number'>253</span>
+<span class='line-number'>254</span>
+<span class='line-number'>255</span>
+<span class='line-number'>256</span>
+<span class='line-number'>257</span>
+<span class='line-number'>258</span>
+<span class='line-number'>259</span>
+<span class='line-number'>260</span>
+<span class='line-number'>261</span>
+<span class='line-number'>262</span>
+<span class='line-number'>263</span>
+<span class='line-number'>264</span>
+<span class='line-number'>265</span>
+<span class='line-number'>266</span>
+<span class='line-number'>267</span>
+<span class='line-number'>268</span>
+<span class='line-number'>269</span>
+<span class='line-number'>270</span>
+<span class='line-number'>271</span>
+<span class='line-number'>272</span>
+<span class='line-number'>273</span>
+<span class='line-number'>274</span>
+<span class='line-number'>275</span>
+<span class='line-number'>276</span>
+<span class='line-number'>277</span>
+<span class='line-number'>278</span>
+<span class='line-number'>279</span>
+<span class='line-number'>280</span>
+<span class='line-number'>281</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[User@Darwin11.3.0] $ mkdir Rails3TestDrive                                                                                                                                                   [~/Creations]
+</span><span class='line'>[User@Darwin11.3.0] $ cd Rails3TestDrive                                                                                                                                                      [~/Creations]
+</span><span class='line'>[User@Darwin11.3.0] $ vi Gemfile                                                                                                                                              [~/Creations/Rails3TestDrive]
+</span><span class='line'>[User@Darwin11.3.0] $ rvm use 1.9.3                                                                                                                                           [~/Creations/Rails3TestDrive]
+</span><span class='line'>Using /Users/matsuki_hidenori/.rvm/gems/ruby-1.9.3-p125
+</span><span class='line'>[User@Darwin11.3.0] $ bundle install --path vender/bundle                                                                                                                     [~/Creations/Rails3TestDrive]
+</span><span class='line'>Fetching source index for http://rubygems.org/
+</span><span class='line'>Installing rake (0.9.2.2) 
+</span><span class='line'>Installing abstract (1.0.0) WARNING: abstract-1.0.0 has an invalid nil value for @cert_chain
+</span><span class='line'>
+</span><span class='line'>Installing activesupport (3.0.12) 
+</span><span class='line'>Installing builder (2.1.2) WARNING: builder-2.1.2 has an invalid nil value for @cert_chain
+</span><span class='line'>
+</span><span class='line'>Installing i18n (0.5.0) 
+</span><span class='line'>Installing activemodel (3.0.12) 
+</span><span class='line'>Installing erubis (2.6.6) 
+</span><span class='line'>Installing rack (1.2.5) 
+</span><span class='line'>Installing rack-mount (0.6.14) 
+</span><span class='line'>Installing rack-test (0.5.7) 
+</span><span class='line'>Installing tzinfo (0.3.33) 
+</span><span class='line'>Installing actionpack (3.0.12) 
+</span><span class='line'>Installing mime-types (1.18) 
+</span><span class='line'>Installing polyglot (0.3.3) 
+</span><span class='line'>Installing treetop (1.4.10) 
+</span><span class='line'>Installing mail (2.2.19) 
+</span><span class='line'>Installing actionmailer (3.0.12) 
+</span><span class='line'>Installing arel (2.0.10) 
+</span><span class='line'>Installing activerecord (3.0.12) 
+</span><span class='line'>Installing activeresource (3.0.12) 
+</span><span class='line'>Using bundler (1.0.22) 
+</span><span class='line'>Installing json (1.7.1) with native extensions 
+</span><span class='line'>Installing rdoc (3.12) 
+</span><span class='line'>Installing thor (0.14.6) 
+</span><span class='line'>Installing railties (3.0.12) 
+</span><span class='line'>Installing rails (3.0.12) 
+</span><span class='line'>Your bundle is complete! It was installed into ./vender/bundle
+</span><span class='line'>[User@Darwin11.3.0] $ du -d1 -h                                                                                                                                               [~/Creations/Rails3TestDrive]
+</span><span class='line'>4.0K  ./.bundle
+</span><span class='line'> 28M  ./vender
+</span><span class='line'> 28M  .
+</span><span class='line'>[User@Darwin11.3.0] $ bundle exec rails new .                                                                                                                                 [~/Creations/Rails3TestDrive]
+</span><span class='line'>       exist  
+</span><span class='line'>      create  README
+</span><span class='line'>      create  Rakefile
+</span><span class='line'>      create  config.ru
+</span><span class='line'>      create  .gitignore
+</span><span class='line'>    conflict  Gemfile
+</span><span class='line'>Overwrite /Users/****/Creations/Rails3TestDrive/Gemfile? (enter "h" for help) [Ynaqdh] y
+</span><span class='line'>       force  Gemfile
+</span><span class='line'>      create  app
+</span><span class='line'>      create  app/controllers/application_controller.rb
+</span><span class='line'>      create  app/helpers/application_helper.rb
+</span><span class='line'>      create  app/mailers
+</span><span class='line'>      create  app/models
+</span><span class='line'>      create  app/views/layouts/application.html.erb
+</span><span class='line'>      create  config
+</span><span class='line'>      create  config/routes.rb
+</span><span class='line'>      create  config/application.rb
+</span><span class='line'>      create  config/environment.rb
+</span><span class='line'>      create  config/environments
+</span><span class='line'>      create  config/environments/development.rb
+</span><span class='line'>      create  config/environments/production.rb
+</span><span class='line'>      create  config/environments/test.rb
+</span><span class='line'>      create  config/initializers
+</span><span class='line'>      create  config/initializers/backtrace_silencers.rb
+</span><span class='line'>      create  config/initializers/inflections.rb
+</span><span class='line'>      create  config/initializers/mime_types.rb
+</span><span class='line'>      create  config/initializers/secret_token.rb
+</span><span class='line'>      create  config/initializers/session_store.rb
+</span><span class='line'>      create  config/locales
+</span><span class='line'>      create  config/locales/en.yml
+</span><span class='line'>      create  config/boot.rb
+</span><span class='line'>      create  config/database.yml
+</span><span class='line'>      create  db
+</span><span class='line'>      create  db/seeds.rb
+</span><span class='line'>      create  doc
+</span><span class='line'>      create  doc/README_FOR_APP
+</span><span class='line'>      create  lib
+</span><span class='line'>      create  lib/tasks
+</span><span class='line'>      create  lib/tasks/.gitkeep
+</span><span class='line'>      create  log
+</span><span class='line'>      create  log/server.log
+</span><span class='line'>      create  log/production.log
+</span><span class='line'>      create  log/development.log
+</span><span class='line'>      create  log/test.log
+</span><span class='line'>      create  public
+</span><span class='line'>      create  public/404.html
+</span><span class='line'>      create  public/422.html
+</span><span class='line'>      create  public/500.html
+</span><span class='line'>      create  public/favicon.ico
+</span><span class='line'>      create  public/index.html
+</span><span class='line'>      create  public/robots.txt
+</span><span class='line'>      create  public/images
+</span><span class='line'>      create  public/images/rails.png
+</span><span class='line'>      create  public/stylesheets
+</span><span class='line'>      create  public/stylesheets/.gitkeep
+</span><span class='line'>      create  public/javascripts
+</span><span class='line'>      create  public/javascripts/application.js
+</span><span class='line'>      create  public/javascripts/controls.js
+</span><span class='line'>      create  public/javascripts/dragdrop.js
+</span><span class='line'>      create  public/javascripts/effects.js
+</span><span class='line'>      create  public/javascripts/prototype.js
+</span><span class='line'>      create  public/javascripts/rails.js
+</span><span class='line'>      create  script
+</span><span class='line'>      create  script/rails
+</span><span class='line'>      create  test
+</span><span class='line'>      create  test/fixtures
+</span><span class='line'>      create  test/functional
+</span><span class='line'>      create  test/integration
+</span><span class='line'>      create  test/performance/browsing_test.rb
+</span><span class='line'>      create  test/test_helper.rb
+</span><span class='line'>      create  test/unit
+</span><span class='line'>      create  tmp
+</span><span class='line'>      create  tmp/sessions
+</span><span class='line'>      create  tmp/sockets
+</span><span class='line'>      create  tmp/cache
+</span><span class='line'>      create  tmp/pids
+</span><span class='line'>      create  vendor/plugins
+</span><span class='line'>      create  vendor/plugins/.gitkeep
+</span><span class='line'>[User@Darwin11.3.0] $ bundle install                                                                                                                                          [~/Creations/Rails3TestDrive]
+</span><span class='line'>Fetching source index for http://rubygems.org/
+</span><span class='line'>Using rake (0.9.2.2) 
+</span><span class='line'>Using abstract (1.0.0) 
+</span><span class='line'>Using activesupport (3.0.12) 
+</span><span class='line'>Using builder (2.1.2) 
+</span><span class='line'>Using i18n (0.5.0) 
+</span><span class='line'>Using activemodel (3.0.12) 
+</span><span class='line'>Using erubis (2.6.6) 
+</span><span class='line'>Using rack (1.2.5) 
+</span><span class='line'>Using rack-mount (0.6.14) 
+</span><span class='line'>Using rack-test (0.5.7) 
+</span><span class='line'>Using tzinfo (0.3.33) 
+</span><span class='line'>Using actionpack (3.0.12) 
+</span><span class='line'>Using mime-types (1.18) 
+</span><span class='line'>Using polyglot (0.3.3) 
+</span><span class='line'>Using treetop (1.4.10) 
+</span><span class='line'>Using mail (2.2.19) 
+</span><span class='line'>Using actionmailer (3.0.12) 
+</span><span class='line'>Using arel (2.0.10) 
+</span><span class='line'>Using activerecord (3.0.12) 
+</span><span class='line'>Using activeresource (3.0.12) 
+</span><span class='line'>Using bundler (1.0.22) 
+</span><span class='line'>Using json (1.7.1) 
+</span><span class='line'>Using rdoc (3.12) 
+</span><span class='line'>Using thor (0.14.6) 
+</span><span class='line'>Using railties (3.0.12) 
+</span><span class='line'>Using rails (3.0.12) 
+</span><span class='line'>Installing sqlite3 (1.3.6) with native extensions 
+</span><span class='line'>Your bundle is complete! It was installed into ./vender/bundle
+</span><span class='line'>[User@Darwin11.3.0] $ bundle exec rails generate scaffold User name:string                                                                                                    [~/Creations/Rails3TestDrive]
+</span><span class='line'>      invoke  active_record
+</span><span class='line'>      create    db/migrate/20120507130958_create_users.rb
+</span><span class='line'>      create    app/models/user.rb
+</span><span class='line'>      invoke    test_unit
+</span><span class='line'>      create      test/unit/user_test.rb
+</span><span class='line'>      create      test/fixtures/users.yml
+</span><span class='line'>       route  resources :users
+</span><span class='line'>      invoke  scaffold_controller
+</span><span class='line'>      create    app/controllers/users_controller.rb
+</span><span class='line'>      invoke    erb
+</span><span class='line'>      create      app/views/users
+</span><span class='line'>      create      app/views/users/index.html.erb
+</span><span class='line'>      create      app/views/users/edit.html.erb
+</span><span class='line'>      create      app/views/users/show.html.erb
+</span><span class='line'>      create      app/views/users/new.html.erb
+</span><span class='line'>      create      app/views/users/_form.html.erb
+</span><span class='line'>      invoke    test_unit
+</span><span class='line'>      create      test/functional/users_controller_test.rb
+</span><span class='line'>      invoke    helper
+</span><span class='line'>      create      app/helpers/users_helper.rb
+</span><span class='line'>      invoke      test_unit
+</span><span class='line'>      create        test/unit/helpers/users_helper_test.rb
+</span><span class='line'>      invoke  stylesheets
+</span><span class='line'>      create    public/stylesheets/scaffold.css
+</span><span class='line'>[User@Darwin11.3.0] $ bundle exec rake db:migrate                                                                                                                             [~/Creations/Rails3TestDrive]
+</span><span class='line'>==  CreateUsers: migrating ====================================================
+</span><span class='line'>-- create_table(:users)
+</span><span class='line'>   -&gt; 0.0018s
+</span><span class='line'>==  CreateUsers: migrated (0.0019s) ===========================================
+</span><span class='line'>
+</span><span class='line'>[User@Darwin11.3.0] $ bundle exec rails server                                                                                                                                [~/Creations/Rails3TestDrive]
+</span><span class='line'>=&gt; Booting WEBrick
+</span><span class='line'>=&gt; Rails 3.0.12 application starting in development on http://0.0.0.0:3000
+</span><span class='line'>=&gt; Call with -d to detach
+</span><span class='line'>=&gt; Ctrl-C to shutdown server
+</span><span class='line'>[2012-05-07 22:10:18] INFO  WEBrick 1.3.1
+</span><span class='line'>[2012-05-07 22:10:18] INFO  ruby 1.9.3 (2012-02-16) [x86_64-darwin11.3.0]
+</span><span class='line'>[2012-05-07 22:10:18] INFO  WEBrick::HTTPServer#start: pid=21495 port=3000
+</span><span class='line'>DEPRECATION WARNING: config.action_view.debug_rjs will be removed in 3.1, from 3.1 onwards you will need to install prototype-rails to continue to use RJS templates . (called from service at /Users/****/.rvm/rubies/ruby-1.9.3-p125/lib/ruby/1.9.1/webrick/httpserver.rb:138)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Started GET "/Users" for 127.0.0.1 at 2012-05-07 22:10:35 +0900
+</span><span class='line'>
+</span><span class='line'>ActionController::RoutingError (No route matches "/Users"):
+</span><span class='line'>  
+</span><span class='line'>
+</span><span class='line'>Rendered vender/bundle/ruby/1.9.1/gems/actionpack-3.0.12/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.1ms)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Started GET "/User" for 127.0.0.1 at 2012-05-07 22:10:40 +0900
+</span><span class='line'>
+</span><span class='line'>ActionController::RoutingError (No route matches "/User"):
+</span><span class='line'>  
+</span><span class='line'>
+</span><span class='line'>Rendered vender/bundle/ruby/1.9.1/gems/actionpack-3.0.12/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.6ms)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Started GET "/user" for 127.0.0.1 at 2012-05-07 22:10:44 +0900
+</span><span class='line'>
+</span><span class='line'>ActionController::RoutingError (No route matches "/user"):
+</span><span class='line'>  
+</span><span class='line'>
+</span><span class='line'>Rendered vender/bundle/ruby/1.9.1/gems/actionpack-3.0.12/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.1ms)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Started GET "/users" for 127.0.0.1 at 2012-05-07 22:10:48 +0900
+</span><span class='line'>  Processing by UsersController#index as HTML
+</span><span class='line'>  User Load (0.6ms)  SELECT "users".* FROM "users"
+</span><span class='line'>Rendered users/index.html.erb within layouts/application (5.5ms)
+</span><span class='line'>Completed 200 OK in 39ms (Views: 11.7ms | ActiveRecord: 0.6ms)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Started GET "/users/new" for 127.0.0.1 at 2012-05-07 22:10:51 +0900
+</span><span class='line'>  Processing by UsersController#new as HTML
+</span><span class='line'>Rendered users/_form.html.erb (15.5ms)
+</span><span class='line'>Rendered users/new.html.erb within layouts/application (20.7ms)
+</span><span class='line'>Completed 200 OK in 29ms (Views: 24.4ms | ActiveRecord: 0.0ms)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Started POST "/users" for 127.0.0.1 at 2012-05-07 22:10:55 +0900
+</span><span class='line'>  Processing by UsersController#create as HTML
+</span><span class='line'>  Parameters: {"utf8"=&gt;"✓", "authenticity_token"=&gt;"AalR70HWmzioAHd9ZUOf3GivpWaL6T4RWgjyZlfIJlE=", "user"=&gt;{"name"=&gt;"user01"}, "commit"=&gt;"Create User"}
+</span><span class='line'>  SQL (0.2ms)   SELECT name
+</span><span class='line'> FROM sqlite_master
+</span><span class='line'> WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+</span><span class='line'>  AREL (0.4ms)  INSERT INTO "users" ("name", "created_at", "updated_at") VALUES ('user01', '2012-05-07 13:10:55.061506', '2012-05-07 13:10:55.061506')
+</span><span class='line'>Redirected to http://localhost:3000/users/1
+</span><span class='line'>Completed 302 Found in 45ms
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Started GET "/users/1" for 127.0.0.1 at 2012-05-07 22:10:55 +0900
+</span><span class='line'>  Processing by UsersController#show as HTML
+</span><span class='line'>  Parameters: {"id"=&gt;"1"}
+</span><span class='line'>  User Load (0.2ms)  SELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1
+</span><span class='line'>Rendered users/show.html.erb within layouts/application (11.0ms)
+</span><span class='line'>Completed 200 OK in 19ms (Views: 14.5ms | ActiveRecord: 0.7ms)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Started GET "/users" for 127.0.0.1 at 2012-05-07 22:10:57 +0900
+</span><span class='line'>  Processing by UsersController#index as HTML
+</span><span class='line'>  User Load (0.4ms)  SELECT "users".* FROM "users"
+</span><span class='line'>Rendered users/index.html.erb within layouts/application (12.5ms)
+</span><span class='line'>Completed 200 OK in 20ms (Views: 17.2ms | ActiveRecord: 0.4ms)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Started GET "/users/1" for 127.0.0.1 at 2012-05-07 22:11:00 +0900
+</span><span class='line'>  Processing by UsersController#show as HTML
+</span><span class='line'>  Parameters: {"id"=&gt;"1"}
+</span><span class='line'>  User Load (0.2ms)  SELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1
+</span><span class='line'>Rendered users/show.html.erb within layouts/application (31.4ms)
+</span><span class='line'>Completed 200 OK in 41ms (Views: 35.3ms | ActiveRecord: 0.2ms)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Started GET "/users/1/edit" for 127.0.0.1 at 2012-05-07 22:11:03 +0900
+</span><span class='line'>  Processing by UsersController#edit as HTML
+</span><span class='line'>  Parameters: {"id"=&gt;"1"}
+</span><span class='line'>  User Load (0.1ms)  SELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1
+</span><span class='line'>Rendered users/_form.html.erb (10.7ms)
+</span><span class='line'>Rendered users/edit.html.erb within layouts/application (15.8ms)
+</span><span class='line'>Completed 200 OK in 25ms (Views: 20.9ms | ActiveRecord: 0.1ms)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Started GET "/users" for 127.0.0.1 at 2012-05-07 22:11:05 +0900
+</span><span class='line'>  Processing by UsersController#index as HTML
+</span><span class='line'>  User Load (0.4ms)  SELECT "users".* FROM "users"
+</span><span class='line'>Rendered users/index.html.erb within layouts/application (11.6ms)
+</span><span class='line'>Completed 200 OK in 19ms (Views: 15.7ms | ActiveRecord: 0.4ms)
+</span><span class='line'>[2012-05-07 22:11:05] WARN  Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true
+</span><span class='line'>^C[2012-05-07 22:11:09] INFO  going to shutdown ...
+</span><span class='line'>[2012-05-07 22:11:09] INFO  WEBrick::HTTPServer#start done.
+</span><span class='line'>Exiting</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/05/06/source/">Gen_deployでpushされるもの</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-06T21:22:00+09:00" pubdate data-updated="true">May 6<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>すっごい勘違いしてた！
+<code>git push</code>でエラーになる理由悩んでた。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[mazgi@Caolila] $ git push origin master                                                                                                                          [~/Creations/mazgi.github.com]
+</span><span class='line'>error: src refspec master does not match any.
+</span><span class='line'>error: failed to push some refs to 'git@github.com:mazgi/mazgi.github.com.git'</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>bundle exec rake gen_deploy</code>してもsource/*とかpushされないじゃん。。</p>
+
+<p>github pagesにpushされたファイル
+<img src="/images/2012-05-06/2012-05-06_21.27.21.png">
+ローカルにあるファイル</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[mazgi@Caolila] $ ls -1
+</span><span class='line'>CHANGELOG.markdown
+</span><span class='line'>Gemfile
+</span><span class='line'>Gemfile.lock
+</span><span class='line'>README.markdown
+</span><span class='line'>Rakefile
+</span><span class='line'>_config.yml
+</span><span class='line'>_deploy/
+</span><span class='line'>assets/
+</span><span class='line'>atom.xml
+</span><span class='line'>blog/
+</span><span class='line'>config.rb
+</span><span class='line'>config.ru
+</span><span class='line'>favicon.png
+</span><span class='line'>images/
+</span><span class='line'>index.html
+</span><span class='line'>javascripts/
+</span><span class='line'>plugins/
+</span><span class='line'>public/
+</span><span class='line'>sass/
+</span><span class='line'>sitemap.xml
+</span><span class='line'>source/
+</span><span class='line'>stylesheets/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>source/ごと<code>git push</code>するリモートリポジトリつくった。とりあえず公開しても困らないと思ってる。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[mazgi@Caolila] $ git branch
+</span><span class='line'>* source
+</span><span class='line'>[mazgi@Caolila] $ git remote add github git@github.com:mazgi/source.mazgi.github.com.git
+</span><span class='line'>[mazgi@Caolila] $ git push github source</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/05/06/install/">Install</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-06T17:18:00+09:00" pubdate data-updated="true">May 6<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>インストールしてみた。</p>
+
+<pre><code>Last login: Sun May  6 15:47:34 on ttys001
+[mazgi@Caolila] $ rvm list known                                                                                                                                                             [~]
+# MRI Rubies
+[ruby-]1.8.6[-p420]
+[ruby-]1.8.7[-p358]
+[ruby-]1.8.7-head
+[ruby-]1.9.1[-p431]
+[ruby-]1.9.2-p180
+[ruby-]1.9.2-p290
+[ruby-]1.9.2-p318
+[ruby-]1.9.2[-p320]
+[ruby-]1.9.2-head
+[ruby-]1.9.3-preview1
+[ruby-]1.9.3-rc1
+[ruby-]1.9.3-p0
+[ruby-]1.9.3-p125
+[ruby-]1.9.3-[p194]
+[ruby-]1.9.3-head
+ruby-head
+
+# GoRuby
+goruby
+
+# TheCodeShop - MRI experimental patches
+tcs
+
+# JRuby
+jruby-1.2.0
+jruby-1.3.1
+jruby-1.4.0
+jruby-1.6.5
+jruby-1.6.5.1
+jruby-1.6.6
+jruby[-1.6.7]
+jruby-head
+
+# Rubinius
+rbx-1.0.1
+rbx-1.1.1
+rbx-1.2.3
+rbx-1.2.4
+rbx[-head]
+rbx-2.0.testing
+
+# Ruby Enterprise Edition
+ree-1.8.6
+ree[-1.8.7][-2012.02]
+
+# Kiji
+kiji
+
+# MagLev
+maglev[-head]
+maglev-1.0.0
+
+# Mac OS X Snow Leopard Or Newer
+macruby[-0.10]
+macruby-nightly
+macruby-head
+
+# IronRuby -- Not implemented yet.
+ironruby-0.9.3
+ironruby-1.0-rc2
+ironruby-head
+[mazgi@Caolila] $ rvm install 1.9,3                                                                                                                                                          [~]
+Fetching yaml-0.1.4.tar.gz to /Users/mazgi/.rvm/archives
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  460k  100  460k    0     0  68886      0  0:00:06  0:00:06 --:--:--  136k
+Extracting yaml-0.1.4.tar.gz to /Users/mazgi/.rvm/src
+Configuring yaml in /Users/mazgi/.rvm/src/yaml-0.1.4.
+Compiling yaml in /Users/mazgi/.rvm/src/yaml-0.1.4.
+Installing yaml to /Users/mazgi/.rvm/usr
+Installing Ruby from source to: /Users/mazgi/.rvm/rubies/ruby-1.9, this may take a while depending on your cpu(s)...
+
+ruby-1.9 - #fetching 
+ruby-1.9 - #downloading ruby-1.9, this may take a while depending on your connection...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+curl: (22) The requested URL returned error: 404
+The requested url does not exist: 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.tar.bz2'
+Trying ftp:// URL instead.
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0
+curl: (78) RETR response: 550
+There was an error, please check /Users/mazgi/.rvm/log//*.log
+There has been an error while trying to fetch the source.  
+Halting the installation.
+There has been an error fetching the ruby interpreter. Halting the installation.
+Unknown ruby interpreter string component: '3'.
+[mazgi@Caolila] $ rvm install 1.9.3                                                                                                                                                          [~]
+Fetching yaml-0.1.4.tar.gz to /Users/mazgi/.rvm/archives
+Extracting yaml-0.1.4.tar.gz to /Users/mazgi/.rvm/src
+Configuring yaml in /Users/mazgi/.rvm/src/yaml-0.1.4.
+Compiling yaml in /Users/mazgi/.rvm/src/yaml-0.1.4.
+Installing yaml to /Users/mazgi/.rvm/usr
+Installing Ruby from source to: /Users/mazgi/.rvm/rubies/ruby-1.9.3-p194, this may take a while depending on your cpu(s)...
+
+ruby-1.9.3-p194 - #fetching 
+ruby-1.9.3-p194 - #downloading ruby-1.9.3-p194, this may take a while depending on your connection...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 9610k  100 9610k    0     0   428k      0  0:00:22  0:00:22 --:--:--  504k
+ruby-1.9.3-p194 - #extracting ruby-1.9.3-p194 to /Users/mazgi/.rvm/src/ruby-1.9.3-p194
+ruby-1.9.3-p194 - #extracted to /Users/mazgi/.rvm/src/ruby-1.9.3-p194
+ruby-1.9.3-p194 - #configuring 
+ruby-1.9.3-p194 - #compiling 
+ruby-1.9.3-p194 - #installing 
+Retrieving rubygems-1.8.24
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  371k  100  371k    0     0   296k      0  0:00:01  0:00:01 --:--:--  433k
+Extracting rubygems-1.8.24 ...
+Removing old Rubygems files...
+Installing rubygems-1.8.24 for ruby-1.9.3-p194 ...
+Installation of rubygems completed successfully.
+ruby-1.9.3-p194 - adjusting #shebangs for (gem irb erb ri rdoc testrb rake).
+ruby-1.9.3-p194 - #importing default gemsets (/Users/mazgi/.rvm/gemsets/)
+Install of ruby-1.9.3-p194 - #complete 
+[mazgi@Caolila] $ rvm list                                                                                                                                                                   [~]
+
+rvm rubies
+
+=* ruby-1.9.3-p194 [ x86_64 ]
+
+# =&gt; - current
+# =* - current &amp;&amp; default
+#  * - default
+
+[mazgi@Caolila] $ rvm use 1.9.3                                                                                                                                                              [~]
+Using /Users/mazgi/.rvm/gems/ruby-1.9.3-p194
+[mazgi@Caolila] $ ruby -v                                                                                                                                                                    [~]
+ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-darwin11.3.0]
+[mazgi@Caolila] $ cd Creations                                                                                                                                                               [~]
+[mazgi@Caolila] $ git clone git://github.com/imathis/octopress.git mazgi.github.com                                                                                                [~/Creations]
+Cloning into 'mazgi.github.com'...
+remote: Counting objects: 6354, done.
+remote: Compressing objects: 100% (2314/2314), done.
+remote: Total 6354 (delta 3619), reused 6001 (delta 3471)
+Receiving objects: 100% (6354/6354), 1.29 MiB | 228 KiB/s, done.
+Resolving deltas: 100% (3619/3619), done.
+[mazgi@Caolila] $ cd mazgi.github.com                                                                                                                                              [~/Creations]
+====================================================================================
+= NOTICE                                                                           =
+====================================================================================
+= RVM has encountered a new or modified .rvmrc file in the current directory       =
+= This is a shell script and therefore may contain any shell commands.             =
+=                                                                                  =
+= Examine the contents of this file carefully to be sure the contents are          =
+= safe before trusting it! ( Choose v[iew] below to view the contents )            =
+====================================================================================
+Do you wish to trust this .rvmrc file? (/Users/mazgi/Creations/mazgi.github.com/.rvmrc)
+y[es], n[o], v[iew], c[ancel]&gt; v
+
+====================================================================================
+= The contents of the .rvmrc file will now be displayed.                           =
+= After reading the file, you will be prompted again for 'yes or no' to set        =
+= the trust level for this particular version of the file.                         =
+=                                                                                  =
+= Note: You will be re-prompted each time the .rvmrc file's contents change        =
+= changes, and may change the trust setting manually at any time.                  =
+====================================================================================
+(( press a key to review the .rvmrc file ))
+rvm use 1.9.2
+
+====================================================================================
+= Viewing of /Users/mazgi/Creations/mazgi.github.com/.rvmrc complete.              =
+====================================================================================
+= Trusting an .rvmrc file means that whenever you cd into this directory,          =
+= RVM will run this .rvmrc shell script.                                           =
+= Note that if the contents of the file change, you will be re-prompted to         =
+= review the file and adjust its trust settings. You may also change the           =
+= trust settings manually at any time with the 'rvm rvmrc' command.                =
+====================================================================================
+
+Do you wish to trust this .rvmrc file? (/Users/mazgi/Creations/mazgi.github.com/.rvmrc)
+y[es], n[o], v[iew], c[ancel]&gt; y
+ruby-1.9.2-p320 is not installed.
+To install do: 'rvm install ruby-1.9.2-p320'
+[mazgi@Caolila] $ ruby -v                                                                                                                                         [~/Creations/mazgi.github.com]
+ruby 1.8.7 (2010-01-10 patchlevel 249) [universal-darwin11.0]
+[mazgi@Caolila] $ rvm use 1.9.3                                                                                                                                   [~/Creations/mazgi.github.com]
+Using /Users/mazgi/.rvm/gems/ruby-1.9.3-p194
+[mazgi@Caolila] $ &lt;Gemfile                                                                                                                                        [~/Creations/mazgi.github.com]
+source "http://rubygems.org"
+
+group :development do
+  gem 'rake'
+  gem 'rack'
+  gem 'jekyll'
+  gem 'rdiscount'
+  gem 'pygments.rb'
+  gem 'RedCloth'
+  gem 'haml', '&gt;= 3.1'
+  gem 'compass', '&gt;= 0.11'
+  gem 'rubypants'
+  gem 'rb-fsevent'
+  gem 'stringex'
+  gem 'liquid', '2.2.2'
+end
+
+gem 'sinatra', '1.2.6'
+[mazgi@Caolila] $ bundle install                                                                                                                                  [~/Creations/mazgi.github.com]
+Fetching gem metadata from http://rubygems.org/.......
+Installing rake (0.9.2) 
+Installing RedCloth (4.2.8) with native extensions 
+Installing posix-spawn (0.3.6) with native extensions 
+Installing albino (1.3.3) 
+Installing blankslate (2.1.2.4) 
+Installing chunky_png (1.2.1) 
+Installing fast-stemmer (1.0.0) with native extensions 
+Installing classifier (1.3.3) 
+Installing fssm (0.2.7) 
+Installing sass (3.1.5) 
+Installing compass (0.11.5) 
+Installing directory_watcher (1.4.0) 
+Installing ffi (1.0.9) with native extensions 
+Installing haml (3.1.2) 
+Installing kramdown (0.13.3) 
+Installing liquid (2.2.2) 
+Installing syntax (1.0.0) 
+Installing maruku (0.6.0) 
+Installing jekyll (0.11.0) 
+Installing rubypython (0.5.1) 
+Installing pygments.rb (0.1.3) 
+Installing rack (1.3.2) 
+Installing rb-fsevent (0.4.3.1) with native extensions 
+Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension.
+
+        /Users/mazgi/.rvm/rubies/ruby-1.9.3-p194/bin/ruby extconf.rb 
+creating Makefile
+CFLAGS='-isysroot /Developer/SDKs/MacOSX10.7.sdk -mmacosx-version-min=10.7 -mdynamic-no-pic -std=gnu99 -Os -pipe -Wmissing-prototypes -Wreturn-type -Wmissing-braces -Wparentheses -Wswitch -Wunused-function -Wunused-label -Wunused-parameter -Wunused-variable -Wunused-value -Wuninitialized -Wunknown-pragmas -Wshadow -Wfour-char-constants -Wsign-compare -Wnewline-eof -Wconversion -Wshorten-64-to-32 -Wglobal-constructors -pedantic' /usr/bin/clang -isysroot /Developer/SDKs/MacOSX10.7.sdk -mmacosx-version-min=10.7 -mdynamic-no-pic -std=gnu99 -dead_strip -framework CoreServices -o '/Users/mazgi/.rvm/gems/ruby-1.9.3-p194/gems/rb-fsevent-0.4.3.1/bin/fsevent_watch' fsevent/fsevent_watch.c
+fsevent/fsevent_watch.c:1:10: fatal error: 'stdio.h' file not found
+#include &lt;stdio.h&gt;
+         ^
+1 error generated.
+extconf.rb:59:in `&lt;main&gt;': Compilation of fsevent_watch failed (see README) (RuntimeError)
+
+
+Gem files will remain installed in /Users/mazgi/.rvm/gems/ruby-1.9.3-p194/gems/rb-fsevent-0.4.3.1 for inspection.
+Results logged to /Users/mazgi/.rvm/gems/ruby-1.9.3-p194/gems/rb-fsevent-0.4.3.1/ext/gem_make.out
+An error occured while installing rb-fsevent (0.4.3.1), and Bundler cannot continue.
+Make sure that `gem install rb-fsevent -v '0.4.3.1'` succeeds before bundling.
+[mazgi@Caolila] $ xcode-select print-path                                                                                                                         [~/Creations/mazgi.github.com]
+Usage: xcode-select -print-path
+   or: xcode-select -switch &lt;xcode_folder_path&gt;
+   or: xcode-select -version
+Arguments:
+   -print-path                     Prints the path of the current Xcode folder
+   -switch &lt;xcode_folder_path&gt;     Sets the path for the current Xcode folder
+   -version                        Prints xcode-select version information
+[mazgi@Caolila] $ xcode-select -print-path                                                                                                                        [~/Creations/mazgi.github.com]
+/Developer
+[mazgi@Caolila] $ xcode-select -switch /Applications/Xcode.app/Contents/Developer                                                                                 [~/Creations/mazgi.github.com]
+xcode-select: Error: -switch must be run as root (e.g. sudo xcode-select -switch &lt;xcode_folder_path&gt;).
+[mazgi@Caolila] $ sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer                                                                            [~/Creations/mazgi.github.com]
+Password:
+[mazgi@Caolila] $ xcode-select -print-path                                                                                                                        [~/Creations/mazgi.github.com]
+/Applications/Xcode.app/Contents/Developer
+[mazgi@Caolila] $ bundle install                                                                                                                                  [~/Creations/mazgi.github.com]
+Fetching gem metadata from http://rubygems.org/.......
+Using rake (0.9.2) 
+Using RedCloth (4.2.8) 
+Using posix-spawn (0.3.6) 
+Using albino (1.3.3) 
+Using blankslate (2.1.2.4) 
+Using chunky_png (1.2.1) 
+Using fast-stemmer (1.0.0) 
+Using classifier (1.3.3) 
+Using fssm (0.2.7) 
+Using sass (3.1.5) 
+Using compass (0.11.5) 
+Using directory_watcher (1.4.0) 
+Using ffi (1.0.9) 
+Using haml (3.1.2) 
+Using kramdown (0.13.3) 
+Using liquid (2.2.2) 
+Using syntax (1.0.0) 
+Using maruku (0.6.0) 
+Using jekyll (0.11.0) 
+Using rubypython (0.5.1) 
+Using pygments.rb (0.1.3) 
+Using rack (1.3.2) 
+Installing rb-fsevent (0.4.3.1) with native extensions 
+Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension.
+
+        /Users/mazgi/.rvm/rubies/ruby-1.9.3-p194/bin/ruby extconf.rb 
+creating Makefile
+CFLAGS='-isysroot /Applications/Xcode.app/Contents/Developer/SDKs/MacOSX10.7.sdk -mmacosx-version-min=10.7 -mdynamic-no-pic -std=gnu99 -Os -pipe -Wmissing-prototypes -Wreturn-type -Wmissing-braces -Wparentheses -Wswitch -Wunused-function -Wunused-label -Wunused-parameter -Wunused-variable -Wunused-value -Wuninitialized -Wunknown-pragmas -Wshadow -Wfour-char-constants -Wsign-compare -Wnewline-eof -Wconversion -Wshorten-64-to-32 -Wglobal-constructors -pedantic' /usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/SDKs/MacOSX10.7.sdk -mmacosx-version-min=10.7 -mdynamic-no-pic -std=gnu99 -dead_strip -framework CoreServices -o '/Users/mazgi/.rvm/gems/ruby-1.9.3-p194/gems/rb-fsevent-0.4.3.1/bin/fsevent_watch' fsevent/fsevent_watch.c
+fsevent/fsevent_watch.c:1:10: fatal error: 'stdio.h' file not found
+#include &lt;stdio.h&gt;
+         ^
+1 error generated.
+extconf.rb:59:in `&lt;main&gt;': Compilation of fsevent_watch failed (see README) (RuntimeError)
+
+
+Gem files will remain installed in /Users/mazgi/.rvm/gems/ruby-1.9.3-p194/gems/rb-fsevent-0.4.3.1 for inspection.
+Results logged to /Users/mazgi/.rvm/gems/ruby-1.9.3-p194/gems/rb-fsevent-0.4.3.1/ext/gem_make.out
+An error occured while installing rb-fsevent (0.4.3.1), and Bundler cannot continue.
+Make sure that `gem install rb-fsevent -v '0.4.3.1'` succeeds before bundling.
+[mazgi@Caolila] $ xcode-select -switch /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer                                             [~/Creations/mazgi.github.com]
+xcode-select: Error: -switch must be run as root (e.g. sudo xcode-select -switch &lt;xcode_folder_path&gt;).
+[mazgi@Caolila] $ sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer                                        [~/Creations/mazgi.github.com]
+[mazgi@Caolila] $ bundle install                                                                                                                                  [~/Creations/mazgi.github.com]
+Fetching gem metadata from http://rubygems.org/.......
+Using rake (0.9.2) 
+Using RedCloth (4.2.8) 
+Using posix-spawn (0.3.6) 
+Using albino (1.3.3) 
+Using blankslate (2.1.2.4) 
+Using chunky_png (1.2.1) 
+Using fast-stemmer (1.0.0) 
+Using classifier (1.3.3) 
+Using fssm (0.2.7) 
+Using sass (3.1.5) 
+Using compass (0.11.5) 
+Using directory_watcher (1.4.0) 
+Using ffi (1.0.9) 
+Using haml (3.1.2) 
+Using kramdown (0.13.3) 
+Using liquid (2.2.2) 
+Using syntax (1.0.0) 
+Using maruku (0.6.0) 
+Using jekyll (0.11.0) 
+Using rubypython (0.5.1) 
+Using pygments.rb (0.1.3) 
+Using rack (1.3.2) 
+Installing rb-fsevent (0.4.3.1) with native extensions 
+Installing rdiscount (1.6.8) with native extensions 
+Installing rubypants (0.2.0) 
+Installing tilt (1.3.2) 
+Installing sinatra (1.2.6) 
+Installing stringex (1.3.0) 
+Using bundler (1.1.3) 
+Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
+[mazgi@Caolila] $ rake install                                                                                                                                    [~/Creations/mazgi.github.com]
+rake aborted!
+You have already activated rake 0.9.2.2, but your Gemfile requires rake 0.9.2. Using bundle exec may solve this.
+
+(See full trace by running task with --trace)
+[mazgi@Caolila] $ rvm install 1.9.2                                                                                                                               [~/Creations/mazgi.github.com]
+Fetching yaml-0.1.4.tar.gz to /Users/mazgi/.rvm/archives
+Extracting yaml-0.1.4.tar.gz to /Users/mazgi/.rvm/src
+Configuring yaml in /Users/mazgi/.rvm/src/yaml-0.1.4.
+Compiling yaml in /Users/mazgi/.rvm/src/yaml-0.1.4.
+Installing yaml to /Users/mazgi/.rvm/usr
+Installing Ruby from source to: /Users/mazgi/.rvm/rubies/ruby-1.9.2-p320, this may take a while depending on your cpu(s)...
+
+ruby-1.9.2-p320 - #fetching 
+ruby-1.9.2-p320 - #downloading ruby-1.9.2-p320, this may take a while depending on your connection...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 8770k  100 8770k    0     0   323k      0  0:00:27  0:00:27 --:--:--  245k
+ruby-1.9.2-p320 - #extracting ruby-1.9.2-p320 to /Users/mazgi/.rvm/src/ruby-1.9.2-p320
+ruby-1.9.2-p320 - #extracted to /Users/mazgi/.rvm/src/ruby-1.9.2-p320
+ruby-1.9.2-p320 - #configuring 
+ruby-1.9.2-p320 - #compiling 
+ruby-1.9.2-p320 - #installing 
+Removing old Rubygems files...
+Installing rubygems-1.8.24 for ruby-1.9.2-p320 ...
+Installation of rubygems completed successfully.
+ruby-1.9.2-p320 - adjusting #shebangs for (gem irb erb ri rdoc testrb rake).
+ruby-1.9.2-p320 - #importing default gemsets (/Users/mazgi/.rvm/gemsets/)
+Install of ruby-1.9.2-p320 - #complete 
+[mazgi@Caolila] $ rvm use 1.9.2                                                                                                                                   [~/Creations/mazgi.github.com]
+Using /Users/mazgi/.rvm/gems/ruby-1.9.2-p320
+[mazgi@Caolila] $ ruby -v                                                                                                                                         [~/Creations/mazgi.github.com]
+ruby 1.9.2p320 (2012-04-20 revision 35421) [x86_64-darwin11.3.0]
+[mazgi@Caolila] $ bundle install                                                                                                                                  [~/Creations/mazgi.github.com]
+Fetching gem metadata from http://rubygems.org/.......
+Installing rake (0.9.2) 
+Installing RedCloth (4.2.8) with native extensions 
+Installing posix-spawn (0.3.6) with native extensions 
+Installing albino (1.3.3) 
+Installing blankslate (2.1.2.4) 
+Installing chunky_png (1.2.1) 
+Installing fast-stemmer (1.0.0) with native extensions 
+Installing classifier (1.3.3) 
+Installing fssm (0.2.7) 
+Installing sass (3.1.5) 
+Installing compass (0.11.5) 
+Installing directory_watcher (1.4.0) 
+Installing ffi (1.0.9) with native extensions 
+Installing haml (3.1.2) 
+Installing kramdown (0.13.3) 
+Installing liquid (2.2.2) 
+Installing syntax (1.0.0) 
+Installing maruku (0.6.0) 
+Installing jekyll (0.11.0) 
+Installing rubypython (0.5.1) 
+Installing pygments.rb (0.1.3) 
+Installing rack (1.3.2) 
+Installing rb-fsevent (0.4.3.1) with native extensions 
+Installing rdiscount (1.6.8) with native extensions 
+Installing rubypants (0.2.0) 
+Installing tilt (1.3.2) 
+Installing sinatra (1.2.6) 
+Installing stringex (1.3.0) 
+Using bundler (1.1.3) 
+Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
+[mazgi@Caolila] $ rake install                                                                                                                                    [~/Creations/mazgi.github.com]
+rake aborted!
+You have already activated rake 0.9.2.2, but your Gemfile requires rake 0.9.2. Using bundle exec may solve this.
+
+(See full trace by running task with --trace)
+[mazgi@Caolila] $ bundle exec rake install                                                                                                                        [~/Creations/mazgi.github.com]
+## Copying classic theme into ./source and ./sass
+[mazgi@Caolila] $ rvm use 1.9.3                                                                                                                                   [~/Creations/mazgi.github.com]
+Using /Users/mazgi/.rvm/gems/ruby-1.9.3-p194
+[mazgi@Caolila] $ bundle install                                                                                                                                  [~/Creations/mazgi.github.com]
+Using rake (0.9.2) 
+Using RedCloth (4.2.8) 
+Using posix-spawn (0.3.6) 
+Using albino (1.3.3) 
+Using blankslate (2.1.2.4) 
+Using chunky_png (1.2.1) 
+Using fast-stemmer (1.0.0) 
+Using classifier (1.3.3) 
+Using fssm (0.2.7) 
+Using sass (3.1.5) 
+Using compass (0.11.5) 
+Using directory_watcher (1.4.0) 
+Using ffi (1.0.9) 
+Using haml (3.1.2) 
+Using kramdown (0.13.3) 
+Using liquid (2.2.2) 
+Using syntax (1.0.0) 
+Using maruku (0.6.0) 
+Using jekyll (0.11.0) 
+Using rubypython (0.5.1) 
+Using pygments.rb (0.1.3) 
+Using rack (1.3.2) 
+Using rb-fsevent (0.4.3.1) 
+Using rdiscount (1.6.8) 
+Using rubypants (0.2.0) 
+Using tilt (1.3.2) 
+Using sinatra (1.2.6) 
+Using stringex (1.3.0) 
+Using bundler (1.1.3) 
+Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
+[mazgi@Caolila] $ bundle exec rake install                                                                                                                        [~/Creations/mazgi.github.com]
+A theme is already installed, proceeding will overwrite existing files. Are you sure? [y/n] y
+## Copying classic theme into ./source and ./sass
+[mazgi@Caolila] $ bundle exec rake -T                                                                                                                             [~/Creations/mazgi.github.com]
+rake clean                     # Clean out caches: .pygments-cache, .gist-cache, .sass-cache
+rake copydot[source,dest]      # copy dot files for deployment
+rake deploy                    # Default deploy task
+rake gen_deploy                # Generate website and deploy
+rake generate                  # Generate jekyll site
+rake install[theme]            # Initial setup for Octopress: copies the default theme into the path of Jekyll's generator.
+rake integrate                 # Move all stashed posts back into the posts directory, ready for site generation.
+rake isolate[filename]         # Move all other posts than the one currently being worked on to a temporary stash location (stash) so regenerating the site happens much quicker.
+rake list                      # list tasks
+rake new_page[filename]        # Create a new page in source/(filename)/index.markdown
+rake new_post[title]           # Begin a new post in source/_posts
+rake preview                   # preview the site in a web browser
+rake push                      # deploy public directory to github pages
+rake rsync                     # Deploy website via rsync
+rake set_root_dir[dir]         # Update configurations to support publishing to root or sub directory
+rake setup_github_pages[repo]  # Set up _deploy folder and deploy branch for Github Pages deployment
+rake update_source[theme]      # Move source to source.old, install source theme updates, replace source/_includes/navigation.html with source.old's navigation
+rake update_style[theme]       # Move sass to sass.old, install sass theme updates, replace sass/custom with sass.old/custom
+rake watch                     # Watch the site and regenerate when it changes
+[mazgi@Caolila] $ bundle exec rake setup_github_pages                                                                                                             [~/Creations/mazgi.github.com]
+Enter the read/write url for your repository: git@github.com:mazgi/mazgi.github.com.git
+Added remote git@github.com:mazgi/mazgi.github.com.git as origin
+Set origin as default remote
+Master branch renamed to 'source' for committing your blog source files
+Initialized empty Git repository in /Users/mazgi/Creations/mazgi.github.com/_deploy/.git/
+[master (root-commit) ae2058e] Octopress init
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+ create mode 100644 index.html
+
+---
+## Now you can deploy to http://mazgi.github.com with `rake deploy` ##
+[mazgi@Caolila] $ bundle exec rake generate                                                                                                                       [~/Creations/mazgi.github.com]
+## Generating Site with Jekyll
+directory source/stylesheets/ 
+   create source/stylesheets/screen.css 
+/Users/mazgi/.rvm/gems/ruby-1.9.3-p194/gems/maruku-0.6.0/lib/maruku/input/parse_doc.rb:22:in `&lt;top (required)&gt;': iconv will be deprecated in the future, use String#encode instead.
+Configuration from /Users/mazgi/Creations/mazgi.github.com/_config.yml
+/Users/mazgi/.rvm/gems/ruby-1.9.3-p194/gems/ffi-1.0.9/lib/ffi/platform.rb:27: Use RbConfig instead of obsolete and deprecated Config.
+Building site: source -&gt; public
+Successfully generated site: source -&gt; public
+[mazgi@Caolila] $ bundle exec rake deploy                                                                                                                         [~/Creations/mazgi.github.com]
+## Deploying branch to Github Pages 
+
+## copying public to _deploy
+
+## Commiting: Site updated at 2012-05-06 07:39:49 UTC
+[master 8524ab6] Site updated at 2012-05-06 07:39:49 UTC
+ 61 files changed, 2658 insertions(+), 1 deletions(-)
+ create mode 100644 assets/jwplayer/glow/controlbar/background.png
+ create mode 100644 assets/jwplayer/glow/controlbar/blankButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/divider.png
+ create mode 100644 assets/jwplayer/glow/controlbar/fullscreenButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/fullscreenButtonOver.png
+ create mode 100644 assets/jwplayer/glow/controlbar/muteButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/muteButtonOver.png
+ create mode 100644 assets/jwplayer/glow/controlbar/normalscreenButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/normalscreenButtonOver.png
+ create mode 100644 assets/jwplayer/glow/controlbar/pauseButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/pauseButtonOver.png
+ create mode 100644 assets/jwplayer/glow/controlbar/playButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/playButtonOver.png
+ create mode 100644 assets/jwplayer/glow/controlbar/timeSliderBuffer.png
+ create mode 100644 assets/jwplayer/glow/controlbar/timeSliderCapLeft.png
+ create mode 100644 assets/jwplayer/glow/controlbar/timeSliderCapRight.png
+ create mode 100644 assets/jwplayer/glow/controlbar/timeSliderProgress.png
+ create mode 100644 assets/jwplayer/glow/controlbar/timeSliderRail.png
+ create mode 100644 assets/jwplayer/glow/controlbar/unmuteButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/unmuteButtonOver.png
+ create mode 100644 assets/jwplayer/glow/display/background.png
+ create mode 100644 assets/jwplayer/glow/display/bufferIcon.png
+ create mode 100644 assets/jwplayer/glow/display/muteIcon.png
+ create mode 100644 assets/jwplayer/glow/display/playIcon.png
+ create mode 100644 assets/jwplayer/glow/dock/button.png
+ create mode 100644 assets/jwplayer/glow/glow.xml
+ create mode 100644 assets/jwplayer/glow/playlist/item.png
+ create mode 100644 assets/jwplayer/glow/playlist/itemOver.png
+ create mode 100644 assets/jwplayer/glow/playlist/sliderCapBottom.png
+ create mode 100644 assets/jwplayer/glow/playlist/sliderCapTop.png
+ create mode 100644 assets/jwplayer/glow/playlist/sliderRail.png
+ create mode 100644 assets/jwplayer/glow/playlist/sliderThumb.png
+ create mode 100644 assets/jwplayer/glow/sharing/embedIcon.png
+ create mode 100644 assets/jwplayer/glow/sharing/embedScreen.png
+ create mode 100644 assets/jwplayer/glow/sharing/shareIcon.png
+ create mode 100644 assets/jwplayer/glow/sharing/shareScreen.png
+ create mode 100644 assets/jwplayer/player.swf
+ create mode 100644 atom.xml
+ create mode 100644 blog/archives/index.html
+ create mode 100644 favicon.png
+ create mode 100644 images/bird_32_gray.png
+ create mode 100644 images/bird_32_gray_fail.png
+ create mode 100644 images/code_bg.png
+ create mode 100644 images/dotted-border.png
+ create mode 100644 images/email.png
+ create mode 100644 images/line-tile.png
+ create mode 100644 images/noise.png
+ create mode 100644 images/rss.png
+ create mode 100644 images/search.png
+ rewrite index.html (100%)
+ create mode 100644 javascripts/ender.js
+ create mode 100644 javascripts/github.js
+ create mode 100644 javascripts/libs/ender.js
+ create mode 100644 javascripts/libs/jXHR.js
+ create mode 100644 javascripts/libs/swfobject-dynamic.js
+ create mode 100644 javascripts/modernizr-2.0.js
+ create mode 100644 javascripts/octopress.js
+ create mode 100644 javascripts/pinboard.js
+ create mode 100644 javascripts/twitter.js
+ create mode 100644 sitemap.xml
+ create mode 100644 stylesheets/screen.css
+
+## Pushing generated _deploy website
+The authenticity of host 'github.com (207.97.227.239)' can't be established.
+RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+Are you sure you want to continue connecting (yes/no)? y
+Please type 'yes' or 'no': yes
+Warning: Permanently added 'github.com,207.97.227.239' (RSA) to the list of known hosts.
+Permission denied (publickey).
+fatal: The remote end hung up unexpectedly
+
+## Github Pages deploy complete
+[mazgi@Caolila] $ bundle exec rake deploy                                                                                                                         [~/Creations/mazgi.github.com]
+## Deploying branch to Github Pages 
+
+## copying public to _deploy
+
+## Commiting: Site updated at 2012-05-06 07:44:19 UTC
+# On branch master
+nothing to commit (working directory clean)
+
+## Pushing generated _deploy website
+Permission denied (publickey).
+fatal: The remote end hung up unexpectedly
+
+## Github Pages deploy complete
+[mazgi@Caolila] $ git status                                                                                                                                      [~/Creations/mazgi.github.com]
+# On branch source
+# Changes not staged for commit:
+#   (use "git add &lt;file&gt;..." to update what will be committed)
+#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+#
+#   modified:   Rakefile
+#   modified:   _config.yml
+#
+# Untracked files:
+#   (use "git add &lt;file&gt;..." to include in what will be committed)
+#
+#   sass/
+#   source/
+no changes added to commit (use "git add" and/or "git commit -a")
+[mazgi@Caolila] $ git add -A                                                                                                                                      [~/Creations/mazgi.github.com]
+[mazgi@Caolila] $ git status                                                                                                                                      [~/Creations/mazgi.github.com]
+# On branch source
+# Changes to be committed:
+#   (use "git reset HEAD &lt;file&gt;..." to unstage)
+#
+#   modified:   Rakefile
+#   modified:   _config.yml
+#   new file:   sass/_base.scss
+#   new file:   sass/_partials.scss
+#   new file:   sass/base/_layout.scss
+#   new file:   sass/base/_solarized.scss
+#   new file:   sass/base/_theme.scss
+#   new file:   sass/base/_typography.scss
+#   new file:   sass/base/_utilities.scss
+#   new file:   sass/custom/_colors.scss
+#   new file:   sass/custom/_fonts.scss
+#   new file:   sass/custom/_layout.scss
+#   new file:   sass/custom/_styles.scss
+#   new file:   sass/partials/_archive.scss
+#   new file:   sass/partials/_blog.scss
+#   new file:   sass/partials/_footer.scss
+#   new file:   sass/partials/_header.scss
+#   new file:   sass/partials/_navigation.scss
+#   new file:   sass/partials/_sharing.scss
+#   new file:   sass/partials/_sidebar.scss
+#   new file:   sass/partials/_syntax.scss
+#   new file:   sass/partials/sidebar/_base.scss
+#   new file:   sass/partials/sidebar/_delicious.scss
+#   new file:   sass/partials/sidebar/_googleplus.scss
+#   new file:   sass/partials/sidebar/_pinboard.scss
+#   new file:   sass/partials/sidebar/_twitter.scss
+#   new file:   sass/screen.scss
+#   new file:   source/_includes/after_footer.html
+#   new file:   source/_includes/archive_post.html
+#   new file:   source/_includes/article.html
+#   new file:   source/_includes/asides/delicious.html
+#   new file:   source/_includes/asides/github.html
+#   new file:   source/_includes/asides/googleplus.html
+#   new file:   source/_includes/asides/pinboard.html
+#   new file:   source/_includes/asides/recent_posts.html
+#   new file:   source/_includes/asides/twitter.html
+#   new file:   source/_includes/custom/after_footer.html
+#   new file:   source/_includes/custom/asides/about.html
+#   new file:   source/_includes/custom/category_feed.xml
+#   new file:   source/_includes/custom/footer.html
+#   new file:   source/_includes/custom/head.html
+#   new file:   source/_includes/custom/header.html
+#   new file:   source/_includes/custom/navigation.html
+#   new file:   source/_includes/disqus.html
+#   new file:   source/_includes/facebook_like.html
+#   new file:   source/_includes/footer.html
+#   new file:   source/_includes/google_analytics.html
+#   new file:   source/_includes/google_plus_one.html
+#   new file:   source/_includes/head.html
+#   new file:   source/_includes/header.html
+#   new file:   source/_includes/navigation.html
+#   new file:   source/_includes/post/author.html
+#   new file:   source/_includes/post/categories.html
+#   new file:   source/_includes/post/date.html
+#   new file:   source/_includes/post/disqus_thread.html
+#   new file:   source/_includes/post/sharing.html
+#   new file:   source/_includes/twitter_sharing.html
+#   new file:   source/_layouts/category_index.html
+#   new file:   source/_layouts/default.html
+#   new file:   source/_layouts/page.html
+#   new file:   source/_layouts/post.html
+#   new file:   source/assets/jwplayer/glow/controlbar/background.png
+#   new file:   source/assets/jwplayer/glow/controlbar/blankButton.png
+#   new file:   source/assets/jwplayer/glow/controlbar/divider.png
+#   new file:   source/assets/jwplayer/glow/controlbar/fullscreenButton.png
+#   new file:   source/assets/jwplayer/glow/controlbar/fullscreenButtonOver.png
+#   new file:   source/assets/jwplayer/glow/controlbar/muteButton.png
+#   new file:   source/assets/jwplayer/glow/controlbar/muteButtonOver.png
+#   new file:   source/assets/jwplayer/glow/controlbar/normalscreenButton.png
+#   new file:   source/assets/jwplayer/glow/controlbar/normalscreenButtonOver.png
+#   new file:   source/assets/jwplayer/glow/controlbar/pauseButton.png
+#   new file:   source/assets/jwplayer/glow/controlbar/pauseButtonOver.png
+#   new file:   source/assets/jwplayer/glow/controlbar/playButton.png
+#   new file:   source/assets/jwplayer/glow/controlbar/playButtonOver.png
+#   new file:   source/assets/jwplayer/glow/controlbar/timeSliderBuffer.png
+#   new file:   source/assets/jwplayer/glow/controlbar/timeSliderCapLeft.png
+#   new file:   source/assets/jwplayer/glow/controlbar/timeSliderCapRight.png
+#   new file:   source/assets/jwplayer/glow/controlbar/timeSliderProgress.png
+#   new file:   source/assets/jwplayer/glow/controlbar/timeSliderRail.png
+#   new file:   source/assets/jwplayer/glow/controlbar/unmuteButton.png
+#   new file:   source/assets/jwplayer/glow/controlbar/unmuteButtonOver.png
+#   new file:   source/assets/jwplayer/glow/display/background.png
+#   new file:   source/assets/jwplayer/glow/display/bufferIcon.png
+#   new file:   source/assets/jwplayer/glow/display/muteIcon.png
+#   new file:   source/assets/jwplayer/glow/display/playIcon.png
+#   new file:   source/assets/jwplayer/glow/dock/button.png
+#   new file:   source/assets/jwplayer/glow/glow.xml
+#   new file:   source/assets/jwplayer/glow/playlist/item.png
+#   new file:   source/assets/jwplayer/glow/playlist/itemOver.png
+#   new file:   source/assets/jwplayer/glow/playlist/sliderCapBottom.png
+#   new file:   source/assets/jwplayer/glow/playlist/sliderCapTop.png
+#   new file:   source/assets/jwplayer/glow/playlist/sliderRail.png
+#   new file:   source/assets/jwplayer/glow/playlist/sliderThumb.png
+#   new file:   source/assets/jwplayer/glow/sharing/embedIcon.png
+#   new file:   source/assets/jwplayer/glow/sharing/embedScreen.png
+#   new file:   source/assets/jwplayer/glow/sharing/shareIcon.png
+#   new file:   source/assets/jwplayer/glow/sharing/shareScreen.png
+#   new file:   source/assets/jwplayer/player.swf
+#   new file:   source/atom.xml
+#   new file:   source/blog/archives/index.html
+#   new file:   source/favicon.png
+#   new file:   source/images/bird_32_gray.png
+#   new file:   source/images/bird_32_gray_fail.png
+#   new file:   source/images/code_bg.png
+#   new file:   source/images/dotted-border.png
+#   new file:   source/images/email.png
+#   new file:   source/images/line-tile.png
+#   new file:   source/images/noise.png
+#   new file:   source/images/rss.png
+#   new file:   source/images/search.png
+#   new file:   source/index.html
+#   new file:   source/javascripts/ender.js
+#   new file:   source/javascripts/github.js
+#   new file:   source/javascripts/libs/ender.js
+#   new file:   source/javascripts/libs/jXHR.js
+#   new file:   source/javascripts/libs/swfobject-dynamic.js
+#   new file:   source/javascripts/modernizr-2.0.js
+#   new file:   source/javascripts/octopress.js
+#   new file:   source/javascripts/pinboard.js
+#   new file:   source/javascripts/twitter.js
+#
+[mazgi@Caolila] $ git commit -m "create blog."                                                                                                                    [~/Creations/mazgi.github.com]
+[source fb4ae28] create blog.
+ 120 files changed, 4360 insertions(+), 3 deletions(-)
+ create mode 100644 sass/_base.scss
+ create mode 100644 sass/_partials.scss
+ create mode 100644 sass/base/_layout.scss
+ create mode 100644 sass/base/_solarized.scss
+ create mode 100644 sass/base/_theme.scss
+ create mode 100644 sass/base/_typography.scss
+ create mode 100644 sass/base/_utilities.scss
+ create mode 100644 sass/custom/_colors.scss
+ create mode 100644 sass/custom/_fonts.scss
+ create mode 100644 sass/custom/_layout.scss
+ create mode 100644 sass/custom/_styles.scss
+ create mode 100644 sass/partials/_archive.scss
+ create mode 100644 sass/partials/_blog.scss
+ create mode 100644 sass/partials/_footer.scss
+ create mode 100644 sass/partials/_header.scss
+ create mode 100644 sass/partials/_navigation.scss
+ create mode 100644 sass/partials/_sharing.scss
+ create mode 100644 sass/partials/_sidebar.scss
+ create mode 100644 sass/partials/_syntax.scss
+ create mode 100644 sass/partials/sidebar/_base.scss
+ create mode 100644 sass/partials/sidebar/_delicious.scss
+ create mode 100644 sass/partials/sidebar/_googleplus.scss
+ create mode 100644 sass/partials/sidebar/_pinboard.scss
+ create mode 100644 sass/partials/sidebar/_twitter.scss
+ create mode 100644 sass/screen.scss
+ create mode 100644 source/_includes/after_footer.html
+ create mode 100644 source/_includes/archive_post.html
+ create mode 100644 source/_includes/article.html
+ create mode 100644 source/_includes/asides/delicious.html
+ create mode 100644 source/_includes/asides/github.html
+ create mode 100644 source/_includes/asides/googleplus.html
+ create mode 100644 source/_includes/asides/pinboard.html
+ create mode 100644 source/_includes/asides/recent_posts.html
+ create mode 100644 source/_includes/asides/twitter.html
+ create mode 100644 source/_includes/custom/after_footer.html
+ create mode 100644 source/_includes/custom/asides/about.html
+ create mode 100644 source/_includes/custom/category_feed.xml
+ create mode 100644 source/_includes/custom/footer.html
+ create mode 100644 source/_includes/custom/head.html
+ create mode 100644 source/_includes/custom/header.html
+ create mode 100644 source/_includes/custom/navigation.html
+ create mode 100644 source/_includes/disqus.html
+ create mode 100644 source/_includes/facebook_like.html
+ create mode 100644 source/_includes/footer.html
+ create mode 100644 source/_includes/google_analytics.html
+ create mode 100644 source/_includes/google_plus_one.html
+ create mode 100644 source/_includes/head.html
+ create mode 100644 source/_includes/header.html
+ create mode 100644 source/_includes/navigation.html
+ create mode 100644 source/_includes/post/author.html
+ create mode 100644 source/_includes/post/categories.html
+ create mode 100644 source/_includes/post/date.html
+ create mode 100644 source/_includes/post/disqus_thread.html
+ create mode 100644 source/_includes/post/sharing.html
+ create mode 100644 source/_includes/twitter_sharing.html
+ create mode 100644 source/_layouts/category_index.html
+ create mode 100644 source/_layouts/default.html
+ create mode 100644 source/_layouts/page.html
+ create mode 100644 source/_layouts/post.html
+ create mode 100644 source/assets/jwplayer/glow/controlbar/background.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/blankButton.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/divider.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/fullscreenButton.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/fullscreenButtonOver.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/muteButton.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/muteButtonOver.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/normalscreenButton.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/normalscreenButtonOver.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/pauseButton.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/pauseButtonOver.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/playButton.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/playButtonOver.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/timeSliderBuffer.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/timeSliderCapLeft.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/timeSliderCapRight.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/timeSliderProgress.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/timeSliderRail.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/unmuteButton.png
+ create mode 100644 source/assets/jwplayer/glow/controlbar/unmuteButtonOver.png
+ create mode 100644 source/assets/jwplayer/glow/display/background.png
+ create mode 100644 source/assets/jwplayer/glow/display/bufferIcon.png
+ create mode 100644 source/assets/jwplayer/glow/display/muteIcon.png
+ create mode 100644 source/assets/jwplayer/glow/display/playIcon.png
+ create mode 100644 source/assets/jwplayer/glow/dock/button.png
+ create mode 100644 source/assets/jwplayer/glow/glow.xml
+ create mode 100644 source/assets/jwplayer/glow/playlist/item.png
+ create mode 100644 source/assets/jwplayer/glow/playlist/itemOver.png
+ create mode 100644 source/assets/jwplayer/glow/playlist/sliderCapBottom.png
+ create mode 100644 source/assets/jwplayer/glow/playlist/sliderCapTop.png
+ create mode 100644 source/assets/jwplayer/glow/playlist/sliderRail.png
+ create mode 100644 source/assets/jwplayer/glow/playlist/sliderThumb.png
+ create mode 100644 source/assets/jwplayer/glow/sharing/embedIcon.png
+ create mode 100644 source/assets/jwplayer/glow/sharing/embedScreen.png
+ create mode 100644 source/assets/jwplayer/glow/sharing/shareIcon.png
+ create mode 100644 source/assets/jwplayer/glow/sharing/shareScreen.png
+ create mode 100644 source/assets/jwplayer/player.swf
+ create mode 100644 source/atom.xml
+ create mode 100644 source/blog/archives/index.html
+ create mode 100644 source/favicon.png
+ create mode 100644 source/images/bird_32_gray.png
+ create mode 100644 source/images/bird_32_gray_fail.png
+ create mode 100644 source/images/code_bg.png
+ create mode 100644 source/images/dotted-border.png
+ create mode 100644 source/images/email.png
+ create mode 100644 source/images/line-tile.png
+ create mode 100644 source/images/noise.png
+ create mode 100644 source/images/rss.png
+ create mode 100644 source/images/search.png
+ create mode 100644 source/index.html
+ create mode 100644 source/javascripts/ender.js
+ create mode 100644 source/javascripts/github.js
+ create mode 100644 source/javascripts/libs/ender.js
+ create mode 100644 source/javascripts/libs/jXHR.js
+ create mode 100644 source/javascripts/libs/swfobject-dynamic.js
+ create mode 100644 source/javascripts/modernizr-2.0.js
+ create mode 100644 source/javascripts/octopress.js
+ create mode 100644 source/javascripts/pinboard.js
+ create mode 100644 source/javascripts/twitter.js
+[mazgi@Caolila] $ git status                                                                                                                                      [~/Creations/mazgi.github.com]
+# On branch source
+nothing to commit (working directory clean)
+[mazgi@Caolila] $ git remote show                                                                                                                                 [~/Creations/mazgi.github.com]
+octopress
+origin
+[mazgi@Caolila] $ git push help                                                                                                                                   [~/Creations/mazgi.github.com]
+fatal: 'help' does not appear to be a git repository
+fatal: The remote end hung up unexpectedly
+[mazgi@Caolila] $ git push origin master                                                                                                                          [~/Creations/mazgi.github.com]
+Permission denied (publickey).
+fatal: The remote end hung up unexpectedly
+[mazgi@Caolila] $ git remote show                                                                                                                                 [~/Creations/mazgi.github.com]
+octopress
+origin
+[mazgi@Caolila] $ git push origin master -v                                                                                                                       [~/Creations/mazgi.github.com]
+Pushing to git@github.com:mazgi/mazgi.github.com.git
+Permission denied (publickey).
+fatal: The remote end hung up unexpectedly
+[mazgi@Caolila] $ git push origin master -v                                                                                                                       [~/Creations/mazgi.github.com]
+Pushing to git@github.com:mazgi/mazgi.github.com.git
+error: src refspec master does not match any.
+error: failed to push some refs to 'git@github.com:mazgi/mazgi.github.com.git'
+[mazgi@Caolila] $ git push origin master                                                                                                                          [~/Creations/mazgi.github.com]
+error: src refspec master does not match any.
+error: failed to push some refs to 'git@github.com:mazgi/mazgi.github.com.git'
+[mazgi@Caolila] $ git status                                                                                                                                      [~/Creations/mazgi.github.com]
+# On branch source
+nothing to commit (working directory clean)
+[mazgi@Caolila] $ git status -v                                                                                                                                   [~/Creations/mazgi.github.com]
+# On branch source
+nothing to commit (working directory clean)
+[mazgi@Caolila] $ git commit -m "create blog."                                                                                                                    [~/Creations/mazgi.github.com]
+# On branch source
+nothing to commit (working directory clean)
+[mazgi@Caolila] $ git push origin master                                                                                                                          [~/Creations/mazgi.github.com]
+error: src refspec master does not match any.
+error: failed to push some refs to 'git@github.com:mazgi/mazgi.github.com.git'
+[mazgi@Caolila] $ git pull origin                                                                                                                                 [~/Creations/mazgi.github.com]
+Your configuration specifies to merge with the ref 'master'
+from the remote, but no such ref was fetched.
+[mazgi@Caolila] $ git push origin master                                                                                                                          [~/Creations/mazgi.github.com]
+error: src refspec master does not match any.
+error: failed to push some refs to 'git@github.com:mazgi/mazgi.github.com.git'
+[mazgi@Caolila] $ git status                                                                                                                                      [~/Creations/mazgi.github.com]
+# On branch source
+nothing to commit (working directory clean)
+[mazgi@Caolila] $ git status                                                                                                                                      [~/Creations/mazgi.github.com]
+# On branch source
+nothing to commit (working directory clean)
+[mazgi@Caolila] $ bundle exec rake gen_deploy                                                                                                                     [~/Creations/mazgi.github.com]
+## Generating Site with Jekyll
+unchanged sass/screen.scss
+/Users/mazgi/.rvm/gems/ruby-1.9.3-p194/gems/maruku-0.6.0/lib/maruku/input/parse_doc.rb:22:in `&lt;top (required)&gt;': iconv will be deprecated in the future, use String#encode instead.
+Configuration from /Users/mazgi/Creations/mazgi.github.com/_config.yml
+/Users/mazgi/.rvm/gems/ruby-1.9.3-p194/gems/ffi-1.0.9/lib/ffi/platform.rb:27: Use RbConfig instead of obsolete and deprecated Config.
+Building site: source -&gt; public
+Successfully generated site: source -&gt; public
+## Deploying branch to Github Pages 
+
+## copying public to _deploy
+
+## Commiting: Site updated at 2012-05-06 08:02:15 UTC
+[master e388d99] Site updated at 2012-05-06 08:02:15 UTC
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+## Pushing generated _deploy website
+Counting objects: 82, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (75/75), done.
+Writing objects: 100% (82/82), 179.82 KiB, done.
+Total 82 (delta 3), reused 0 (delta 0)
+To git@github.com:mazgi/mazgi.github.com.git
+ * [new branch]      master -&gt; master
+
+## Github Pages deploy complete
+[mazgi@Caolila] $ git status                                                                                                                                      [~/Creations/mazgi.github.com]
+# On branch source
+nothing to commit (working directory clean)
+[mazgi@Caolila] $ git push origin master                                                                                                                          [~/Creations/mazgi.github.com]
+error: src refspec master does not match any.
+error: failed to push some refs to 'git@github.com:mazgi/mazgi.github.com.git'
+[mazgi@Caolila] $ git remote add origin git@github.com:mazgi/mazgi.github.com.git                                                                                 [~/Creations/mazgi.github.com]
+fatal: remote origin already exists.
+[mazgi@Caolila] $ git remote add github git@github.com:mazgi/mazgi.github.com.git                                                                                 [~/Creations/mazgi.github.com]
+[mazgi@Caolila] $ git push github master                                                                                                                          [~/Creations/mazgi.github.com]
+error: src refspec master does not match any.
+error: failed to push some refs to 'git@github.com:mazgi/mazgi.github.com.git'
+[mazgi@Caolila] $ git remote rm github                                                                                                                            [~/Creations/mazgi.github.com]
+[mazgi@Caolila] $ git pull                                                                                                                                        [~/Creations/mazgi.github.com]
+warning: no common commits
+remote: Counting objects: 82, done.
+remote: Compressing objects: 100% (72/72), done.
+remote: Total 82 (delta 3), reused 82 (delta 3)
+Unpacking objects: 100% (82/82), done.
+From github.com:mazgi/mazgi.github.com
+ * [new branch]      master     -&gt; origin/master
+Merge made by the 'recursive' strategy.
+ assets/jwplayer/glow/controlbar/background.png     |  Bin 0 -&gt; 141 bytes
+ assets/jwplayer/glow/controlbar/blankButton.png    |  Bin 0 -&gt; 82 bytes
+ assets/jwplayer/glow/controlbar/divider.png        |  Bin 0 -&gt; 118 bytes
+ .../jwplayer/glow/controlbar/fullscreenButton.png  |  Bin 0 -&gt; 203 bytes
+ .../glow/controlbar/fullscreenButtonOver.png       |  Bin 0 -&gt; 636 bytes
+ assets/jwplayer/glow/controlbar/muteButton.png     |  Bin 0 -&gt; 343 bytes
+ assets/jwplayer/glow/controlbar/muteButtonOver.png |  Bin 0 -&gt; 835 bytes
+ .../glow/controlbar/normalscreenButton.png         |  Bin 0 -&gt; 210 bytes
+ .../glow/controlbar/normalscreenButtonOver.png     |  Bin 0 -&gt; 664 bytes
+ assets/jwplayer/glow/controlbar/pauseButton.png    |  Bin 0 -&gt; 170 bytes
+ .../jwplayer/glow/controlbar/pauseButtonOver.png   |  Bin 0 -&gt; 442 bytes
+ assets/jwplayer/glow/controlbar/playButton.png     |  Bin 0 -&gt; 251 bytes
+ assets/jwplayer/glow/controlbar/playButtonOver.png |  Bin 0 -&gt; 553 bytes
+ .../jwplayer/glow/controlbar/timeSliderBuffer.png  |  Bin 0 -&gt; 112 bytes
+ .../jwplayer/glow/controlbar/timeSliderCapLeft.png |  Bin 0 -&gt; 94 bytes
+ .../glow/controlbar/timeSliderCapRight.png         |  Bin 0 -&gt; 103 bytes
+ .../glow/controlbar/timeSliderProgress.png         |  Bin 0 -&gt; 114 bytes
+ assets/jwplayer/glow/controlbar/timeSliderRail.png |  Bin 0 -&gt; 116 bytes
+ assets/jwplayer/glow/controlbar/unmuteButton.png   |  Bin 0 -&gt; 264 bytes
+ .../jwplayer/glow/controlbar/unmuteButtonOver.png  |  Bin 0 -&gt; 649 bytes
+ assets/jwplayer/glow/display/background.png        |  Bin 0 -&gt; 686 bytes
+ assets/jwplayer/glow/display/bufferIcon.png        |  Bin 0 -&gt; 816 bytes
+ assets/jwplayer/glow/display/muteIcon.png          |  Bin 0 -&gt; 334 bytes
+ assets/jwplayer/glow/display/playIcon.png          |  Bin 0 -&gt; 465 bytes
+ assets/jwplayer/glow/dock/button.png               |  Bin 0 -&gt; 686 bytes
+ assets/jwplayer/glow/glow.xml                      |  115 ++
+ assets/jwplayer/glow/playlist/item.png             |  Bin 0 -&gt; 172 bytes
+ assets/jwplayer/glow/playlist/itemOver.png         |  Bin 0 -&gt; 171 bytes
+ assets/jwplayer/glow/playlist/sliderCapBottom.png  |  Bin 0 -&gt; 108 bytes
+ assets/jwplayer/glow/playlist/sliderCapTop.png     |  Bin 0 -&gt; 105 bytes
+ assets/jwplayer/glow/playlist/sliderRail.png       |  Bin 0 -&gt; 100 bytes
+ assets/jwplayer/glow/playlist/sliderThumb.png      |  Bin 0 -&gt; 97 bytes
+ assets/jwplayer/glow/sharing/embedIcon.png         |  Bin 0 -&gt; 749 bytes
+ assets/jwplayer/glow/sharing/embedScreen.png       |  Bin 0 -&gt; 2579 bytes
+ assets/jwplayer/glow/sharing/shareIcon.png         |  Bin 0 -&gt; 589 bytes
+ assets/jwplayer/glow/sharing/shareScreen.png       |  Bin 0 -&gt; 4576 bytes
+ assets/jwplayer/player.swf                         |  Bin 0 -&gt; 91375 bytes
+ atom.xml                                           |   16 +
+ blog/archives/index.html                           |  131 ++
+ favicon.png                                        |  Bin 0 -&gt; 400 bytes
+ images/bird_32_gray.png                            |  Bin 0 -&gt; 1376 bytes
+ images/bird_32_gray_fail.png                       |  Bin 0 -&gt; 615 bytes
+ images/code_bg.png                                 |  Bin 0 -&gt; 239 bytes
+ images/dotted-border.png                           |  Bin 0 -&gt; 99 bytes
+ images/email.png                                   |  Bin 0 -&gt; 301 bytes
+ images/line-tile.png                               |  Bin 0 -&gt; 636 bytes
+ images/noise.png                                   |  Bin 0 -&gt; 17742 bytes
+ images/rss.png                                     |  Bin 0 -&gt; 490 bytes
+ images/search.png                                  |  Bin 0 -&gt; 333 bytes
+ index.html                                         |  122 ++
+ javascripts/ender.js                               |   45 +
+ javascripts/github.js                              |   37 +
+ javascripts/libs/ender.js                          | 1497 ++++++++++++++++++++
+ javascripts/libs/jXHR.js                           |   85 ++
+ javascripts/libs/swfobject-dynamic.js              |  298 ++++
+ javascripts/modernizr-2.0.js                       |    5 +
+ javascripts/octopress.js                           |  161 +++
+ javascripts/pinboard.js                            |   56 +
+ javascripts/twitter.js                             |   78 +
+ sitemap.xml                                        |   11 +
+ stylesheets/screen.css                             |    1 +
+ 61 files changed, 2658 insertions(+), 0 deletions(-)
+ create mode 100644 assets/jwplayer/glow/controlbar/background.png
+ create mode 100644 assets/jwplayer/glow/controlbar/blankButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/divider.png
+ create mode 100644 assets/jwplayer/glow/controlbar/fullscreenButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/fullscreenButtonOver.png
+ create mode 100644 assets/jwplayer/glow/controlbar/muteButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/muteButtonOver.png
+ create mode 100644 assets/jwplayer/glow/controlbar/normalscreenButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/normalscreenButtonOver.png
+ create mode 100644 assets/jwplayer/glow/controlbar/pauseButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/pauseButtonOver.png
+ create mode 100644 assets/jwplayer/glow/controlbar/playButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/playButtonOver.png
+ create mode 100644 assets/jwplayer/glow/controlbar/timeSliderBuffer.png
+ create mode 100644 assets/jwplayer/glow/controlbar/timeSliderCapLeft.png
+ create mode 100644 assets/jwplayer/glow/controlbar/timeSliderCapRight.png
+ create mode 100644 assets/jwplayer/glow/controlbar/timeSliderProgress.png
+ create mode 100644 assets/jwplayer/glow/controlbar/timeSliderRail.png
+ create mode 100644 assets/jwplayer/glow/controlbar/unmuteButton.png
+ create mode 100644 assets/jwplayer/glow/controlbar/unmuteButtonOver.png
+ create mode 100644 assets/jwplayer/glow/display/background.png
+ create mode 100644 assets/jwplayer/glow/display/bufferIcon.png
+ create mode 100644 assets/jwplayer/glow/display/muteIcon.png
+ create mode 100644 assets/jwplayer/glow/display/playIcon.png
+ create mode 100644 assets/jwplayer/glow/dock/button.png
+ create mode 100644 assets/jwplayer/glow/glow.xml
+ create mode 100644 assets/jwplayer/glow/playlist/item.png
+ create mode 100644 assets/jwplayer/glow/playlist/itemOver.png
+ create mode 100644 assets/jwplayer/glow/playlist/sliderCapBottom.png
+ create mode 100644 assets/jwplayer/glow/playlist/sliderCapTop.png
+ create mode 100644 assets/jwplayer/glow/playlist/sliderRail.png
+ create mode 100644 assets/jwplayer/glow/playlist/sliderThumb.png
+ create mode 100644 assets/jwplayer/glow/sharing/embedIcon.png
+ create mode 100644 assets/jwplayer/glow/sharing/embedScreen.png
+ create mode 100644 assets/jwplayer/glow/sharing/shareIcon.png
+ create mode 100644 assets/jwplayer/glow/sharing/shareScreen.png
+ create mode 100644 assets/jwplayer/player.swf
+ create mode 100644 atom.xml
+ create mode 100644 blog/archives/index.html
+ create mode 100644 favicon.png
+ create mode 100644 images/bird_32_gray.png
+ create mode 100644 images/bird_32_gray_fail.png
+ create mode 100644 images/code_bg.png
+ create mode 100644 images/dotted-border.png
+ create mode 100644 images/email.png
+ create mode 100644 images/line-tile.png
+ create mode 100644 images/noise.png
+ create mode 100644 images/rss.png
+ create mode 100644 images/search.png
+ create mode 100644 index.html
+ create mode 100644 javascripts/ender.js
+ create mode 100644 javascripts/github.js
+ create mode 100644 javascripts/libs/ender.js
+ create mode 100644 javascripts/libs/jXHR.js
+ create mode 100644 javascripts/libs/swfobject-dynamic.js
+ create mode 100644 javascripts/modernizr-2.0.js
+ create mode 100644 javascripts/octopress.js
+ create mode 100644 javascripts/pinboard.js
+ create mode 100644 javascripts/twitter.js
+ create mode 100644 sitemap.xml
+ create mode 100644 stylesheets/screen.css
+[mazgi@Caolila] $ git status                                                                                                                                      [~/Creations/mazgi.github.com]
+# On branch source
+# Your branch is ahead of 'origin/master' by 590 commits.
+#
+nothing to commit (working directory clean)
+[mazgi@Caolila] $                                                                                                                                                 [~/Creations/mazgi.github.com]
+[mazgi@Caolila] $ vi _config.yml                                                                                                                                  [~/Creations/mazgi.github.com]
+[mazgi@Caolila] $ git status                                                                                                                                      [~/Creations/mazgi.github.com]
+# On branch source
+# Your branch is ahead of 'origin/master' by 590 commits.
+#
+# Changes not staged for commit:
+#   (use "git add &lt;file&gt;..." to update what will be committed)
+#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+#
+#   modified:   _config.yml
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+[mazgi@Caolila] $                                                                                                                                                 [~/Creations/mazgi.gi
+
+[mazgi@Caolila] $ git commit -m "サイトの設定を編集"                                                                                                              [~/Creations/mazgi.github.com]
+# On branch source
+# Your branch is ahead of 'origin/master' by 590 commits.
+#
+# Changes not staged for commit:
+#   (use "git add &lt;file&gt;..." to update what will be committed)
+#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+#
+#   modified:   _config.yml
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+[mazgi@Caolila] $ git commit -m "サイトの設定を編集" -a                                                                                                           [~/Creations/mazgi.github.com]
+[source e9295e5] サイトの設定を編集
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+[mazgi@Caolila] $ bundle exec rake gen_deploy                                                                                                                     [~/Creations/mazgi.github.com]
+## Generating Site with Jekyll
+unchanged sass/screen.scss
+/Users/mazgi/.rvm/gems/ruby-1.9.3-p194/gems/maruku-0.6.0/lib/maruku/input/parse_doc.rb:22:in `&lt;top (required)&gt;': iconv will be deprecated in the future, use String#encode instead.
+Configuration from /Users/mazgi/Creations/mazgi.github.com/_config.yml
+/Users/mazgi/.rvm/gems/ruby-1.9.3-p194/gems/ffi-1.0.9/lib/ffi/platform.rb:27: Use RbConfig instead of obsolete and deprecated Config.
+Building site: source -&gt; public
+Successfully generated site: source -&gt; public
+## Deploying branch to Github Pages 
+
+## copying public to _deploy
+
+## Commiting: Site updated at 2012-05-06 08:15:22 UTC
+[master af39366] Site updated at 2012-05-06 08:15:22 UTC
+ 3 files changed, 13 insertions(+), 13 deletions(-)
+
+## Pushing generated _deploy website
+Counting objects: 13, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (7/7), 625 bytes, done.
+Total 7 (delta 4), reused 0 (delta 0)
+To git@github.com:mazgi/mazgi.github.com.git
+   e388d99..af39366  master -&gt; master
+
+## Github Pages deploy complete
+[mazgi@Caolila] $ git push origin master                                                                                                                          [~/Creations/mazgi.github.com]
+error: src refspec master does not match any.
+error: failed to push some refs to 'git@github.com:mazgi/mazgi.github.com.git'
+[mazgi@Caolila] $ bundle exec rake -T                                                                                                                             [~/Creations/mazgi.github.com]
+rake clean                     # Clean out caches: .pygments-cache, .gist-cache, .sass-cache
+rake copydot[source,dest]      # copy dot files for deployment
+rake deploy                    # Default deploy task
+rake gen_deploy                # Generate website and deploy
+rake generate                  # Generate jekyll site
+rake install[theme]            # Initial setup for Octopress: copies the default theme into the path of Jekyll's generator.
+rake integrate                 # Move all stashed posts back into the posts directory, ready for site generation.
+rake isolate[filename]         # Move all other posts than the one currently being worked on to a temporary stash location (stash) so regenerating the site happens much quicker.
+rake list                      # list tasks
+rake new_page[filename]        # Create a new page in source/(filename)/index.markdown
+rake new_post[title]           # Begin a new post in source/_posts
+rake preview                   # preview the site in a web browser
+rake push                      # deploy public directory to github pages
+rake rsync                     # Deploy website via rsync
+rake set_root_dir[dir]         # Update configurations to support publishing to root or sub directory
+rake setup_github_pages[repo]  # Set up _deploy folder and deploy branch for Github Pages deployment
+rake update_source[theme]      # Move source to source.old, install source theme updates, replace source/_includes/navigation.html with source.old's navigation
+rake update_style[theme]       # Move sass to sass.old, install sass theme updates, replace sass/custom with sass.old/custom
+rake watch                     # Watch the site and regenerate when it changes
+[mazgi@Caolila] $ bundle exec rake new_post["install"]                                                                                                            [~/Creations/mazgi.github.com]
+zsh: no matches found: new_post[install]
+[mazgi@Caolila] $ bundle exec rake new_post\["install"\]                                                                                                          [~/Creations/mazgi.github.com]
+Creating new post: source/_posts/2012-05-06-install.markdown
+[mazgi@Caolila] $ &lt;source/_posts/2012-05-06-install.markdown                                                                                                      [~/Creations/mazgi.github.com]
+---
+layout: post
+title: "install"
+date: 2012-05-06 17:18
+comments: true
+categories: 
+---
+[mazgi@Caolila] $ vi source/_posts/2012-05-06-install.markdown                                                                                                    [~/Creations/mazgi.github.com]
+[mazgi@Caolila] $                                                                                                                                                 [~/Creations/mazgi.github.com]
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
@@ -76,6 +2031,18 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/05/07/rails3/">rails3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/06/source/">gen_deployでpushされるもの</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/06/install/">install</a>
+      </li>
     
   </ul>
 </section>
@@ -91,7 +2058,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2012 - Your Name -
+  Copyright &copy; 2012 - mazgi -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
@@ -100,7 +2067,24 @@
 
 
 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
 
 
 
