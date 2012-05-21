@@ -4,7 +4,7 @@
   <title><![CDATA[Blog]]></title>
   <link href="http://mazgi.github.com/atom.xml" rel="self"/>
   <link href="http://mazgi.github.com/"/>
-  <updated>2012-05-21T21:24:52+09:00</updated>
+  <updated>2012-05-21T22:02:02+09:00</updated>
   <id>http://mazgi.github.com/</id>
   <author>
     <name><![CDATA[mazgi]]></name>
@@ -18,7 +18,9 @@
     <link href="http://mazgi.github.com/blog/2012/05/21/devise/"/>
     <updated>2012-05-21T21:22:00+09:00</updated>
     <id>http://mazgi.github.com/blog/2012/05/21/devise</id>
-    <content type="html"><![CDATA[<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+    <content type="html"><![CDATA[<p>source => https://github.com/mazgi/DeviseTestDrive</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
