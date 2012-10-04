@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Debian | log++]]></title>
+  <link href="http://mazgi.github.com/blog/categories/debian/atom.xml" rel="self"/>
+  <link href="http://mazgi.github.com/"/>
+  <updated>2012-10-05T00:40:24+09:00</updated>
+  <id>http://mazgi.github.com/</id>
+  <author>
+    <name><![CDATA[mazgi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[「第0回Debianパッケージング道場」に行ってきました]]></title>
+    <link href="http://mazgi.github.com/blog/2012/09/22/debian-dojo/"/>
+    <updated>2012-09-22T16:54:00+09:00</updated>
+    <id>http://mazgi.github.com/blog/2012/09/22/debian-dojo</id>
+    <content type="html"><![CDATA[<p>9/22(土)に楽天さんで<a href="http://www.zusaar.com/event/355109">第0回Debianパッケージング道場 on Zusaar</a>が開催されたので行ってきました。<br/>
+Debianド素人として大いにハマってきた様をレポートしてみます。</p>
+
+<h1>参加するまで</h1>
+
+<h2>参加の動機とか</h2>
+
+<p>最近仕事でDebian GNU/Linuxを触りはじめたので「社内用に最新バージョンやpatch適用済みのパッケージ作れたらな」という軽い気持ちです。
+DebianにはRuby1.9.3のパッケージがなさそうだった <em>(※<a href="http://packages.debian.org/ja/sid/libruby">libruby</a>というパッケージがあるようです)</em> ので、「ちょっとパッケージ作ってみるか」とか考えてました。</p>
+
+<h2>準備したこと</h2>
+
+<p>前日になってバタバタとMacBook Air上のVirtualBoxにDebian GNU/Linuxをインストールしました。</p>
+
+<ul>
+<li>Debian squeezeインストール</li>
+</ul>
+
+
+<p><img src="/images/2012-09-22-debian-dojo/20120922_debian_squeeze_installed.png"></p>
+
+<p><em>"使うパソコンで Debian / unstable が動作する環境を整えてください。"</em> とのことだったので、VirtualBoxに <strong>Debian squeeze</strong> をインストールしました <em>(※後述、unstableが何たるかを理解していませんでした)</em> 。<br/>
+インストール自体はISOイメージファイルから普通に行いました。パーティションを手動で切ったくらいなので手順は省きます。</p>
+
+<ul>
+<li>sshd設定</li>
+</ul>
+
+
+<p>Macから <code>ssh xxx.local</code> したかったので <strong>SSHデーモン</strong> と <strong>Avahi</strong> を入れました。<br/>
+sshdのパッケージ名、sshなんですね。</p>
+
+<p>```</p>
+
+<h1>apt-get install avahi-daemon</h1>
+
+<h1>apt-get install ssh</h1>
+
+<p>```</p>
+
+<ul>
+<li>開発ツールインストール</li>
+</ul>
+
+
+<p><em>"Debian / unstable に 最低限のビルド環境を構築してください。sudo apt-get install packaging-dev"</em> とのことだったので <code>packaging-dev</code> をインストールしようとしたのですが…</p>
+
+<p>```</p>
+
+<h1>apt-get install packaging-dev</h1>
+
+<p>パッケージリストを読み込んでいます... 完了
+依存関係ツリーを作成しています              <br/>
+状態情報を読み取っています... 完了
+E: パッケージ packaging-dev が見つかりません
+```</p>
+
+<p>…なぜかパッケージが見つかりません <em>(※後述)</em> 。<br/>
+仕方ないので保留して <code>build-essential</code> だけ入れておきました。</p>
+
+<p>```</p>
+
+<h1>apt-get install build-essential</h1>
+
+<p>```</p>
+
+<h1>当日</h1>
+
+<p>当日は、午前中ハンズオン、午後から黙々とハッカソンっぽい感じで進みました。<br/>
+ハンズオン形式で <a href="https://twitter.com/iwamatsu">@iwamatsu</a> 先生が用意してくださったサンプルをDebianパッケージにしていきます。</p>
+
+<h3>ネットワーク</h3>
+
+<p>VirtualBoxのネットワーク設定をブリッジにしていたのですが、IPアドレスがもらえませんでした(ありがち)。<br/>
+慌てて仮想NICを追加！</p>
+
+<p><img src="/images/2012-09-22-debian-dojo/20120922_add_virtual_nic.png"></p>
+
+<h2>作業をはじめる前の準備</h2>
+
+<ul>
+<li>パッケージメンテナ名の設定</li>
+</ul>
+
+
+<p>パッケージメンテナの名前 <code>DEBFULLNAME</code> と メールアドレス <code>DEBEMAIL</code> を環境変数として設定しましょうとのこと。</p>
+
+<p><code>
+￼export DEBFULLNAME="Yasuo IWAKURA"
+export DEBEMAIL="Y.I@wired.example.com"
+</code>
+本来は <code>∼/.bashrc</code> などに書くようです。<br/>
+私はネットワークの設定しててこれをすっとばしたのであとでちょっと悩むことになります  <em>(※後述)</em> 。</p>
+
+<ul>
+<li><code>packaging-dev</code> のインストール</li>
+</ul>
+
+
+<p>これはメタパッケージで、インストールDebianパッケージをパッケージングするのに必要な各種パッケージが入るとのこと。<br/>
+…が、Debian squeezeではパッケージが見つかりません…！</p>
+
+<h3>unstableについて</h3>
+
+<p>パッケージ作るためにはDebian unstableが必要で、これはどうやらディストリビューションのtrunkバージョンのようなものに当たるようです。<br/>
+どうりでISOイメージが提供されていないはずです…。</p>
+
+<p>ということでDebian squeezeをunstableにする方法を教えていただきました。<br/>
+ちなみにunstableのコードネームは常にsidだそうで、これはtoystoryのワルガキに由来するそうです。</p>
+
+<p><code>sources.list</code> に下記の2行だけ書いて、他の行をコメントアウトします。</p>
+
+<p><code>
+root@debian-squeeze:~# cat /etc/apt/sources.list
+...
+deb http://ftp.jaist.ac.jp/pub/Linux/Debian/ sid main
+deb-src http://ftp.jaist.ac.jp/pub/Linux/Debian/ sid main
+...
+</code>
+アップグレードします。</p>
+
+<p><code>
+root@debian-squeeze:~# apt-get update
+root@debian-squeeze:~# apt-get upgrade
+root@debian-squeeze:~# apt-get dist-upgrade
+</code>
+ついでにホスト名も変えました。</p>
+
+<p>```</p>
+
+<h1>cat /etc/hostname</h1>
+
+<p>debian-sid
+<code>``
+sidにアップグレードしたら、無事</code>packaging-dev` がインストールできました！</p>
+
+<p>```</p>
+
+<h1>apt-cache search packaging-dev</h1>
+
+<p>packaging-dev - パッケージ開発のための便利なツール群
+root@debian-sid:~# apt-get install packaging-dev
+```</p>
+
+<h2>サンプルパッケージ作成</h2>
+
+<p>Debian unstable環境ができたので、周りの皆様に遅れながらも <a href="https://twitter.com/iwamatsu">@iwamatsu</a> 先生が用意してくださったサンプルパッケージをパッケージングします。</p>
+
+<h3>まずビルドしてみる</h3>
+
+<p>tarballを取得して展開します。<br/>
+<em>※なお、tarballのダウンロードURLは、永続的なものか分からなかったため仮のものに置き換えています。</em></p>
+
+<p><code>
+root@debian-sid:~# mkdir -p ~/debian/dojo/work
+root@debian-sid:~# cd ~/debian/dojo/work/
+root@debian-sid:~/debian/dojo/work# wget http://experiments.example.com/hello-cwidget-20120922.tar.gz
+root@debian-sid:~/debian/dojo/work# tar xvf hello-cwidget-20120922.tar.gz
+hello-cwidget-20120922/
+hello-cwidget-20120922/README
+hello-cwidget-20120922/config.h.in
+hello-cwidget-20120922/COPYING
+hello-cwidget-20120922/NEWS
+hello-cwidget-20120922/NOTE
+hello-cwidget-20120922/Makefile.in
+hello-cwidget-20120922/install-sh
+hello-cwidget-20120922/Makefile.am
+hello-cwidget-20120922/depcomp
+hello-cwidget-20120922/missing
+hello-cwidget-20120922/configure.in
+hello-cwidget-20120922/AUTHORS
+hello-cwidget-20120922/configure
+hello-cwidget-20120922/INSTALL
+hello-cwidget-20120922/hello-cwidget.cc
+hello-cwidget-20120922/autoscan.log
+hello-cwidget-20120922/ChangeLog
+hello-cwidget-20120922/aclocal.m4
+</code>
+続いてconfigureしてみます。</p>
+
+<p><code>``
+root@debian-sid:~/debian/dojo/work# cd hello-cwidget-20120922/
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# ./configure
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... no
+checking for mawk... mawk
+checking whether make sets $(MAKE)... yes
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables...
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking for style of include used by make... GNU
+checking dependency style of gcc... gcc3
+checking for g++... g++
+checking whether we are using the GNU C++ compiler... yes
+checking whether g++ accepts -g... yes
+checking dependency style of g++... gcc3
+checking for pkg-config... no
+checking for SIGC... no
+configure: error: in</code>/root/debian/dojo/work/hello-cwidget-20120922':
+configure: error: The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.</p>
+
+<p>Alternatively, you may set the environment variables SIGC_CFLAGS
+and SIGC_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.</p>
+
+<p>To get pkg-config, see <a href="http://pkg-config.freedesktop.org/">http://pkg-config.freedesktop.org/</a>.
+See <code>config.log' for more details
+```
+</code>pkg-config<code>が足りないと言われてしまいました。  
+</code>pkg-config` が含まれるパッケージを探してインストールします。</p>
+
+<p>```
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# apt-file search pkg-config
+...
+pkg-config: /usr/bin/pkg-config</p>
+
+<p>root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# apt-get install pkg-config
+```
+再度configureします。</p>
+
+<p>```
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# ./configure
+...
+checking for pkg-config... /usr/bin/pkg-config
+checking pkg-config is at least version 0.9.0... yes
+checking for SIGC... no
+configure: error: Package requirements (sigc++-2.0) were not met:</p>
+
+<p>No package 'sigc++-2.0' found</p>
+
+<p>Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.</p>
+
+<p>Alternatively, you may set the environment variables SIGC_CFLAGS
+and SIGC_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+<code>``
+今度は</code>sigc++-2.0<code>が足りないようです。  
+</code>sigc++-2.0`が含まれるパッケージを探してインストールします。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# apt-file search sigc++-2.0 | more
+libsigc++-2.0-0c2a: /usr/share/doc/libsigc++-2.0-0c2a/changelog.Debian.gz
+libsigc++-2.0-0c2a: /usr/share/doc/libsigc++-2.0-0c2a/changelog.gz
+libsigc++-2.0-0c2a: /usr/share/doc/libsigc++-2.0-0c2a/copyright
+libsigc++-2.0-dev: /usr/include/sigc++-2.0/sigc++/adaptors/adaptor_trait.h
+libsigc++-2.0-dev: /usr/include/sigc++-2.0/sigc++/adaptors/adaptors.h
+...
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# apt-get install libsigc++-2.0-dev
+</code>
+再度（ry</p>
+
+<p>```
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# ./configure
+checking for SIGC... yes
+checking for CWIDGET... no
+configure: error: Package requirements (cwidget) were not met:</p>
+
+<p>No package 'cwidget' found</p>
+
+<p>Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.</p>
+
+<p>Alternatively, you may set the environment variables CWIDGET_CFLAGS
+and CWIDGET_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+<code>``
+こんどは</code>cwidget`が（ry<br/>
+めんどくさくなったのでパッケージ名だけ表示して当たりをつけてみます。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# apt-file search cwidget | cut -d ' ' -f 1 | sort -u
+chirp:
+d-rats:
+evolution-dev:
+libcwidget-dev:
+libcwidget-doc:
+libcwidget3-dbg:
+libcwidget3:
+libevolution:
+libmac-widgets-doc:
+qt4-doc-html:
+zabbix-frontend-php:
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# apt-get install libcwidget-dev
+</code>
+こんどこそ！</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# ./configure
+...
+checking for pkg-config... /usr/bin/pkg-config
+checking pkg-config is at least version 0.9.0... yes
+checking for SIGC... yes
+checking for CWIDGET... yes
+configure: creating ./config.status
+config.status: creating config.h
+config.status: executing depfiles commands
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating config.h
+config.status: config.h is unchanged
+config.status: executing depfiles commands
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# make
+make  all-am
+make[1]: ディレクトリ `/root/debian/dojo/work/hello-cwidget-20120922' に入ります
+make[1]: ディレクトリ `/root/debian/dojo/work/hello-cwidget-20120922' から出ます
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# ./hello-cwidget
+</code>
+やっとconfigure成功です！</p>
+
+<h3>パッケージにしてみる</h3>
+
+<p>configureまでできることを確認したところで、今回はmakeを端折ってパッケージングします。<br/>
+もちろん本来はmakeしてプログラム単体での動作確認を行うべきでしょうが、この時点でかなり遅れてたので省いてしまいました。</p>
+
+<p>まず、tarballを展開し直します。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# cd ..
+root@debian-sid:~/debian/dojo/work# rm -rf hello-cwidget-20120922
+root@debian-sid:~/debian/dojo/work# tar xvf hello-cwidget-20120922.tar.gz
+root@debian-sid:~/debian/dojo/work# cd hello-cwidget-20120922/
+</code>
+<code>dh-make</code>を入れます。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# apt-get install dh-make
+</code>
+<code>dh-make</code>を実行します。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# dh_make --createorig -s
+Maintainer name  : root
+Email-Address    : root@debian-squeeze.mobile.mazgi.com
+Date             : Sat, 22 Sep 2012 11:53:58 +0900
+Package Name     : hello-cwidget
+Version          : 20120922
+License          : blank
+Type of Package  : Single
+Hit &lt;enter&gt; to confirm: ^C
+</code>
+すると…なんということでしょう！<br/>
+メンテナ名とメールアドレスがめちゃくちゃではないですか!!</p>
+
+<p>慌てて<code>DEBFULLNAME</code>と<code>DEBEMAIL</code>を設定します。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# export DEBFULLNAME="Hidenori MATSUKI"
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# export DEBEMAIL="MATSUKI.Hidenori@gmail.com"
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# dh_make --createorig -s
+Maintainer name  : Hidenori MATSUKI
+Email-Address    : MATSUKI.Hidenori@gmail.com
+Date             : Sat, 22 Sep 2012 11:56:51 +0900
+Package Name     : hello-cwidget
+Version          : 20120922
+License          : blank
+Type of Package  : Single
+Hit &lt;enter&gt; to confirm:
+Done. Please edit the files in the debian/ subdirectory now. hello-cwidget
+uses a configure script, so you probably don't have to edit the Makefiles.
+</code>
+<code>dh_make</code> を実行するとdebianディレクトリが作成されるようです。</p>
+
+<p>```
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# tree
+.
+├── AUTHORS
+...
+├── configure.in
+├── debian
+│   ├── README.Debian
+│   ├── README.source
+│   ├── changelog
+│   ├── compat
+│   ├── control
+│   ├── copyright
+│   ├── docs
+│   ├── emacsen-install.ex
+│   ├── emacsen-remove.ex
+│   ├── emacsen-startup.ex
+│   ├── hello-cwidget.cron.d.ex
+│   ├── hello-cwidget.default.ex
+│   ├── hello-cwidget.doc-base.EX
+│   ├── init.d.ex
+│   ├── manpage.1.ex
+│   ├── manpage.sgml.ex
+│   ├── manpage.xml.ex
+│   ├── menu.ex
+│   ├── postinst.ex
+│   ├── postrm.ex
+│   ├── preinst.ex
+│   ├── prerm.ex
+│   ├── rules
+│   ├── source
+│   │   └── format
+│   └── watch.ex
+├── depcomp
+…</p>
+
+<p>2 directories, 43 files
+```
+debianディレクトリ内のファイルで、今回パッケージを作成するにあたって不要なものを削除します。</p>
+
+<p>```
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# rm debian/<em>.ex debian/</em>.EX debian/README.Debian debian/README.source debian/docs
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# tree
+.
+├── AUTHORS
+…
+├── configure.in
+├── debian
+│   ├── changelog
+│   ├── compat
+│   ├── control
+│   ├── copyright
+│   ├── rules
+│   └── source
+│       └── format
+├── depcomp
+…</p>
+
+<p>2 directories, 24 files</p>
+
+<p><code>``
+開発環境では</code>debi` コマンドでインストールできるようですので、インストールして実行してみます。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# debi
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# which hello-cwidget
+/usr/bin/hello-cwidget
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# hello-cwidget
+</code></p>
+
+<p><img src="/images/2012-09-22-debian-dojo/20120922_hello-cwidget_01.png"></p>
+
+<p>無事実行できました！</p>
+
+<h4><em>dh_makeのオプションについて</em></h4>
+
+<p>各オプションの意味を<code>man dh_make</code>でみるとそれぞれ下記の意味を持つようです。<br/>
+<code>-s</code> は単体のプログラム用、</p>
+
+<blockquote><p>-s, --single<br/>
+Automatically set the package class to Single binary, skipping the question.</p></blockquote>
+
+<p><code>--createorig</code> はオリジナルをtarballとして保存してくれる。</p>
+
+<blockquote><p>If no -f is supplied either but --createorig is, the current  directory  is  created into  a news archive ../<packagename>-<version>.orig.tar.gz The original archive is needed for other Debian tools to generate the diffs to the original</p></blockquote>
+
+<h2>パッケージのビルドテスト</h2>
+
+<p><code>pbuilder</code> というツールを使うと、chroot環境のsandbox上でパッケージのビルドを検証できるようです。<br/>
+このツールを使って、今回は特に依存パッケージのインストールをテストします。</p>
+
+<p>早速設定ファイルを編集してchroot環境で使うシステムイメージを作ります。<br/>
+今回は <code>cowbuilder</code> というものを使います。CopyOnWriteで早いらしいですよくわかりません！</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# cat ~/.pbuilderrc
+PDEBUILD_PBUILDER=cowbuilder
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# cowbuilder --create
+</code>
+そして <code>pdebuild</code> コマンドでビルドテストを行います。</p>
+
+<p>```
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# cat debian/control
+...
+Build-Depends: debhelper (>= 9.0.0)
+...
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# pdebuild
+...
+dh clean  --with autotools-dev
+dh: unable to load addon autotools-dev: Can't locate Debian/Debhelper/Sequence/autotools_dev.pm in @INC (@INC contains: /etc/perl /usr/local/lib/perl/5.14.2 /usr/local/share/perl/5.14.2 /usr/lib/perl5 /usr/share/perl5 /usr/lib/perl/5.14 /usr/share/perl/5.14 /usr/local/lib/site_perl .) at (eval 3) line 2.
+BEGIN failed--compilation aborted at (eval 3) line 2.</p>
+
+<p>make: *** [clean] Error 2
+dpkg-buildpackage: error: fakeroot debian/rules clean gave error exit status 2
+E: Failed autobuilding of package
+…
+<code>``
+見覚えのあるエラーでコケました。  
+</code>debian/control` ファイルに依存関係を追加して再度ビルドテストしてみます。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# cat debian/control
+...
+Build-Depends: debhelper (&gt;= 9.0.0), autotools-dev
+...
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# pdebuild
+checking dependency style of g++... none
+checking for pkg-config... no
+checking for SIGC... no
+configure: error: in `/tmp/buildd/hello-cwidget-20120922':
+configure: error: The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+...
+configure: exit 1
+dh_auto_configure: ./configure --build=x86_64-linux-gnu --prefix=/usr --includedir=${prefix}/include --mandir=${prefix}/share/man --infodir=${prefix}/share/info --sysconfdir=/etc --localstatedir=/var --libexecdir=${prefix}/lib/hello-cwidget --disable-maintainer-mode --disable-dependency-tracking returned exit code 1
+make: *** [build] Error 25
+dpkg-buildpackage: error: debian/rules build gave error exit status 2
+E: Failed autobuilding of package
+...
+</code>
+<code>debian/control</code> ファイルに依存関係を追加して（ry</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# cat debian/control
+...
+Build-Depends: debhelper (&gt;= 9.0.0), autotools-dev, libcwidget-dev
+...
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# pdebuild
+</code>
+成功しました！<br/>
+これでインストール時に依存パッケージも入れてくれるようになりました。</p>
+
+<h2>パッケージビルド</h2>
+
+<p>では改めて <code>debuild</code> コマンドでパッケージをビルドします。<br/>
+オプションの <code>-us</code> はソースパッケージにPGP署名を行わない、 <code>-uc</code> は.changesファイルにPGP署名を行わないという意味になるようです。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# debuild -us -uc
+</code>
+1つ上のディレクトリを見てみます。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# ls -l ..
+合計 208
+drwxr-xr-x 3 mazgi mazgi  4096  9月 22 14:24 hello-cwidget-20120922
+-rw-r--r-- 1 root  root  84299  9月 22 09:38 hello-cwidget-20120922.tar.gz
+-rw-r--r-- 1 root  root   1779  9月 22 14:24 hello-cwidget_20120922-1.debian.tar.gz
+-rw-r--r-- 1 root  root    915  9月 22 14:24 hello-cwidget_20120922-1.dsc
+-rw-r--r-- 1 root  root   6616  9月 22 14:24 hello-cwidget_20120922-1_amd64.build
+-rw-r--r-- 1 root  root   1637  9月 22 14:24 hello-cwidget_20120922-1_amd64.changes
+-rw-r--r-- 1 root  root   7134  9月 22 14:24 hello-cwidget_20120922-1_amd64.deb
+-rw-r--r-- 1 root  root   1357  9月 22 14:18 hello-cwidget_20120922-1_source.changes
+-rw-r--r-- 1 root  root  84280  9月 22 11:57 hello-cwidget_20120922.orig.tar.gz
+</code>
+無事debファイルができています。</p>
+
+<h2>パッケージインストール／アンインストールテスト</h2>
+
+<p><code>piuparts</code> というツールでインストールとアンインストールのテストができるようです。<br/>
+パッケージビルドで使用した<code>pdebuild</code> と同じようにchrootしてsandboxを提供してくれるようです。</p>
+
+<p><code>pbuilder</code> にはCopyOnWriteで高速動作する <code>cowbuilder</code> がありますが、 <code>piuparts</code> のCopyOnWrite版は目下開発中のようです。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# piuparts -d unstable ../hello-cwidget_20120922-1_amd64.deb
+…
+7m52.2s INFO: PASS: All tests.
+7m52.2s INFO: piuparts run ends.
+</code></p>
+
+<h2>パッケージの修正</h2>
+
+<p>今回のサンプルパッケージには、大変ありがたいことにtypoが <em>用意されている</em> ので修正してみます。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# grep -r Debain
+hello-cwidget.cc:       dialogs::ok(L"Hello, Debain Dojo!",
+</code>
+"Debain"を"Debian"に修正してみます。</p>
+
+<h3>patchをつくる</h3>
+
+<p>typoを修正して、 <code>dpkg-source --commit</code> コマンドでパッチを作ります。楽チンですね。</p>
+
+<p><code>dpkg-source --commit</code> コマンドは元のtarballを基準としてパッチを作るようです。<br/>
+gitでいうところの<code>git init</code> 的な操作はいらないのかな？と不思議だったのですが、教えていただきました。<br/>
+Makefileの書き方次第ではパッチにゴミが混じることがあるようなので、 <code>debuild</code> コマンドでcleanしたり、 <code>debclean</code> コマンドを実行してお掃除した方がいいようです。<br/>
+今回は <code>./debian/rules clean</code> しちゃいましたが、この辺りサッパリ理解してないので必要に迫られたら調べたいです。</p>
+
+<p>また、パッケージ自体のバージョン管理にはSubversionのような集中リポジトリ型より分散型のVCSの方が相性良いとのことです。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# ./debian/rules clean
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# vi hello-cwidget.cc
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# EDITOR=vi dpkg-source --commit
+dpkg-source: info: local changes detected, the modified files are:
+ hello-cwidget-20120922/hello-cwidget.cc
+Enter the desired patch name: fix typo
+…
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# cat debian/patches/series
+fix-typo
+</code>
+patchの内容はこんな感じです。</p>
+
+<p>```
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# cat debian/patches/fix-typo
+Description: Fixed message in dialog
+ This patch is fixed typo from Debain to Debian.
+ .
+ hello-cwidget (20120922-1) unstable; urgency=low
+ .
+   * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+Author: Hidenori MATSUKI <a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#77;&#x41;&#x54;&#x53;&#x55;&#75;&#x49;&#46;&#72;&#105;&#100;&#101;&#x6e;&#x6f;&#x72;&#x69;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#x4d;&#65;&#84;&#83;&#x55;&#75;&#x49;&#46;&#x48;&#x69;&#100;&#x65;&#x6e;&#111;&#x72;&#x69;&#64;&#103;&#x6d;&#x61;&#105;&#x6c;&#46;&#x63;&#x6f;&#109;</a></p>
+
+<hr />
+
+<p>The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:</p>
+
+<p>Origin: Other
+Forwarded: not-needed
+Last-Update: 2012-09-22</p>
+
+<p>--- hello-cwidget-20120922.orig/hello-cwidget.cc
++++ hello-cwidget-20120922/hello-cwidget.cc
+@@ -35,7 +35,7 @@ int main(int argc, char **argv)</p>
+
+<pre><code>toplevel::init();
+
+widgets::widget_ref dialog =
+</code></pre>
+
+<ul>
+<li><pre><code>dialogs::ok(L"Hello, Debain Dojo!",
+</code></pre></li>
+<li><pre><code>dialogs::ok(L"Hello, Debian Dojo!",
+    util::arg(sigc::ptr_fun(toplevel::exitmain)));
+</code></pre>
+
+<p>toplevel::settoplevel(dialog);
+<code>``
+再度</code>debuild<code>コマンドを実行します。  
+どうやら</code>dpkg-source` が実行されてパッチが当たるようです。</p></li>
+</ul>
+
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# debuild -us -uc
+…
+dpkg-source: info: applying fix-typo
+…
+Finished running lintian.
+</code>
+<code>debi</code> で更新されたパッケージをインストールしてみます。</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# debi
+(データベースを読み込んでいます ... 現在 61017 個のファイルとディレクトリがインストールされています。)
+hello-cwidget 20120922-1 を (hello-cwidget_20120922-1_amd64.deb で) 置換するための準備をしています ...
+hello-cwidget を展開し、置換しています...
+hello-cwidget (20120922-1) を設定しています ...
+root@debian-sid:~/debian/dojo/work/hello-cwidget-20120922# hello-cwidget
+</code>
+<img src="/images/2012-09-22-debian-dojo/20120922_hello-cwidget_02.png"></p>
+
+<p>ちゃんと"Debain"が"Debian"に直っていますね！<br/>
+どうやら <code>debi</code> コマンドでインストールすると同じバージョンのパッケージでも置き換えられるようです。</p>
+
+<h1>Ruby1.9.3をパッケージングしてみる…</h1>
+
+<p>さていよいよRuby1.9.3のパッケージングに挑戦です！<br/>
+これが目的で参加させていただいたのでした。</p>
+
+<p>まずはtarball持ってきてビルドできることを確認…</p>
+
+<p><code>
+root@debian-sid:~/debian/dojo/work.ruby# pwd
+/root/debian/dojo/work.ruby
+root@debian-sid:~/debian/dojo/work.ruby# curl -LO ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.bz2
+root@debian-sid:~/debian/dojo/work.ruby# tar xf ruby-1.9.3-p194.tar.bz2
+root@debian-sid:~/debian/dojo/work.ruby# cd ruby-1.9.3-p194/
+root@debian-sid:~/debian/dojo/work.ruby/ruby-1.9.3-p194# ./configure
+root@debian-sid:~/debian/dojo/work.ruby/ruby-1.9.3-p194# make
+root@debian-sid:~/debian/dojo/work.ruby/ruby-1.9.3-p194# make check
+</code>
+…してたら <code>make check</code> 終わらずに時間切れ。</p>
+
+<p>今回ここまででした。。</p>
+
+<h1>感想と教えていただいたこと</h1>
+
+<p>成果発表の時間に"前に立って質問する"という前代未聞の方法でいろいろ教えていただいたのでメモ。</p>
+
+<ul>
+<li>感じたDebian文化
+
+<ul>
+<li>「それはFreeじゃない」とか聴こえてきてさすがDebian GNU/Linuxだなと思いました。</li>
+<li>(Debianに限らないけど)対象のライセンスは皆さんものすごく気にされてて「見習わないと！」と思いました。</li>
+</ul>
+</li>
+<li>Rubyパッケージについて
+
+<ul>
+<li><a href="http://packages.debian.org/ja/sid/libruby">libruby</a>あるそうです！…ｏｒｚ</li>
+<li>「rubyをビルドするなら、debian用のtarball使ったほうが楽だよ！」と教えていただきました、感謝。</li>
+</ul>
+</li>
+<li>mikutterパッケージ作った方が！ <a href="https://github.com/upsilon/mikutter-deb">upsilon/mikutter-deb</a>
+
+<ul>
+<li>Debianコミュニティでもパッケージング中とのこと</li>
+<li>アイコンは"みく"だそうです、なんだー初音ミクとは無関係なんですねー当たり前ですねっ</li>
+<li>画像のライセンスはCC by SA3.0とのこと</li>
+<li>音源もライセンス解決したorする見込みだそうです。</li>
+<li>ライセンス問題全部解決したので晴れてパッケージになる！らしいです。</li>
+</ul>
+</li>
+<li>PHPにも<a href="http://getcomposer.org/">Composer</a>というRubyのbundlerぽいのがあるらしいです、知らなかった。</li>
+</ul>
+
+
+<p>環境構築で手間取って聞き漏らしたり理解しきれなかったところも多いのですが、debファイルがちょっとだけ身近に感じられるようになりました。
+皆さん本当にありがとうございました！</p>
+]]></content>
+  </entry>
+  
+</feed>
