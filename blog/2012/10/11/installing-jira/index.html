@@ -114,7 +114,7 @@ x86_64なGentoo Linux+MySQLな環境にJIRAをインストールして、nginx�
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # emerge -pv mysql
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # emerge -pv mysql
 </span><span class='line'>
 </span><span class='line'>These are the packages that would be merged, in order:
 </span><span class='line'>
@@ -131,9 +131,9 @@ x86_64なGentoo Linux+MySQLな環境にJIRAをインストールして、nginx�
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # grep innodb_file_per_table /etc/mysql/my.cnf
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # grep innodb_file_per_table /etc/mysql/my.cnf
 </span><span class='line'>innodb_file_per_table
-</span><span class='line'>[root@bangdoll] # grep datadir /etc/mysql/my.cnf
+</span><span class='line'>[root@Bowmore] # grep datadir /etc/mysql/my.cnf
 </span><span class='line'>datadir                   = /var/lib/mysql</span></code></pre></td></tr></table></div></figure>
 
 
@@ -148,9 +148,9 @@ XFSの場合、サイズは後からでもmountしたまま拡張できるので
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # lvcreate -nJIRA -L4G VG00
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # lvcreate -nJIRA -L4G VG00
 </span><span class='line'>  Logical volume "JIRA" created
-</span><span class='line'>[root@bangdoll] # mkfs.xfs /dev/VG00/JIRA
+</span><span class='line'>[root@Bowmore] # mkfs.xfs /dev/VG00/JIRA
 </span><span class='line'>…</span></code></pre></td></tr></table></div></figure>
 
 
@@ -165,12 +165,12 @@ XFSの場合、サイズは後からでもmountしたまま拡張できるので
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # mkdir -p /opt/JIRA
-</span><span class='line'>[root@bangdoll] # vi /etc/fstab
-</span><span class='line'>[root@bangdoll] # grep /dev/VG00/JIRA /etc/fstab
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # mkdir -p /opt/JIRA
+</span><span class='line'>[root@Bowmore] # vi /etc/fstab
+</span><span class='line'>[root@Bowmore] # grep /dev/VG00/JIRA /etc/fstab
 </span><span class='line'>/dev/VG00/JIRA        /opt/JIRA   xfs     noatime     0 1
-</span><span class='line'>[root@bangdoll] # mount -a
-</span><span class='line'>[root@bangdoll] # mount | grep /opt/JIRA
+</span><span class='line'>[root@Bowmore] # mount -a
+</span><span class='line'>[root@Bowmore] # mount | grep /opt/JIRA
 </span><span class='line'>/dev/mapper/VG00-JIRA on /opt/JIRA type xfs (rw,noatime)</span></code></pre></td></tr></table></div></figure>
 
 
@@ -205,19 +205,19 @@ MySQLのデータディレクトリにディレクトリ(シンボリックリ�
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # mkdir -p /opt/JIRA/jira_5.1.6 /opt/JIRA/mysql
-</span><span class='line'>[root@bangdoll] # cd /var/lib/mysql
-</span><span class='line'>[root@bangdoll] # ln -s /opt/JIRA/mysql jira
-</span><span class='line'>[root@bangdoll] # ls -l /var/lib/mysql/jira
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # mkdir -p /opt/JIRA/jira_5.1.6 /opt/JIRA/mysql
+</span><span class='line'>[root@Bowmore] # cd /var/lib/mysql
+</span><span class='line'>[root@Bowmore] # ln -s /opt/JIRA/mysql jira
+</span><span class='line'>[root@Bowmore] # ls -l /var/lib/mysql/jira
 </span><span class='line'>lrwxrwxrwx 1 root root 15 Oct 12 03:16 /var/lib/mysql/jira -&gt; /opt/JIRA/mysql/
-</span><span class='line'>[root@bangdoll] # cat&lt;&lt;EOF&gt;jira/db.opt
+</span><span class='line'>[root@Bowmore] # cat&lt;&lt;EOF&gt;jira/db.opt
 </span><span class='line'>heredoc&gt; default-character-set=utf8
 </span><span class='line'>heredoc&gt; default-collation=utf8_general_ci
 </span><span class='line'>heredoc&gt; EOF
-</span><span class='line'>[root@bangdoll] # chown -R mysql:mysql /opt/JIRA/mysql
-</span><span class='line'>[root@bangdoll] # ls -ld /opt/JIRA/mysql
+</span><span class='line'>[root@Bowmore] # chown -R mysql:mysql /opt/JIRA/mysql
+</span><span class='line'>[root@Bowmore] # ls -ld /opt/JIRA/mysql
 </span><span class='line'>drwxr-xr-x 2 mysql mysql 19 Oct 12 04:33 /opt/JIRA/mysql/
-</span><span class='line'>[root@bangdoll] # ls -lR /opt/JIRA/mysql
+</span><span class='line'>[root@Bowmore] # ls -lR /opt/JIRA/mysql
 </span><span class='line'>/opt/JIRA/mysql:
 </span><span class='line'>total 4
 </span><span class='line'>-rw-r--r-- 1 mysql mysql 61 Oct 12 04:30 db.opt</span></code></pre></td></tr></table></div></figure>
@@ -257,7 +257,7 @@ MySQLのデータディレクトリにディレクトリ(シンボリックリ�
 <span class='line-number'>28</span>
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # mysql -uroot -p
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # mysql -uroot -p
 </span><span class='line'>Enter password: 
 </span><span class='line'>Welcome to the MySQL monitor.  Commands end with ; or \g.
 </span><span class='line'>Your MySQL connection id is 7
@@ -310,12 +310,12 @@ MySQLのデータディレクトリにディレクトリ(シンボリックリ�
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # cd /tmp
-</span><span class='line'>[root@bangdoll] # curl -LO http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-5.1.6-x64.bin
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # cd /tmp
+</span><span class='line'>[root@Bowmore] # curl -LO http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-5.1.6-x64.bin
 </span><span class='line'>...
-</span><span class='line'>[root@bangdoll] # ls -l atlassian-jira-5.1.6-x64.bin
+</span><span class='line'>[root@Bowmore] # ls -l atlassian-jira-5.1.6-x64.bin
 </span><span class='line'>-rw-r--r-- 1 root  root  158706257 Oct 12 02:47 atlassian-jira-5.1.6-x64.bin
-</span><span class='line'>[root@bangdoll] # chmod a+x atlassian-jira-5.1.6-x64.bin</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>[root@Bowmore] # chmod a+x atlassian-jira-5.1.6-x64.bin</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>ユーザーの作成(不要)</h3>
@@ -337,13 +337,13 @@ MySQLのデータディレクトリにディレクトリ(シンボリックリ�
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # groupadd -g50000 jira
-</span><span class='line'>[root@bangdoll] # useradd -u 50001 -g jira -s /bin/bash -d /opt/JIRA/home -m -c "Atlassian JIRA" jira
-</span><span class='line'>[root@bangdoll] # grep jira /etc/passwd
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # groupadd -g50000 jira
+</span><span class='line'>[root@Bowmore] # useradd -u 50001 -g jira -s /bin/bash -d /opt/JIRA/home -m -c "Atlassian JIRA" jira
+</span><span class='line'>[root@Bowmore] # grep jira /etc/passwd
 </span><span class='line'>jira:x:50001:50000:Atlassian JIRA:/opt/JIRA/home:/bin/bash
-</span><span class='line'>[root@bangdoll] # grep jira /etc/group
+</span><span class='line'>[root@Bowmore] # grep jira /etc/group
 </span><span class='line'>jira:x:50000:
-</span><span class='line'>[root@bangdoll] # ls -al /opt/JIRA/home
+</span><span class='line'>[root@Bowmore] # ls -al /opt/JIRA/home
 </span><span class='line'>total 12
 </span><span class='line'>drwxr-xr-x 3 jira jira  70 Oct 12 03:33 ./
 </span><span class='line'>drwxr-xr-x 5 root root  46 Oct 12 03:33 ../
@@ -433,10 +433,10 @@ JIRAはHTTPリクエスト用とコントロール用にTCPポートを2つ使�
 <span class='line-number'>48</span>
 <span class='line-number'>49</span>
 <span class='line-number'>50</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # cd /tmp
-</span><span class='line'>[root@bangdoll] # ls -l atlassian-jira-5.1.6-x64.bin
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # cd /tmp
+</span><span class='line'>[root@Bowmore] # ls -l atlassian-jira-5.1.6-x64.bin
 </span><span class='line'>-rwxr-xr-x 1 root root 158706257 Oct 12 02:47 atlassian-jira-5.1.6-x64.bin*
-</span><span class='line'>[root@bangdoll] # ./atlassian-jira-5.1.6-x64.bin
+</span><span class='line'>[root@Bowmore] # ./atlassian-jira-5.1.6-x64.bin
 </span><span class='line'>Unpacking JRE ...
 </span><span class='line'>Starting Installer ...
 </span><span class='line'>
@@ -501,13 +501,13 @@ JIRAはHTTPリクエスト用とコントロール用にTCPポートを2つ使�
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # grep jira /etc/passwd
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # grep jira /etc/passwd
 </span><span class='line'>jira:x:50001:50000:Atlassian JIRA:/opt/JIRA/home:/bin/bash
 </span><span class='line'>jira1:x:50002:50002:Atlassian JIRA:/home/jira1:/bin/bash
-</span><span class='line'>[root@bangdoll] # grep jira /etc/group
+</span><span class='line'>[root@Bowmore] # grep jira /etc/group
 </span><span class='line'>jira:x:50000:
 </span><span class='line'>jira1:x:50002:
-</span><span class='line'>[root@bangdoll] # ps aux | grep jir\[a\]
+</span><span class='line'>[root@Bowmore] # ps aux | grep jir\[a\]
 </span><span class='line'>jira1     7536  8.2 16.1 2691288 332336 pts/1  Sl   03:37   0:52 /opt/JIRA/jira_5.1.6/jira/jre//bin/java -Djava.util.logging.config.file=/opt/JIRA/jira_5.1.6/jira/conf/logging.properties -XX:MaxPermSize=256m -Xms256m -Xmx768m -Djava.awt.headless=true -Datlassian.standalone=JIRA -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dmail.mime.decodeparameters=true -XX:+PrintGCDateStamps -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/opt/JIRA/jira_5.1.6/jira/endorsed -classpath /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar -Dcatalina.base=/opt/JIRA/jira_5.1.6/jira -Dcatalina.home=/opt/JIRA/jira_5.1.6/jira -Djava.io.tmpdir=/opt/JIRA/jira_5.1.6/jira/temp org.apache.catalina.startup.Bootstrap start</span></code></pre></td></tr></table></div></figure>
 
 
@@ -555,7 +555,7 @@ JIRAはHTTPリクエスト用とコントロール用にTCPポートを2つ使�
 <span class='line-number'>34</span>
 <span class='line-number'>35</span>
 <span class='line-number'>36</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # /etc/init.d/jira1 stop
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # /etc/init.d/jira1 stop
 </span><span class='line'>executing using dedicated user
 </span><span class='line'>                .....
 </span><span class='line'>          .... .NMMMD.  ...
@@ -596,7 +596,7 @@ JIRAはHTTPリクエスト用とコントロール用にTCPポートを2つ使�
 <p>起動スクリプトの名前を変えます。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # mv /etc/init.d/jira1 /etc/init.d/jira</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # mv /etc/init.d/jira1 /etc/init.d/jira</span></code></pre></td></tr></table></div></figure>
 
 
 <p>インストールディレクトリのownerを確認してみます。ファイル/ディレクトリのownerが<code>root</code>なものと<code>jira1</code>なものがあるようです。<br/>
@@ -626,12 +626,12 @@ ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリ�
 <span class='line-number'>22</span>
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # cd /opt/JIRA/jira_5.1.6
-</span><span class='line'>[root@bangdoll] # ls -l
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # cd /opt/JIRA/jira_5.1.6
+</span><span class='line'>[root@Bowmore] # ls -l
 </span><span class='line'>total 4
 </span><span class='line'>drwx------  9 jira1 root   90 Oct 12 03:49 application-data/
 </span><span class='line'>drwxr-xr-x 15 root  root 4096 Oct 12 03:37 jira/
-</span><span class='line'>[root@bangdoll] # ls -l jira
+</span><span class='line'>[root@Bowmore] # ls -l jira
 </span><span class='line'>total 100
 </span><span class='line'>-rw-r--r--  1 root  root   574 Sep 25 10:12 NOTICE
 </span><span class='line'>-rw-r--r--  1 root  root  3749 Sep 25 10:12 README.html
@@ -660,8 +660,8 @@ ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリ�
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # chown -R jira:jira application-data
-</span><span class='line'>[root@bangdoll] # ls -l
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # chown -R jira:jira application-data
+</span><span class='line'>[root@Bowmore] # ls -l
 </span><span class='line'>total 4
 </span><span class='line'>drwx------  9 jira jira   90 Oct 12 03:49 application-data/
 </span><span class='line'>drwxr-xr-x 15 root root 4096 Oct 12 03:37 jira/</span></code></pre></td></tr></table></div></figure>
@@ -689,8 +689,8 @@ ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリ�
 <span class='line-number'>18</span>
 <span class='line-number'>19</span>
 <span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # chown -R jira:jira jira/logs jira/temp jira/work
-</span><span class='line'>[root@bangdoll] # ls -l jira
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # chown -R jira:jira jira/logs jira/temp jira/work
+</span><span class='line'>[root@Bowmore] # ls -l jira
 </span><span class='line'>total 100
 </span><span class='line'>-rw-r--r--  1 root root   574 Sep 25 10:12 NOTICE
 </span><span class='line'>-rw-r--r--  1 root root  3749 Sep 25 10:12 README.html
@@ -727,14 +727,14 @@ ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリ�
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # cat jira/bin/user.sh
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # cat jira/bin/user.sh
 </span><span class='line'># START INSTALLER MAGIC ! DO NOT EDIT !
 </span><span class='line'>JIRA_USER="jira1" # user created by installer
 </span><span class='line'># END INSTALLER MAGIC ! DO NOT EDIT !
 </span><span class='line'>
 </span><span class='line'>export JIRA_USER
-</span><span class='line'>[root@bangdoll] # vi jira/bin/user.sh
-</span><span class='line'>[root@bangdoll] # cat jira/bin/user.sh
+</span><span class='line'>[root@Bowmore] # vi jira/bin/user.sh
+</span><span class='line'>[root@Bowmore] # cat jira/bin/user.sh
 </span><span class='line'># START INSTALLER MAGIC ! DO NOT EDIT !
 </span><span class='line'>JIRA_USER="jira" # user created by installer
 </span><span class='line'># END INSTALLER MAGIC ! DO NOT EDIT !
@@ -784,7 +784,7 @@ ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリ�
 <span class='line-number'>38</span>
 <span class='line-number'>39</span>
 <span class='line-number'>40</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # /etc/init.d/jira start
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # /etc/init.d/jira start
 </span><span class='line'>
 </span><span class='line'>To run JIRA in the foreground, start the server with start-jira.sh -fg
 </span><span class='line'>executing using dedicated user: jira
@@ -822,7 +822,7 @@ ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリ�
 </span><span class='line'>Using JRE_HOME:        /opt/JIRA/jira_5.1.6/jira/jre/
 </span><span class='line'>Using CLASSPATH:       /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar
 </span><span class='line'>Using CATALINA_PID:    /opt/JIRA/jira_5.1.6/jira/work/catalina.pid
-</span><span class='line'>[root@bangdoll] # ps aux | grep jir\[a\]
+</span><span class='line'>[root@Bowmore] # ps aux | grep jir\[a\]
 </span><span class='line'>jira      7849  136 15.8 2690072 325976 pts/1  Sl   03:59   0:31 /opt/JIRA/jira_5.1.6/jira/jre//bin/java -Djava.util.logging.config.file=/opt/JIRA/jira_5.1.6/jira/conf/logging.properties -XX:MaxPermSize=256m -Xms256m -Xmx768m -Djava.awt.headless=true -Datlassian.standalone=JIRA -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dmail.mime.decodeparameters=true -XX:+PrintGCDateStamps -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/opt/JIRA/jira_5.1.6/jira/endorsed -classpath /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar -Dcatalina.base=/opt/JIRA/jira_5.1.6/jira -Dcatalina.home=/opt/JIRA/jira_5.1.6/jira -Djava.io.tmpdir=/opt/JIRA/jira_5.1.6/jira/temp org.apache.catalina.startup.Bootstrap start</span></code></pre></td></tr></table></div></figure>
 
 
@@ -834,9 +834,9 @@ ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリ�
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # userdel -r jira1
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # userdel -r jira1
 </span><span class='line'>userdel: jira1 home directory (/home/jira1) not found
-</span><span class='line'>[root@bangdoll] # groupdel jira1
+</span><span class='line'>[root@Bowmore] # groupdel jira1
 </span><span class='line'>groupdel: group 'jira1' does not exist</span></code></pre></td></tr></table></div></figure>
 
 
@@ -890,9 +890,9 @@ ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリ�
 <span class='line-number'>18</span>
 <span class='line-number'>19</span>
 <span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # cd /etc/nginx/sites.availables
-</span><span class='line'>[root@bangdoll] # vi jira.mazgi.com
-</span><span class='line'>[root@bangdoll] # cat jira.mazgi.com
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # cd /etc/nginx/sites.availables
+</span><span class='line'>[root@Bowmore] # vi jira.mazgi.com
+</span><span class='line'>[root@Bowmore] # cat jira.mazgi.com
 </span><span class='line'>upstream jira.mazgi.com.backend {
 </span><span class='line'>  server 127.0.0.1:50080;
 </span><span class='line'>}
@@ -915,7 +915,7 @@ ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリ�
 <p>ログ出力先のディレクトリを作ります。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # mkdir -p /var/log/nginx/jira.mazgi.com</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # mkdir -p /var/log/nginx/jira.mazgi.com</span></code></pre></td></tr></table></div></figure>
 
 
 <p>JIRAサイトを公開するために<code>sites.availables</code>から<code>sites.enabled</code>にシンボリックリンクを張り、nginxをrestartします。</p>
@@ -928,11 +928,11 @@ ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリ�
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # cd /etc/nginx/sites.enabled
-</span><span class='line'>[root@bangdoll] # ln -s ../sites.availables/jira.mazgi.com .
-</span><span class='line'>[root@bangdoll] # ls -l jira.mazgi.com
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@Bowmore] # cd /etc/nginx/sites.enabled
+</span><span class='line'>[root@Bowmore] # ln -s ../sites.availables/jira.mazgi.com .
+</span><span class='line'>[root@Bowmore] # ls -l jira.mazgi.com
 </span><span class='line'>lrwxrwxrwx 1 root root 34 Oct 12 04:10 jira.mazgi.com -&gt; ../sites.availables/jira.mazgi.com
-</span><span class='line'>[root@bangdoll] # /etc/init.d/nginx restart
+</span><span class='line'>[root@Bowmore] # /etc/init.d/nginx restart
 </span><span class='line'> * Checking nginx' configuration ...                                                                                                                                                                                                                                                                                   [ ok ]
 </span><span class='line'> * Stopping nginx ...                                                                                                                                                                                                                                                                                                  [ ok ]
 </span><span class='line'> * Starting nginx ...                                                                                                                                                                                                                                                                                                  [ ok ]</span></code></pre></td></tr></table></div></figure>

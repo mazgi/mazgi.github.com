@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Debian | log++]]></title>
   <link href="http://mazgi.github.com/blog/categories/debian/atom.xml" rel="self"/>
   <link href="http://mazgi.github.com/"/>
-  <updated>2012-10-22T00:44:26+09:00</updated>
+  <updated>2012-10-22T01:39:36+09:00</updated>
   <id>http://mazgi.github.com/</id>
   <author>
     <name><![CDATA[mazgi]]></name>
@@ -625,7 +625,7 @@ Description: Fixed message in dialog
  hello-cwidget (20120922-1) unstable; urgency=low
  .
    * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
-Author: Hidenori MATSUKI <a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#x3a;&#77;&#x41;&#x54;&#83;&#85;&#75;&#x49;&#x2e;&#x48;&#x69;&#100;&#x65;&#110;&#111;&#114;&#x69;&#64;&#103;&#x6d;&#x61;&#x69;&#108;&#x2e;&#99;&#x6f;&#109;">&#77;&#x41;&#84;&#83;&#x55;&#75;&#73;&#46;&#72;&#105;&#100;&#x65;&#110;&#111;&#x72;&#105;&#x40;&#x67;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#111;&#x6d;</a></p>
+Author: Hidenori MATSUKI <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#x4d;&#x41;&#84;&#x53;&#85;&#x4b;&#x49;&#46;&#72;&#x69;&#x64;&#x65;&#x6e;&#111;&#114;&#105;&#x40;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#109;">&#x4d;&#65;&#84;&#x53;&#x55;&#x4b;&#x49;&#46;&#x48;&#x69;&#x64;&#101;&#x6e;&#x6f;&#x72;&#105;&#x40;&#x67;&#x6d;&#x61;&#x69;&#108;&#x2e;&#99;&#111;&#109;</a></p>
 
 <hr />
 

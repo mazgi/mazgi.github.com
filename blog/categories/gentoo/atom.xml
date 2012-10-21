@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Gentoo | log++]]></title>
   <link href="http://mazgi.github.com/blog/categories/gentoo/atom.xml" rel="self"/>
   <link href="http://mazgi.github.com/"/>
-  <updated>2012-10-22T00:44:26+09:00</updated>
+  <updated>2012-10-22T01:39:36+09:00</updated>
   <id>http://mazgi.github.com/</id>
   <author>
     <name><![CDATA[mazgi]]></name>
@@ -33,7 +33,7 @@ x86_64なGentoo Linux+MySQLな環境にJIRAをインストールして、nginx�
 <p>バージョンとUSEフラグくらいをさっくり確認しておきます。</p>
 
 <p>```
-[root@bangdoll] # emerge -pv mysql</p>
+[root@Bowmore] # emerge -pv mysql</p>
 
 <p>These are the packages that would be merged, in order:</p>
 
@@ -46,9 +46,9 @@ JIRA用のデータファイルは分けたいので</code>innodb_file_per_table
 </code>datadir`のpathも確認しておきます。</p>
 
 <p><code>
-[root@bangdoll] # grep innodb_file_per_table /etc/mysql/my.cnf
+[root@Bowmore] # grep innodb_file_per_table /etc/mysql/my.cnf
 innodb_file_per_table
-[root@bangdoll] # grep datadir /etc/mysql/my.cnf
+[root@Bowmore] # grep datadir /etc/mysql/my.cnf
 datadir                     = /var/lib/mysql
 </code></p>
 
@@ -60,9 +60,9 @@ datadir                     = /var/lib/mysql
 XFSの場合、サイズは後からでもmountしたまま拡張できるので適当です。ただし、(unmountしても)縮小はできないのであまり大きくはしないようにします。</p>
 
 <p><code>
-[root@bangdoll] # lvcreate -nJIRA -L4G VG00
+[root@Bowmore] # lvcreate -nJIRA -L4G VG00
   Logical volume "JIRA" created
-[root@bangdoll] # mkfs.xfs /dev/VG00/JIRA
+[root@Bowmore] # mkfs.xfs /dev/VG00/JIRA
 …
 </code>
 つくったLVは<code>/opt/JIRA</code>にマウントすることにします。<br/>
@@ -70,12 +70,12 @@ XFSの場合、サイズは後からでもmountしたまま拡張できるので
 <code>mount -a</code>を実行してみて正しくマウントできることを確認します。</p>
 
 <p><code>
-[root@bangdoll] # mkdir -p /opt/JIRA
-[root@bangdoll] # vi /etc/fstab
-[root@bangdoll] # grep /dev/VG00/JIRA /etc/fstab
+[root@Bowmore] # mkdir -p /opt/JIRA
+[root@Bowmore] # vi /etc/fstab
+[root@Bowmore] # grep /dev/VG00/JIRA /etc/fstab
 /dev/VG00/JIRA      /opt/JIRA   xfs     noatime     0 1
-[root@bangdoll] # mount -a
-[root@bangdoll] # mount | grep /opt/JIRA
+[root@Bowmore] # mount -a
+[root@Bowmore] # mount | grep /opt/JIRA
 /dev/mapper/VG00-JIRA on /opt/JIRA type xfs (rw,noatime)
 </code></p>
 
@@ -95,19 +95,19 @@ MySQLのデータディレクトリにディレクトリ(シンボリックリ�
 <p>今回はムリヤリ<code>db.opt</code>ファイルを作ってしまったのですがなんかいい方法ないですかね。。</p>
 
 <p><code>
-[root@bangdoll] # mkdir -p /opt/JIRA/jira_5.1.6 /opt/JIRA/mysql
-[root@bangdoll] # cd /var/lib/mysql
-[root@bangdoll] # ln -s /opt/JIRA/mysql jira
-[root@bangdoll] # ls -l /var/lib/mysql/jira
+[root@Bowmore] # mkdir -p /opt/JIRA/jira_5.1.6 /opt/JIRA/mysql
+[root@Bowmore] # cd /var/lib/mysql
+[root@Bowmore] # ln -s /opt/JIRA/mysql jira
+[root@Bowmore] # ls -l /var/lib/mysql/jira
 lrwxrwxrwx 1 root root 15 Oct 12 03:16 /var/lib/mysql/jira -&gt; /opt/JIRA/mysql/
-[root@bangdoll] # cat&lt;&lt;EOF&gt;jira/db.opt
+[root@Bowmore] # cat&lt;&lt;EOF&gt;jira/db.opt
 heredoc&gt; default-character-set=utf8
 heredoc&gt; default-collation=utf8_general_ci
 heredoc&gt; EOF
-[root@bangdoll] # chown -R mysql:mysql /opt/JIRA/mysql
-[root@bangdoll] # ls -ld /opt/JIRA/mysql
+[root@Bowmore] # chown -R mysql:mysql /opt/JIRA/mysql
+[root@Bowmore] # ls -ld /opt/JIRA/mysql
 drwxr-xr-x 2 mysql mysql 19 Oct 12 04:33 /opt/JIRA/mysql/
-[root@bangdoll] # ls -lR /opt/JIRA/mysql
+[root@Bowmore] # ls -lR /opt/JIRA/mysql
 /opt/JIRA/mysql:
 total 4
 -rw-r--r-- 1 mysql mysql 61 Oct 12 04:30 db.opt
@@ -117,7 +117,7 @@ total 4
 <p>そしてJIRA用のMySQLユーザーとして<code>jira</code>を作り、<code>jira</code>データベースへの全権限を与えます。</p>
 
 <p>```
-[root@bangdoll] # mysql -uroot -p
+[root@Bowmore] # mysql -uroot -p
 Enter password:
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 7
@@ -165,12 +165,12 @@ Bye
 インストーラをダウンロードしたら実行可能属性を付けておきます。</p>
 
 <p><code>
-[root@bangdoll] # cd /tmp
-[root@bangdoll] # curl -LO http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-5.1.6-x64.bin
+[root@Bowmore] # cd /tmp
+[root@Bowmore] # curl -LO http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-5.1.6-x64.bin
 ...
-[root@bangdoll] # ls -l atlassian-jira-5.1.6-x64.bin
+[root@Bowmore] # ls -l atlassian-jira-5.1.6-x64.bin
 -rw-r--r-- 1 root  root  158706257 Oct 12 02:47 atlassian-jira-5.1.6-x64.bin
-[root@bangdoll] # chmod a+x atlassian-jira-5.1.6-x64.bin
+[root@Bowmore] # chmod a+x atlassian-jira-5.1.6-x64.bin
 </code></p>
 
 <h3>ユーザーの作成(不要)</h3>
@@ -179,13 +179,13 @@ Bye
 後述する実行ユーザー変更の伏線として残してあります。</p>
 
 <p><code>
-[root@bangdoll] # groupadd -g50000 jira
-[root@bangdoll] # useradd -u 50001 -g jira -s /bin/bash -d /opt/JIRA/home -m -c "Atlassian JIRA" jira
-[root@bangdoll] # grep jira /etc/passwd
+[root@Bowmore] # groupadd -g50000 jira
+[root@Bowmore] # useradd -u 50001 -g jira -s /bin/bash -d /opt/JIRA/home -m -c "Atlassian JIRA" jira
+[root@Bowmore] # grep jira /etc/passwd
 jira:x:50001:50000:Atlassian JIRA:/opt/JIRA/home:/bin/bash
-[root@bangdoll] # grep jira /etc/group
+[root@Bowmore] # grep jira /etc/group
 jira:x:50000:
-[root@bangdoll] # ls -al /opt/JIRA/home
+[root@Bowmore] # ls -al /opt/JIRA/home
 total 12
 drwxr-xr-x 3 jira jira  70 Oct 12 03:33 ./
 drwxr-xr-x 5 root root  46 Oct 12 03:33 ../
@@ -226,10 +226,10 @@ JIRAはHTTPリクエスト用とコントロール用にTCPポートを2つ使�
 
 
 <p>```
-[root@bangdoll] # cd /tmp
-[root@bangdoll] # ls -l atlassian-jira-5.1.6-x64.bin
+[root@Bowmore] # cd /tmp
+[root@Bowmore] # ls -l atlassian-jira-5.1.6-x64.bin
 -rwxr-xr-x 1 root root 158706257 Oct 12 02:47 atlassian-jira-5.1.6-x64.bin*
-[root@bangdoll] # ./atlassian-jira-5.1.6-x64.bin
+[root@Bowmore] # ./atlassian-jira-5.1.6-x64.bin
 Unpacking JRE ...
 Starting Installer ...</p>
 
@@ -285,13 +285,13 @@ Finishing installation ...
 なんということでしょう！…<code>jira1</code>ユーザーを作られてしまいました。しっかり<code>jira1</code>ユーザーで実行されています…oh。</p>
 
 <p><code>
-[root@bangdoll] # grep jira /etc/passwd
+[root@Bowmore] # grep jira /etc/passwd
 jira:x:50001:50000:Atlassian JIRA:/opt/JIRA/home:/bin/bash
 jira1:x:50002:50002:Atlassian JIRA:/home/jira1:/bin/bash
-[root@bangdoll] # grep jira /etc/group
+[root@Bowmore] # grep jira /etc/group
 jira:x:50000:
 jira1:x:50002:
-[root@bangdoll] # ps aux | grep jir\[a\]
+[root@Bowmore] # ps aux | grep jir\[a\]
 jira1     7536  8.2 16.1 2691288 332336 pts/1  Sl   03:37   0:52 /opt/JIRA/jira_5.1.6/jira/jre//bin/java -Djava.util.logging.config.file=/opt/JIRA/jira_5.1.6/jira/conf/logging.properties -XX:MaxPermSize=256m -Xms256m -Xmx768m -Djava.awt.headless=true -Datlassian.standalone=JIRA -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dmail.mime.decodeparameters=true -XX:+PrintGCDateStamps -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/opt/JIRA/jira_5.1.6/jira/endorsed -classpath /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar -Dcatalina.base=/opt/JIRA/jira_5.1.6/jira -Dcatalina.home=/opt/JIRA/jira_5.1.6/jira -Djava.io.tmpdir=/opt/JIRA/jira_5.1.6/jira/temp org.apache.catalina.startup.Bootstrap start
 </code>
 どうにかして<code>jira</code>ユーザーで動いてほしいところです。</p>
@@ -303,7 +303,7 @@ jira1     7536  8.2 16.1 2691288 332336 pts/1  Sl   03:37   0:52 /opt/JIRA/jira_
 <p>まずはJIRAを止めます。</p>
 
 <p>```
-[root@bangdoll] # /etc/init.d/jira1 stop
+[root@Bowmore] # /etc/init.d/jira1 stop
 executing using dedicated user</p>
 
 <pre><code>            .....
@@ -344,18 +344,18 @@ Using CATALINA_PID:    /opt/JIRA/jira_5.1.6/jira/work/catalina.pid
 起動スクリプトの名前を変えます。</p>
 
 <p><code>
-[root@bangdoll] # mv /etc/init.d/jira1 /etc/init.d/jira
+[root@Bowmore] # mv /etc/init.d/jira1 /etc/init.d/jira
 </code>
 インストールディレクトリのownerを確認してみます。ファイル/ディレクトリのownerが<code>root</code>なものと<code>jira1</code>なものがあるようです。<br/>
 ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリのownerを<code>jira</code>ユーザーに変更していきます。</p>
 
 <p><code>
-[root@bangdoll] # cd /opt/JIRA/jira_5.1.6
-[root@bangdoll] # ls -l
+[root@Bowmore] # cd /opt/JIRA/jira_5.1.6
+[root@Bowmore] # ls -l
 total 4
 drwx------  9 jira1 root   90 Oct 12 03:49 application-data/
 drwxr-xr-x 15 root  root 4096 Oct 12 03:37 jira/
-[root@bangdoll] # ls -l jira
+[root@Bowmore] # ls -l jira
 total 100
 -rw-r--r--  1 root  root   574 Sep 25 10:12 NOTICE
 -rw-r--r--  1 root  root  3749 Sep 25 10:12 README.html
@@ -380,8 +380,8 @@ drwx------  3 jira1 root    21 Oct 12 03:49 work/
 元はgroupが<code>root</code>ですが<code>jira</code>グループに変えてしまって問題なさそうです。</p>
 
 <p><code>
-[root@bangdoll] # chown -R jira:jira application-data
-[root@bangdoll] # ls -l
+[root@Bowmore] # chown -R jira:jira application-data
+[root@Bowmore] # ls -l
 total 4
 drwx------  9 jira jira   90 Oct 12 03:49 application-data/
 drwxr-xr-x 15 root root 4096 Oct 12 03:37 jira/
@@ -389,8 +389,8 @@ drwxr-xr-x 15 root root 4096 Oct 12 03:37 jira/
 続いて<code>jira/logs</code>, <code>jira/temp</code>, <code>jira/work</code>の3ディレクトリのownerを<code>jira</code>ユーザー:<code>jira</code>グループに変えます。</p>
 
 <p><code>
-[root@bangdoll] # chown -R jira:jira jira/logs jira/temp jira/work
-[root@bangdoll] # ls -l jira
+[root@Bowmore] # chown -R jira:jira jira/logs jira/temp jira/work
+[root@Bowmore] # ls -l jira
 total 100
 -rw-r--r--  1 root root   574 Sep 25 10:12 NOTICE
 -rw-r--r--  1 root root  3749 Sep 25 10:12 README.html
@@ -415,7 +415,7 @@ drwx------  3 jira jira    21 Oct 12 03:49 work/
 どうやらJIRAの実行ユーザーは<code>JIRA_USER</code>という環境変数で設定されているようです。<em>INSTALLER MAGIC ! DO NOT EDIT !</em>だそうですが気にしないことにします。</p>
 
 <p>```
-[root@bangdoll] # cat jira/bin/user.sh</p>
+[root@Bowmore] # cat jira/bin/user.sh</p>
 
 <h1>START INSTALLER MAGIC ! DO NOT EDIT !</h1>
 
@@ -424,8 +424,8 @@ drwx------  3 jira jira    21 Oct 12 03:49 work/
 <h1>END INSTALLER MAGIC ! DO NOT EDIT !</h1>
 
 <p>export JIRA_USER
-[root@bangdoll] # vi jira/bin/user.sh
-[root@bangdoll] # cat jira/bin/user.sh</p>
+[root@Bowmore] # vi jira/bin/user.sh
+[root@Bowmore] # cat jira/bin/user.sh</p>
 
 <h1>START INSTALLER MAGIC ! DO NOT EDIT !</h1>
 
@@ -439,7 +439,7 @@ drwx------  3 jira jira    21 Oct 12 03:49 work/
 <p>JIRAを起動してみます。</p>
 
 <p>```
-[root@bangdoll] # /etc/init.d/jira start</p>
+[root@Bowmore] # /etc/init.d/jira start</p>
 
 <p>To run JIRA in the foreground, start the server with start-jira.sh -fg
 executing using dedicated user: jira</p>
@@ -478,7 +478,7 @@ Using CATALINA_TMPDIR: /opt/JIRA/jira_5.1.6/jira/temp
 Using JRE_HOME:        /opt/JIRA/jira_5.1.6/jira/jre/
 Using CLASSPATH:       /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar
 Using CATALINA_PID:    /opt/JIRA/jira_5.1.6/jira/work/catalina.pid
-[root@bangdoll] # ps aux | grep jir[a]
+[root@Bowmore] # ps aux | grep jir[a]
 jira      7849  136 15.8 2690072 325976 pts/1  Sl   03:59   0:31 /opt/JIRA/jira_5.1.6/jira/jre//bin/java -Djava.util.logging.config.file=/opt/JIRA/jira_5.1.6/jira/conf/logging.properties -XX:MaxPermSize=256m -Xms256m -Xmx768m -Djava.awt.headless=true -Datlassian.standalone=JIRA -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dmail.mime.decodeparameters=true -XX:+PrintGCDateStamps -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/opt/JIRA/jira_5.1.6/jira/endorsed -classpath /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar -Dcatalina.base=/opt/JIRA/jira_5.1.6/jira -Dcatalina.home=/opt/JIRA/jira_5.1.6/jira -Djava.io.tmpdir=/opt/JIRA/jira_5.1.6/jira/temp org.apache.catalina.startup.Bootstrap start
 <code>``
 無事</code>jira`ユーザーで起動しました！</p>
@@ -486,9 +486,9 @@ jira      7849  136 15.8 2690072 325976 pts/1  Sl   03:59   0:31 /opt/JIRA/jira_
 <p>最後に<code>jira1</code>ユーザーと<code>jira1</code>グループを消しておきます。</p>
 
 <p><code>
-[root@bangdoll] # userdel -r jira1
+[root@Bowmore] # userdel -r jira1
 userdel: jira1 home directory (/home/jira1) not found
-[root@bangdoll] # groupdel jira1
+[root@Bowmore] # groupdel jira1
 groupdel: group 'jira1' does not exist
 </code></p>
 
@@ -523,9 +523,9 @@ groupdel: group 'jira1' does not exist
 
 
 <p>```
-[root@bangdoll] # cd /etc/nginx/sites.availables
-[root@bangdoll] # vi jira.mazgi.com
-[root@bangdoll] # cat jira.mazgi.com
+[root@Bowmore] # cd /etc/nginx/sites.availables
+[root@Bowmore] # vi jira.mazgi.com
+[root@Bowmore] # cat jira.mazgi.com
 upstream jira.mazgi.com.backend {</p>
 
 <pre><code>server 127.0.0.1:50080;
@@ -553,16 +553,16 @@ location / {
 ログ出力先のディレクトリを作ります。</p>
 
 <p><code>
-[root@bangdoll] # mkdir -p /var/log/nginx/jira.mazgi.com
+[root@Bowmore] # mkdir -p /var/log/nginx/jira.mazgi.com
 </code>
 JIRAサイトを公開するために<code>sites.availables</code>から<code>sites.enabled</code>にシンボリックリンクを張り、nginxをrestartします。</p>
 
 <p><code>
-[root@bangdoll] # cd /etc/nginx/sites.enabled
-[root@bangdoll] # ln -s ../sites.availables/jira.mazgi.com .
-[root@bangdoll] # ls -l jira.mazgi.com
+[root@Bowmore] # cd /etc/nginx/sites.enabled
+[root@Bowmore] # ln -s ../sites.availables/jira.mazgi.com .
+[root@Bowmore] # ls -l jira.mazgi.com
 lrwxrwxrwx 1 root root 34 Oct 12 04:10 jira.mazgi.com -&gt; ../sites.availables/jira.mazgi.com
-[root@bangdoll] # /etc/init.d/nginx restart
+[root@Bowmore] # /etc/init.d/nginx restart
  * Checking nginx' configuration ...                                                                                                                                                                                                                                                                                   [ ok ]
  * Stopping nginx ...                                                                                                                                                                                                                                                                                                  [ ok ]
  * Starting nginx ...                                                                                                                                                                                                                                                                                                  [ ok ]
