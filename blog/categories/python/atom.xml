@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Python | log++]]></title>
+  <link href="http://mazgi.github.com/blog/categories/python/atom.xml" rel="self"/>
+  <link href="http://mazgi.github.com/"/>
+  <updated>2012-10-22T00:41:51+09:00</updated>
+  <id>http://mazgi.github.com/</id>
+  <author>
+    <name><![CDATA[mazgi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[pythonbrew]]></title>
+    <link href="http://mazgi.github.com/blog/2012/10/13/pythonbrew/"/>
+    <updated>2012-10-13T15:49:00+09:00</updated>
+    <id>http://mazgi.github.com/blog/2012/10/13/pythonbrew</id>
+    <content type="html"><![CDATA[<p>```
+[mazgi@Caolila] $ curl -kL http://xrl.us/pythonbrewinstall | bash
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</p>
+
+<pre><code>                             Dload  Upload   Total   Spent    Left  Speed
+</code></pre>
+
+<p>100  2799  100  2799    0     0    824      0  0:00:03  0:00:03 --:--:--  1268
+Downloading http://pypi.python.org/packages/source/p/pythonbrew/pythonbrew-1.3.tar.gz</p>
+
+<h6>################################################################## 100.0%</h6>
+
+<p>Extracting /Users/mazgi/.pythonbrew/dists/pythonbrew-1.3.tar.gz
+Installing pythonbrew into /Users/mazgi/.pythonbrew</p>
+
+<p>Well-done! Congratulations!</p>
+
+<p>The pythonbrew is installed as:</p>
+
+<p>  /Users/mazgi/.pythonbrew</p>
+
+<p>Please add the following line to the end of your ~/.bashrc</p>
+
+<p>  [[ -s "$HOME/.pythonbrew/etc/bashrc" ]] &amp;&amp; source "$HOME/.pythonbrew/etc/bashrc"</p>
+
+<p>After that, exit this shell, start a new one, and install some fresh
+pythons:</p>
+
+<p>  pythonbrew install 2.7.2
+  pythonbrew install 3.2</p>
+
+<p>For further instructions, run:</p>
+
+<p>  pythonbrew help</p>
+
+<p>The default help messages will popup and tell you what to do!</p>
+
+<p>Enjoy pythonbrew at /Users/mazgi/.pythonbrew!!
+```</p>
+
+<p><code>
+[mazgi@Caolila] $ cat .zshenv
+[[ -s "$HOME/.pythonbrew/etc/bashrc" ]] &amp;&amp; source "$HOME/.pythonbrew/etc/bashrc"
+</code></p>
+
+<p>```
+[mazgi@Caolila] $ pythonbrew list -k</p>
+
+<h1>Pythons</h1>
+
+<p>Python-1.5.2
+Python-1.6.1
+Python-2.0.1
+Python-2.1.3
+Python-2.2.3
+Python-2.3.7
+Python-2.4.6
+Python-2.5.6
+Python-2.6.7
+Python-2.7.3
+Python-3.0.1
+Python-3.1.4
+Python-3.2.3
+[mazgi@Caolila] $ pythonbrew update
+You are already running the installed latest version of pythonbrew.
+[mazgi@Caolila] $ python --version
+Python 2.7.1
+[mazgi@Caolila] $ pythonbrew install 2.7.3
+Downloading Python-2.7.3.tgz as /Users/mazgi/.pythonbrew/dists/Python-2.7.3.tgz</p>
+
+<h6>################################################################## 100.0%</h6>
+
+<p>Extracting Python-2.7.3.tgz into /Users/mazgi/.pythonbrew/build/Python-2.7.3</p>
+
+<p>This could take a while. You can run the following command on another shell to track the status:
+  tail -f "/Users/mazgi/.pythonbrew/log/build.log"</p>
+
+<p>Patching Python-2.7.3
+Installing Python-2.7.3 into /Users/mazgi/.pythonbrew/pythons/Python-2.7.3
+Downloading distribute_setup.py as /Users/mazgi/.pythonbrew/dists/distribute_setup.py</p>
+
+<h6>################################################################## 100.0%</h6>
+
+<p>Installing distribute into /Users/mazgi/.pythonbrew/pythons/Python-2.7.3
+Installing pip into /Users/mazgi/.pythonbrew/pythons/Python-2.7.3</p>
+
+<p>Installed Python-2.7.3 successfully. Run the following command to switch to Python-2.7.3.
+  pythonbrew switch 2.7.3
+```</p>
+
+<p><code>
+[mazgi@Caolila] $ python --version
+Python 2.7.1
+[mazgi@Caolila] $ pythonbrew use 2.7.3
+Using `Python-2.7.3`
+[mazgi@Caolila] $ python --version
+Python 2.7.3
+[mazgi@Caolila] $ zsh
+[mazgi@Caolila] $ python --version
+Python 2.7.1
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

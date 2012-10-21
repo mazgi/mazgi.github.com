@@ -9,8 +9,33 @@
   <meta name="author" content="mazgi">
 
   
-  <meta name="description" content="9/22(土)に楽天さんで第0回Debianパッケージング道場 on Zusaarが開催されたので行ってきました。
-Debianド素人として大いにハマってきた様をレポートしてみます。 参加するまで 参加の動機とか 最近仕事でDebian GNU/Linuxを触りはじめたので「 &hellip;">
+  <meta name="description" content="1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+[mazgi@bangdoll] $ grep binlog /etc/mysql/my.cnf
+[mazgi@bangdoll] $ mysql -uroot -p &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +90,1278 @@ Debianド素人として大いにハマってきた様をレポートしてみ�
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/10/15/jira-mysql-error/">Jira_mysql_error</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-15T08:02:00+09:00" pubdate data-updated="true">Oct 15<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[mazgi@bangdoll] $ grep binlog /etc/mysql/my.cnf
+</span><span class='line'>[mazgi@bangdoll] $ mysql -uroot -p
+</span><span class='line'>Enter password: 
+</span><span class='line'>Welcome to the MySQL monitor.  Commands end with ; or \g.
+</span><span class='line'>Your MySQL connection id is 46
+</span><span class='line'>Server version: 5.1.62-log Gentoo Linux mysql-5.1.62-r1
+</span><span class='line'>
+</span><span class='line'>Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.
+</span><span class='line'>
+</span><span class='line'>Oracle is a registered trademark of Oracle Corporation and/or its
+</span><span class='line'>affiliates. Other names may be trademarks of their respective
+</span><span class='line'>owners.
+</span><span class='line'>
+</span><span class='line'>Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+</span><span class='line'>
+</span><span class='line'>mysql&gt; show variables like 'binlog_format';
+</span><span class='line'>+---------------+-----------+
+</span><span class='line'>| Variable_name | Value     |
+</span><span class='line'>+---------------+-----------+
+</span><span class='line'>| binlog_format | STATEMENT |
+</span><span class='line'>+---------------+-----------+
+</span><span class='line'>1 row in set (0.00 sec)
+</span><span class='line'>
+</span><span class='line'>mysql&gt; quit
+</span><span class='line'>Bye</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # grep binlog /etc/mysql/my.cnf
+</span><span class='line'>[root@bangdoll] # vi /etc/mysql/my.cnf
+</span><span class='line'>[root@bangdoll] # grep binlog /etc/mysql/my.cnf
+</span><span class='line'>binlog-format=ROW
+</span><span class='line'>[root@bangdoll] # /etc/init.d/mysql restart
+</span><span class='line'> * Stopping mysql ...                                                                                                                                                                                                                  [ ok ]
+</span><span class='line'> * Starting mysql ...                                                                                                                                                                                                                  [ ok ]</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[mazgi@bangdoll] $ mysql -uroot -p
+</span><span class='line'>Enter password: 
+</span><span class='line'>Welcome to the MySQL monitor.  Commands end with ; or \g.
+</span><span class='line'>Your MySQL connection id is 1
+</span><span class='line'>Server version: 5.1.62-log Gentoo Linux mysql-5.1.62-r1
+</span><span class='line'>
+</span><span class='line'>Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.
+</span><span class='line'>
+</span><span class='line'>Oracle is a registered trademark of Oracle Corporation and/or its
+</span><span class='line'>affiliates. Other names may be trademarks of their respective
+</span><span class='line'>owners.
+</span><span class='line'>
+</span><span class='line'>Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+</span><span class='line'>
+</span><span class='line'>mysql&gt; show variables like 'binlog_format';
+</span><span class='line'>+---------------+-------+
+</span><span class='line'>| Variable_name | Value |
+</span><span class='line'>+---------------+-------+
+</span><span class='line'>| binlog_format | ROW   |
+</span><span class='line'>+---------------+-------+
+</span><span class='line'>1 row in set (0.01 sec)
+</span><span class='line'>
+</span><span class='line'>mysql&gt; quit
+</span><span class='line'>Bye</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/10/13/pythonbrew/">Pythonbrew</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-13T15:49:00+09:00" pubdate data-updated="true">Oct 13<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[mazgi@Caolila] $ curl -kL http://xrl.us/pythonbrewinstall | bash
+</span><span class='line'>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+</span><span class='line'>                                 Dload  Upload   Total   Spent    Left  Speed
+</span><span class='line'>100  2799  100  2799    0     0    824      0  0:00:03  0:00:03 --:--:--  1268
+</span><span class='line'>Downloading http://pypi.python.org/packages/source/p/pythonbrew/pythonbrew-1.3.tar.gz
+</span><span class='line'>######################################################################## 100.0%
+</span><span class='line'>Extracting /Users/mazgi/.pythonbrew/dists/pythonbrew-1.3.tar.gz
+</span><span class='line'>Installing pythonbrew into /Users/mazgi/.pythonbrew
+</span><span class='line'>
+</span><span class='line'>Well-done! Congratulations!
+</span><span class='line'>
+</span><span class='line'>The pythonbrew is installed as:
+</span><span class='line'>    
+</span><span class='line'>  /Users/mazgi/.pythonbrew
+</span><span class='line'>
+</span><span class='line'>Please add the following line to the end of your ~/.bashrc
+</span><span class='line'>
+</span><span class='line'>  [[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
+</span><span class='line'>
+</span><span class='line'>After that, exit this shell, start a new one, and install some fresh
+</span><span class='line'>pythons:
+</span><span class='line'>
+</span><span class='line'>  pythonbrew install 2.7.2
+</span><span class='line'>  pythonbrew install 3.2
+</span><span class='line'>
+</span><span class='line'>For further instructions, run:
+</span><span class='line'>
+</span><span class='line'>  pythonbrew help
+</span><span class='line'>
+</span><span class='line'>The default help messages will popup and tell you what to do!
+</span><span class='line'>
+</span><span class='line'>Enjoy pythonbrew at /Users/mazgi/.pythonbrew!!</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[mazgi@Caolila] $ cat .zshenv
+</span><span class='line'>[[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[mazgi@Caolila] $ pythonbrew list -k
+</span><span class='line'># Pythons
+</span><span class='line'>Python-1.5.2
+</span><span class='line'>Python-1.6.1
+</span><span class='line'>Python-2.0.1
+</span><span class='line'>Python-2.1.3
+</span><span class='line'>Python-2.2.3
+</span><span class='line'>Python-2.3.7
+</span><span class='line'>Python-2.4.6
+</span><span class='line'>Python-2.5.6
+</span><span class='line'>Python-2.6.7
+</span><span class='line'>Python-2.7.3
+</span><span class='line'>Python-3.0.1
+</span><span class='line'>Python-3.1.4
+</span><span class='line'>Python-3.2.3
+</span><span class='line'>[mazgi@Caolila] $ pythonbrew update
+</span><span class='line'>You are already running the installed latest version of pythonbrew.
+</span><span class='line'>[mazgi@Caolila] $ python --version
+</span><span class='line'>Python 2.7.1
+</span><span class='line'>[mazgi@Caolila] $ pythonbrew install 2.7.3
+</span><span class='line'>Downloading Python-2.7.3.tgz as /Users/mazgi/.pythonbrew/dists/Python-2.7.3.tgz
+</span><span class='line'>######################################################################## 100.0%
+</span><span class='line'>Extracting Python-2.7.3.tgz into /Users/mazgi/.pythonbrew/build/Python-2.7.3
+</span><span class='line'>
+</span><span class='line'>This could take a while. You can run the following command on another shell to track the status:
+</span><span class='line'>  tail -f "/Users/mazgi/.pythonbrew/log/build.log"
+</span><span class='line'>
+</span><span class='line'>Patching Python-2.7.3
+</span><span class='line'>Installing Python-2.7.3 into /Users/mazgi/.pythonbrew/pythons/Python-2.7.3
+</span><span class='line'>Downloading distribute_setup.py as /Users/mazgi/.pythonbrew/dists/distribute_setup.py
+</span><span class='line'>######################################################################## 100.0%
+</span><span class='line'>Installing distribute into /Users/mazgi/.pythonbrew/pythons/Python-2.7.3
+</span><span class='line'>Installing pip into /Users/mazgi/.pythonbrew/pythons/Python-2.7.3
+</span><span class='line'>
+</span><span class='line'>Installed Python-2.7.3 successfully. Run the following command to switch to Python-2.7.3.
+</span><span class='line'>  pythonbrew switch 2.7.3</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[mazgi@Caolila] $ python --version
+</span><span class='line'>Python 2.7.1
+</span><span class='line'>[mazgi@Caolila] $ pythonbrew use 2.7.3
+</span><span class='line'>Using `Python-2.7.3`
+</span><span class='line'>[mazgi@Caolila] $ python --version
+</span><span class='line'>Python 2.7.3
+</span><span class='line'>[mazgi@Caolila] $ zsh
+</span><span class='line'>[mazgi@Caolila] $ python --version
+</span><span class='line'>Python 2.7.1</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/10/11/installing-jira/">さくらVPSにJIRAをインストールしてみました</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-11T22:28:00+09:00" pubdate data-updated="true">Oct 11<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>自分用のJIRAがほしくなったので、体験版をさくらVPSに入れてみました。<br/>
+x86_64なGentoo Linux+MySQLな環境にJIRAをインストールして、nginxのうしろで動かすまでのメモです。</p>
+
+<p><img src="/images/2012-10-11-installing-jira/20121011_setup_12.png"></p>
+
+<h1>MySQLの設定</h1>
+
+<p>今回はDBにMySQLを使います。<br/>
+お仕事だと<a href="http://www.percona.com/software/percona-server">Percona Server with XtraDB</a>とか使ってるのですが、プライベートですし性能も必要ないので普通のMySQL5.1です。</p>
+
+<h2>MySQLの設定確認</h2>
+
+<p>バージョンとUSEフラグくらいをさっくり確認しておきます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # emerge -pv mysql
+</span><span class='line'>
+</span><span class='line'>These are the packages that would be merged, in order:
+</span><span class='line'>
+</span><span class='line'>Calculating dependencies... done!
+</span><span class='line'>[ebuild   R    ] dev-db/mysql-5.1.62-r1  USE="berkdb community perl ssl -big-tables -cluster -debug -embedded -extraengine -latin1 -max-idx-128 -minimal -pbxt -profiling (-selinux) -static -test -xtradb" 0 kB
+</span><span class='line'>
+</span><span class='line'>Total: 1 package (1 reinstall), Size of downloads: 0 kB</span></code></pre></td></tr></table></div></figure>
+
+
+<p>JIRA用のデータファイルは分けたいので<code>innodb_file_per_table</code>がセットされていることを確認します。<br/>
+<code>datadir</code>のpathも確認しておきます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # grep innodb_file_per_table /etc/mysql/my.cnf
+</span><span class='line'>innodb_file_per_table
+</span><span class='line'>[root@bangdoll] # grep datadir /etc/mysql/my.cnf
+</span><span class='line'>datadir                   = /var/lib/mysql</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>JIRA用LV作成</h2>
+
+<p>筋が良い方法かは自信がないですが、JIRAのデータを1カ所に集めておきたいので専用にLVMのLV(<strong>L</strong><em>ogical</em><strong>V</strong><em>olume</em>)を作ってそこにセットアップすることにします。</p>
+
+<p>JIRAという名前のLVを作ってXFSでフォーマットします。<br/>
+XFSの場合、サイズは後からでもmountしたまま拡張できるので適当です。ただし、(unmountしても)縮小はできないのであまり大きくはしないようにします。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # lvcreate -nJIRA -L4G VG00
+</span><span class='line'>  Logical volume "JIRA" created
+</span><span class='line'>[root@bangdoll] # mkfs.xfs /dev/VG00/JIRA
+</span><span class='line'>…</span></code></pre></td></tr></table></div></figure>
+
+
+<p>つくったLVは<code>/opt/JIRA</code>にマウントすることにします。<br/>
+マウントポイントとなるディレクトリを作って<code>/etc/fstab</code>に行を追加します。<br/>
+<code>mount -a</code>を実行してみて正しくマウントできることを確認します。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # mkdir -p /opt/JIRA
+</span><span class='line'>[root@bangdoll] # vi /etc/fstab
+</span><span class='line'>[root@bangdoll] # grep /dev/VG00/JIRA /etc/fstab
+</span><span class='line'>/dev/VG00/JIRA        /opt/JIRA   xfs     noatime     0 1
+</span><span class='line'>[root@bangdoll] # mount -a
+</span><span class='line'>[root@bangdoll] # mount | grep /opt/JIRA
+</span><span class='line'>/dev/mapper/VG00-JIRA on /opt/JIRA type xfs (rw,noatime)</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>JIRA用データファイルの作成</h2>
+
+<p>JIRA用のLVがマウントできたので、その中にデータファイルを作り配置します。</p>
+
+<p>まずデータファイルディレクトリ(<code>/opt/JIRA/mysql</code>)を作ります。一緒にJIRAのインストールディレクトリ(<code>/opt/JIRA/jira_5.1.6</code>)も作りました。</p>
+
+<p>次にMySQLのデータディレクトリである<code>/var/lib/mysql</code>に移動して、作ったJIRA用データファイルディレクトリのシンボリックリンクを張ります。
+このシンボリックリンク名はMySQL上のデータベース名になります。</p>
+
+<p>ここでちょっと問題が発生しました…。<br/>
+MySQLのデータディレクトリにディレクトリ(シンボリックリンク含む)を作るとデータベースとして認識はされます。
+しかし、<code>db.opt</code>ファイルがないため正常なデータベースとは見なされないようでテーブルを作ることもできません。</p>
+
+<p>今回はムリヤリ<code>db.opt</code>ファイルを作ってしまったのですがなんかいい方法ないですかね。。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # mkdir -p /opt/JIRA/jira_5.1.6 /opt/JIRA/mysql
+</span><span class='line'>[root@bangdoll] # cd /var/lib/mysql
+</span><span class='line'>[root@bangdoll] # ln -s /opt/JIRA/mysql jira
+</span><span class='line'>[root@bangdoll] # ls -l /var/lib/mysql/jira
+</span><span class='line'>lrwxrwxrwx 1 root root 15 Oct 12 03:16 /var/lib/mysql/jira -&gt; /opt/JIRA/mysql/
+</span><span class='line'>[root@bangdoll] # cat&lt;&lt;EOF&gt;jira/db.opt
+</span><span class='line'>heredoc&gt; default-character-set=utf8
+</span><span class='line'>heredoc&gt; default-collation=utf8_general_ci
+</span><span class='line'>heredoc&gt; EOF
+</span><span class='line'>[root@bangdoll] # chown -R mysql:mysql /opt/JIRA/mysql
+</span><span class='line'>[root@bangdoll] # ls -ld /opt/JIRA/mysql
+</span><span class='line'>drwxr-xr-x 2 mysql mysql 19 Oct 12 04:33 /opt/JIRA/mysql/
+</span><span class='line'>[root@bangdoll] # ls -lR /opt/JIRA/mysql
+</span><span class='line'>/opt/JIRA/mysql:
+</span><span class='line'>total 4
+</span><span class='line'>-rw-r--r-- 1 mysql mysql 61 Oct 12 04:30 db.opt</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ともあれJIRA用のデータベース(<code>jira</code>)ができたのでMySQLのシェルで確認してみます。</p>
+
+<p>そしてJIRA用のMySQLユーザーとして<code>jira</code>を作り、<code>jira</code>データベースへの全権限を与えます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # mysql -uroot -p
+</span><span class='line'>Enter password: 
+</span><span class='line'>Welcome to the MySQL monitor.  Commands end with ; or \g.
+</span><span class='line'>Your MySQL connection id is 7
+</span><span class='line'>Server version: 5.1.62-log Gentoo Linux mysql-5.1.62-r1
+</span><span class='line'>
+</span><span class='line'>Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.
+</span><span class='line'>
+</span><span class='line'>Oracle is a registered trademark of Oracle Corporation and/or its
+</span><span class='line'>affiliates. Other names may be trademarks of their respective
+</span><span class='line'>owners.
+</span><span class='line'>
+</span><span class='line'>Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+</span><span class='line'>
+</span><span class='line'>mysql&gt; show databases;
+</span><span class='line'>+--------------------+
+</span><span class='line'>| Database           |
+</span><span class='line'>+--------------------+
+</span><span class='line'>| jira               |
+</span><span class='line'>+--------------------+
+</span><span class='line'>4 rows in set (0.02 sec)
+</span><span class='line'>
+</span><span class='line'>mysql&gt; grant all on jira.* to 'jira'@'localhost' identified by '********';
+</span><span class='line'>Query OK, 0 rows affected (0.10 sec)
+</span><span class='line'>
+</span><span class='line'>mysql&gt; flush privileges;
+</span><span class='line'>Query OK, 0 rows affected (0.00 sec)
+</span><span class='line'>
+</span><span class='line'>mysql&gt; quit
+</span><span class='line'>Bye</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>JIRAインストール</h1>
+
+<p>データの置き場所が決まったのでJIRA本体をインストールします。</p>
+
+<h2>JIRAインストーラのダウンロード</h2>
+
+<p>Linux用のインストーラをダウンロードします。<br/>
+<a href="http://www.atlassian.com/software/jira/download">JIRAインストーラのダウンロードページ</a>はJIRAの開発元である<a href="http://www.atlassian.com/">Atlassian</a>のサイトにあります。<br/>
+<em>Trial Download</em>と書かれていますが製品版との違いは登録するライセンスキーだけなので、製品版をインストールしたい場合でもインストーラ自体は同じものを使います。</p>
+
+<p><img src="/images/2012-10-11-installing-jira/20121011_download_site.png"></p>
+
+<p>今回は<code>curl</code>コマンドを使って<code>/tmp</code>にダウンロードします。<br/>
+インストーラをダウンロードしたら実行可能属性を付けておきます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # cd /tmp
+</span><span class='line'>[root@bangdoll] # curl -LO http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-5.1.6-x64.bin
+</span><span class='line'>...
+</span><span class='line'>[root@bangdoll] # ls -l atlassian-jira-5.1.6-x64.bin
+</span><span class='line'>-rw-r--r-- 1 root  root  158706257 Oct 12 02:47 atlassian-jira-5.1.6-x64.bin
+</span><span class='line'>[root@bangdoll] # chmod a+x atlassian-jira-5.1.6-x64.bin</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>ユーザーの作成(不要)</h3>
+
+<p>インストーラが使ってくれることを期待して<code>jira</code>という名前のユーザーを作っておいたのですが…使ってくれませんでした。インストール前に作る意味はありません。<br/>
+後述する実行ユーザー変更の伏線として残してあります。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # groupadd -g50000 jira
+</span><span class='line'>[root@bangdoll] # useradd -u 50001 -g jira -s /bin/bash -d /opt/JIRA/home -m -c "Atlassian JIRA" jira
+</span><span class='line'>[root@bangdoll] # grep jira /etc/passwd
+</span><span class='line'>jira:x:50001:50000:Atlassian JIRA:/opt/JIRA/home:/bin/bash
+</span><span class='line'>[root@bangdoll] # grep jira /etc/group
+</span><span class='line'>jira:x:50000:
+</span><span class='line'>[root@bangdoll] # ls -al /opt/JIRA/home
+</span><span class='line'>total 12
+</span><span class='line'>drwxr-xr-x 3 jira jira  70 Oct 12 03:33 ./
+</span><span class='line'>drwxr-xr-x 5 root root  46 Oct 12 03:33 ../
+</span><span class='line'>-rw-r--r-- 1 jira jira 551 Aug 21 03:27 .bashrc
+</span><span class='line'>-rw-r--r-- 1 jira jira 127 Aug 21 03:27 .bash_logout
+</span><span class='line'>-rw-r--r-- 1 jira jira 193 Aug 21 03:27 .bash_profile
+</span><span class='line'>drwx------ 2 jira jira   6 Jun 21 21:09 .ssh/</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>JIRAインストーラの実行</h2>
+
+<p>いよいよJIRA本体をインストールします。<br/>
+インストーラを実行するとウィザード形式で質問してくるので答えるとインストールが完了します。今回は以下のように答えました。</p>
+
+<ul>
+<li><code>This will install JIRA 5.1.6 on your computer.</code><br/>
+もちろんインストールするので<code>[o, Enter]</code>を選びます。</li>
+<li><code>Choose the appropriate installation or upgrade option.</code><br/>
+<code>Custom Install</code>したいので<code>2</code>を選びます。</li>
+<li><code>Where should JIRA 5.1.6 be installed?</code><br/>
+インストールディレクトリとして作った<code>/opt/JIRA/jira_5.1.6/jira</code>を入力します。</li>
+<li><code>Default location for JIRA data</code><br/>
+<code>/opt/JIRA/jira_5.1.6/application-data</code>を入力します。<br/>
+インストールディレクトリと同じ階層に<code>application-data</code>というディレクトリ名でアプリケーションデータを置きます。</li>
+<li><code>JIRA requires two TCP ports that are not being used by any other applications on this machine. …</code><br/>
+JIRAはHTTPリクエスト用とコントロール用にTCPポートを2つ使うようです。ポート番号をカスタマイズしたいので<code>2</code>を選びます。
+
+<ul>
+<li><code>HTTP Port Number</code><br/>
+50000番台をJIRAで使うことにして<code>50080</code>と入力します。</li>
+<li><code>Control Port Number</code><br/>
+<code>50005</code>と入力します。</li>
+</ul>
+</li>
+<li><code>You may choose to run JIRA as a service, which means it will start automatically whenever the computer restarts.</code><br/>
+サービスとしてインストールしたいので<code>y</code>を入力します。</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # cd /tmp
+</span><span class='line'>[root@bangdoll] # ls -l atlassian-jira-5.1.6-x64.bin
+</span><span class='line'>-rwxr-xr-x 1 root root 158706257 Oct 12 02:47 atlassian-jira-5.1.6-x64.bin*
+</span><span class='line'>[root@bangdoll] # ./atlassian-jira-5.1.6-x64.bin
+</span><span class='line'>Unpacking JRE ...
+</span><span class='line'>Starting Installer ...
+</span><span class='line'>
+</span><span class='line'>This will install JIRA 5.1.6 on your computer.
+</span><span class='line'>OK [o, Enter], Cancel [c]
+</span><span class='line'>o
+</span><span class='line'>Choose the appropriate installation or upgrade option.
+</span><span class='line'>Please choose one of the following:
+</span><span class='line'>Express Install (use default settings) [1], Custom Install (recommended for advanced users) [2], Upgrade an existing JIRA installation [3, Enter]
+</span><span class='line'>2
+</span><span class='line'>
+</span><span class='line'>Where should JIRA 5.1.6 be installed?
+</span><span class='line'>[/opt/atlassian/jira]
+</span><span class='line'>/opt/JIRA/jira_5.1.6/jira
+</span><span class='line'>Default location for JIRA data
+</span><span class='line'>[/var/atlassian/application-data/jira]
+</span><span class='line'>/opt/JIRA/jira_5.1.6/application-data
+</span><span class='line'>Configure which ports JIRA will use.
+</span><span class='line'>JIRA requires two TCP ports that are not being used by any other
+</span><span class='line'>applications on this machine. The HTTP port is where you will access JIRA
+</span><span class='line'>through your browser. The Control port is used to Startup and Shutdown JIRA.
+</span><span class='line'>Use default ports (HTTP: 8080, Control: 8005) - Recommended [1, Enter], Set custom value for HTTP and Control ports [2]
+</span><span class='line'>2
+</span><span class='line'>HTTP Port Number
+</span><span class='line'>[8080]
+</span><span class='line'>50080
+</span><span class='line'>Control Port Number
+</span><span class='line'>[8005]
+</span><span class='line'>50005
+</span><span class='line'>JIRA can be run in the background.
+</span><span class='line'>You may choose to run JIRA as a service, which means it will start
+</span><span class='line'>automatically whenever the computer restarts.
+</span><span class='line'>Install JIRA as Service?
+</span><span class='line'>Yes [y, Enter], No [n]
+</span><span class='line'>y
+</span><span class='line'>
+</span><span class='line'>Extracting files ...
+</span><span class='line'>                                                                           
+</span><span class='line'>
+</span><span class='line'>Please wait a few moments while JIRA starts up.
+</span><span class='line'>Launching JIRA ...
+</span><span class='line'>Installation of JIRA 5.1.6 is complete
+</span><span class='line'>Your installation of JIRA 5.1.6 is now ready and can be accessed via your
+</span><span class='line'>browser.
+</span><span class='line'>JIRA 5.1.6 can be accessed at http://localhost:50080
+</span><span class='line'>Finishing installation ...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上でJIRAがサービスとして起動します。</p>
+
+<h3>JIRA実行ユーザーの確認</h3>
+
+<p>さて問題のユーザーです。<br/>
+てっきり作った<code>jira</code>ユーザーを使ってくれるものと期待したのですが…<br/>
+なんということでしょう！…<code>jira1</code>ユーザーを作られてしまいました。しっかり<code>jira1</code>ユーザーで実行されています…oh。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # grep jira /etc/passwd
+</span><span class='line'>jira:x:50001:50000:Atlassian JIRA:/opt/JIRA/home:/bin/bash
+</span><span class='line'>jira1:x:50002:50002:Atlassian JIRA:/home/jira1:/bin/bash
+</span><span class='line'>[root@bangdoll] # grep jira /etc/group
+</span><span class='line'>jira:x:50000:
+</span><span class='line'>jira1:x:50002:
+</span><span class='line'>[root@bangdoll] # ps aux | grep jir\[a\]
+</span><span class='line'>jira1     7536  8.2 16.1 2691288 332336 pts/1  Sl   03:37   0:52 /opt/JIRA/jira_5.1.6/jira/jre//bin/java -Djava.util.logging.config.file=/opt/JIRA/jira_5.1.6/jira/conf/logging.properties -XX:MaxPermSize=256m -Xms256m -Xmx768m -Djava.awt.headless=true -Datlassian.standalone=JIRA -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dmail.mime.decodeparameters=true -XX:+PrintGCDateStamps -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/opt/JIRA/jira_5.1.6/jira/endorsed -classpath /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar -Dcatalina.base=/opt/JIRA/jira_5.1.6/jira -Dcatalina.home=/opt/JIRA/jira_5.1.6/jira -Djava.io.tmpdir=/opt/JIRA/jira_5.1.6/jira/temp org.apache.catalina.startup.Bootstrap start</span></code></pre></td></tr></table></div></figure>
+
+
+<p>どうにかして<code>jira</code>ユーザーで動いてほしいところです。</p>
+
+<h2>JIRA実行ユーザーを変える</h2>
+
+<p>JIRAを<code>jira</code>ユーザーで動かして微妙なsuffixが付いた<code>jira1</code>ユーザーを消したいのでJIRAの実行ユーザーを変えてみます。</p>
+
+<p>まずはJIRAを止めます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # /etc/init.d/jira1 stop
+</span><span class='line'>executing using dedicated user
+</span><span class='line'>                .....
+</span><span class='line'>          .... .NMMMD.  ...
+</span><span class='line'>        .8MMM.  $MMN,..~MMMO.
+</span><span class='line'>        .?MMM.         .MMM?.
+</span><span class='line'>
+</span><span class='line'>     OMMMMZ.           .,NMMMN~
+</span><span class='line'>     .IMMMMMM. .NMMMN. .MMMMMN,
+</span><span class='line'>       ,MMMMMM$..3MD..ZMMMMMM.
+</span><span class='line'>        =NMMMMMM,. .,MMMMMMD.
+</span><span class='line'>         .MMMMMMMM8MMMMMMM,
+</span><span class='line'>           .ONMMMMMMMMMMZ.
+</span><span class='line'>             ,NMMMMMMM8.
+</span><span class='line'>            .:,.$MMMMMMM
+</span><span class='line'>          .IMMMM..NMMMMMD.
+</span><span class='line'>         .8MMMMM:  :NMMMMN.
+</span><span class='line'>         .MMMMMM.   .MMMMM~.
+</span><span class='line'>         .MMMMMN    .MMMMM?.
+</span><span class='line'>
+</span><span class='line'>      Atlassian JIRA
+</span><span class='line'>      Version : 5.1.6
+</span><span class='line'>                  
+</span><span class='line'>Detecting JVM PermGen support...
+</span><span class='line'>PermGen switch is supported. Setting to 256m
+</span><span class='line'>
+</span><span class='line'>If you encounter issues starting or stopping JIRA, please see the Troubleshooting guide at http://confluence.atlassian.com/display/JIRA/Installation+Troubleshooting+Guide
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Server startup logs are located in /opt/JIRA/jira_5.1.6/jira/logs/catalina.out
+</span><span class='line'>Using CATALINA_BASE:   /opt/JIRA/jira_5.1.6/jira
+</span><span class='line'>Using CATALINA_HOME:   /opt/JIRA/jira_5.1.6/jira
+</span><span class='line'>Using CATALINA_TMPDIR: /opt/JIRA/jira_5.1.6/jira/temp
+</span><span class='line'>Using JRE_HOME:        /opt/JIRA/jira_5.1.6/jira/jre/
+</span><span class='line'>Using CLASSPATH:       /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar
+</span><span class='line'>Using CATALINA_PID:    /opt/JIRA/jira_5.1.6/jira/work/catalina.pid</span></code></pre></td></tr></table></div></figure>
+
+
+<p>起動スクリプトの名前を変えます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # mv /etc/init.d/jira1 /etc/init.d/jira</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールディレクトリのownerを確認してみます。ファイル/ディレクトリのownerが<code>root</code>なものと<code>jira1</code>なものがあるようです。<br/>
+ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリのownerを<code>jira</code>ユーザーに変更していきます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # cd /opt/JIRA/jira_5.1.6
+</span><span class='line'>[root@bangdoll] # ls -l
+</span><span class='line'>total 4
+</span><span class='line'>drwx------  9 jira1 root   90 Oct 12 03:49 application-data/
+</span><span class='line'>drwxr-xr-x 15 root  root 4096 Oct 12 03:37 jira/
+</span><span class='line'>[root@bangdoll] # ls -l jira
+</span><span class='line'>total 100
+</span><span class='line'>-rw-r--r--  1 root  root   574 Sep 25 10:12 NOTICE
+</span><span class='line'>-rw-r--r--  1 root  root  3749 Sep 25 10:12 README.html
+</span><span class='line'>-rw-r--r--  1 root  root  2043 Sep 25 10:12 README.txt
+</span><span class='line'>drwxr-xr-x 16 root  root  4096 Oct 12 03:37 atlassian-jira/
+</span><span class='line'>drwxr-xr-x  2 root  root  4096 Oct 12 03:45 bin/
+</span><span class='line'>drwxr-xr-x  2 root  root   151 Oct 12 03:37 conf/
+</span><span class='line'>drwxr-xr-x  2 root  root    39 Oct 12 03:37 external-source/
+</span><span class='line'>-rw-r--r--  1 root  root 54642 Oct 12 03:37 install.reg
+</span><span class='line'>drwxr-xr-x  7 root  root  4096 Oct 12 03:36 jre/
+</span><span class='line'>drwxr-xr-x  2 root  root  4096 Oct 12 03:37 lib/
+</span><span class='line'>drwxr-xr-x  2 root  root    24 Oct 12 03:37 licenses/
+</span><span class='line'>drwx------  2 jira1 root  4096 Oct 12 03:37 logs/
+</span><span class='line'>drwx------  2 jira1 root    46 Oct 12 03:37 temp/
+</span><span class='line'>drwxr-xr-x  2 root  root    58 Oct 12 03:37 tomcat-docs/
+</span><span class='line'>-rwx------  1 root  root 11200 Sep 25 10:15 uninstall*
+</span><span class='line'>drwxr-xr-x  2 root  root     6 Sep 25 10:15 webapps/
+</span><span class='line'>drwx------  3 jira1 root    21 Oct 12 03:49 work/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>まずは<code>application-data</code>のownerを<code>jira</code>ユーザー:<code>jira</code>グループに変更します。<br/>
+元はgroupが<code>root</code>ですが<code>jira</code>グループに変えてしまって問題なさそうです。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # chown -R jira:jira application-data
+</span><span class='line'>[root@bangdoll] # ls -l
+</span><span class='line'>total 4
+</span><span class='line'>drwx------  9 jira jira   90 Oct 12 03:49 application-data/
+</span><span class='line'>drwxr-xr-x 15 root root 4096 Oct 12 03:37 jira/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>続いて<code>jira/logs</code>, <code>jira/temp</code>, <code>jira/work</code>の3ディレクトリのownerを<code>jira</code>ユーザー:<code>jira</code>グループに変えます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # chown -R jira:jira jira/logs jira/temp jira/work
+</span><span class='line'>[root@bangdoll] # ls -l jira
+</span><span class='line'>total 100
+</span><span class='line'>-rw-r--r--  1 root root   574 Sep 25 10:12 NOTICE
+</span><span class='line'>-rw-r--r--  1 root root  3749 Sep 25 10:12 README.html
+</span><span class='line'>-rw-r--r--  1 root root  2043 Sep 25 10:12 README.txt
+</span><span class='line'>drwxr-xr-x 16 root root  4096 Oct 12 03:37 atlassian-jira/
+</span><span class='line'>drwxr-xr-x  2 root root  4096 Oct 12 03:45 bin/
+</span><span class='line'>drwxr-xr-x  2 root root   151 Oct 12 03:37 conf/
+</span><span class='line'>drwxr-xr-x  2 root root    39 Oct 12 03:37 external-source/
+</span><span class='line'>-rw-r--r--  1 root root 54642 Oct 12 03:37 install.reg
+</span><span class='line'>drwxr-xr-x  7 root root  4096 Oct 12 03:36 jre/
+</span><span class='line'>drwxr-xr-x  2 root root  4096 Oct 12 03:37 lib/
+</span><span class='line'>drwxr-xr-x  2 root root    24 Oct 12 03:37 licenses/
+</span><span class='line'>drwx------  2 jira jira  4096 Oct 12 03:37 logs/
+</span><span class='line'>drwx------  2 jira jira    46 Oct 12 03:37 temp/
+</span><span class='line'>drwxr-xr-x  2 root root    58 Oct 12 03:37 tomcat-docs/
+</span><span class='line'>-rwx------  1 root root 11200 Sep 25 10:15 uninstall*
+</span><span class='line'>drwxr-xr-x  2 root root     6 Sep 25 10:15 webapps/
+</span><span class='line'>drwx------  3 jira jira    21 Oct 12 03:49 work/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>JIRAの実行ユーザー名が書かれている<code>user.sh</code>を編集します。<br/>
+どうやらJIRAの実行ユーザーは<code>JIRA_USER</code>という環境変数で設定されているようです。<em>INSTALLER MAGIC ! DO NOT EDIT !</em>だそうですが気にしないことにします。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # cat jira/bin/user.sh
+</span><span class='line'># START INSTALLER MAGIC ! DO NOT EDIT !
+</span><span class='line'>JIRA_USER="jira1" # user created by installer
+</span><span class='line'># END INSTALLER MAGIC ! DO NOT EDIT !
+</span><span class='line'>
+</span><span class='line'>export JIRA_USER
+</span><span class='line'>[root@bangdoll] # vi jira/bin/user.sh
+</span><span class='line'>[root@bangdoll] # cat jira/bin/user.sh
+</span><span class='line'># START INSTALLER MAGIC ! DO NOT EDIT !
+</span><span class='line'>JIRA_USER="jira" # user created by installer
+</span><span class='line'># END INSTALLER MAGIC ! DO NOT EDIT !
+</span><span class='line'>
+</span><span class='line'>export JIRA_USER</span></code></pre></td></tr></table></div></figure>
+
+
+<p>JIRAを起動してみます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # /etc/init.d/jira start
+</span><span class='line'>
+</span><span class='line'>To run JIRA in the foreground, start the server with start-jira.sh -fg
+</span><span class='line'>executing using dedicated user: jira
+</span><span class='line'>                .....
+</span><span class='line'>          .... .NMMMD.  ...
+</span><span class='line'>        .8MMM.  $MMN,..~MMMO.
+</span><span class='line'>        .?MMM.         .MMM?.
+</span><span class='line'>
+</span><span class='line'>     OMMMMZ.           .,NMMMN~
+</span><span class='line'>     .IMMMMMM. .NMMMN. .MMMMMN,
+</span><span class='line'>       ,MMMMMM$..3MD..ZMMMMMM.
+</span><span class='line'>        =NMMMMMM,. .,MMMMMMD.
+</span><span class='line'>         .MMMMMMMM8MMMMMMM,
+</span><span class='line'>           .ONMMMMMMMMMMZ.
+</span><span class='line'>             ,NMMMMMMM8.
+</span><span class='line'>            .:,.$MMMMMMM
+</span><span class='line'>          .IMMMM..NMMMMMD.
+</span><span class='line'>         .8MMMMM:  :NMMMMN.
+</span><span class='line'>         .MMMMMM.   .MMMMM~.
+</span><span class='line'>         .MMMMMN    .MMMMM?.
+</span><span class='line'>
+</span><span class='line'>      Atlassian JIRA
+</span><span class='line'>      Version : 5.1.6
+</span><span class='line'>                  
+</span><span class='line'>Detecting JVM PermGen support...
+</span><span class='line'>PermGen switch is supported. Setting to 256m
+</span><span class='line'>
+</span><span class='line'>If you encounter issues starting or stopping JIRA, please see the Troubleshooting guide at http://confluence.atlassian.com/display/JIRA/Installation+Troubleshooting+Guide
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Server startup logs are located in /opt/JIRA/jira_5.1.6/jira/logs/catalina.out
+</span><span class='line'>Using CATALINA_BASE:   /opt/JIRA/jira_5.1.6/jira
+</span><span class='line'>Using CATALINA_HOME:   /opt/JIRA/jira_5.1.6/jira
+</span><span class='line'>Using CATALINA_TMPDIR: /opt/JIRA/jira_5.1.6/jira/temp
+</span><span class='line'>Using JRE_HOME:        /opt/JIRA/jira_5.1.6/jira/jre/
+</span><span class='line'>Using CLASSPATH:       /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar
+</span><span class='line'>Using CATALINA_PID:    /opt/JIRA/jira_5.1.6/jira/work/catalina.pid
+</span><span class='line'>[root@bangdoll] # ps aux | grep jir\[a\]
+</span><span class='line'>jira      7849  136 15.8 2690072 325976 pts/1  Sl   03:59   0:31 /opt/JIRA/jira_5.1.6/jira/jre//bin/java -Djava.util.logging.config.file=/opt/JIRA/jira_5.1.6/jira/conf/logging.properties -XX:MaxPermSize=256m -Xms256m -Xmx768m -Djava.awt.headless=true -Datlassian.standalone=JIRA -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dmail.mime.decodeparameters=true -XX:+PrintGCDateStamps -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/opt/JIRA/jira_5.1.6/jira/endorsed -classpath /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar -Dcatalina.base=/opt/JIRA/jira_5.1.6/jira -Dcatalina.home=/opt/JIRA/jira_5.1.6/jira -Djava.io.tmpdir=/opt/JIRA/jira_5.1.6/jira/temp org.apache.catalina.startup.Bootstrap start</span></code></pre></td></tr></table></div></figure>
+
+
+<p>無事<code>jira</code>ユーザーで起動しました！</p>
+
+<p>最後に<code>jira1</code>ユーザーと<code>jira1</code>グループを消しておきます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # userdel -r jira1
+</span><span class='line'>userdel: jira1 home directory (/home/jira1) not found
+</span><span class='line'>[root@bangdoll] # groupdel jira1
+</span><span class='line'>groupdel: group 'jira1' does not exist</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>nginxの設定</h1>
+
+<p>HTTPサーバーとしてnginxを使っているので、JIRAもnginx経由でアクセスするように設定します。<br/>
+またJIRAのHTTPポートである50080番はiptablesでdropします。</p>
+
+<p>JIRAをホストするnginxですが、<code>/etc/nginx/sites.enabled</code>以下の設定ファイルをincludeする設定になっています。
+また<code>/etc/nginx/sites.enabled/*</code>は<code>/etc/nginx/sites.availables</code>以下の設定ファイルのうち、公開したいもののみシンボリックリンクを張っています。</p>
+
+<p>JIRAサイト用の設定ファイルを<code>jira.mazgi.com</code>という名前で作ります。<br/>
+設定内容はおおむね以下です。</p>
+
+<ul>
+<li><code>upstream</code>ディレクティブの設定内容
+
+<ul>
+<li>自ホストの50080番をbackendにします。</li>
+</ul>
+</li>
+<li><code>server</code>ディレクティブの設定内容
+
+<ul>
+<li>Hostヘッダが<code>jira.mazgi.com</code>のリクエストをJIRAに転送します。</li>
+<li><code>access_log</code>と<code>error_log</code>はそれぞれ専用のディレクトリに出力します。</li>
+<li>JIRAに転送される際、Hostヘッダに<code>$http_host</code>がセットされるようにします。</li>
+<li><code>jira.mazgi.com</code>のすべてのpathへのリクエストをbackendに転送します。</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # cd /etc/nginx/sites.availables
+</span><span class='line'>[root@bangdoll] # vi jira.mazgi.com
+</span><span class='line'>[root@bangdoll] # cat jira.mazgi.com
+</span><span class='line'>upstream jira.mazgi.com.backend {
+</span><span class='line'>  server 127.0.0.1:50080;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>server {
+</span><span class='line'>  listen 0.0.0.0:80;
+</span><span class='line'>  server_name jira.mazgi.com;
+</span><span class='line'>
+</span><span class='line'>  access_log /var/log/nginx/jira.mazgi.com/access_log main;
+</span><span class='line'>  error_log /var/log/nginx/jira.mazgi.com/error_log info;
+</span><span class='line'>
+</span><span class='line'>  proxy_set_header Host $http_host;
+</span><span class='line'>
+</span><span class='line'>  location / {
+</span><span class='line'>      proxy_pass http://jira.mazgi.com.backend;
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ログ出力先のディレクトリを作ります。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # mkdir -p /var/log/nginx/jira.mazgi.com</span></code></pre></td></tr></table></div></figure>
+
+
+<p>JIRAサイトを公開するために<code>sites.availables</code>から<code>sites.enabled</code>にシンボリックリンクを張り、nginxをrestartします。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[root@bangdoll] # cd /etc/nginx/sites.enabled
+</span><span class='line'>[root@bangdoll] # ln -s ../sites.availables/jira.mazgi.com .
+</span><span class='line'>[root@bangdoll] # ls -l jira.mazgi.com
+</span><span class='line'>lrwxrwxrwx 1 root root 34 Oct 12 04:10 jira.mazgi.com -&gt; ../sites.availables/jira.mazgi.com
+</span><span class='line'>[root@bangdoll] # /etc/init.d/nginx restart
+</span><span class='line'> * Checking nginx' configuration ...                                                                                                                                                                                                                                                                                   [ ok ]
+</span><span class='line'> * Stopping nginx ...                                                                                                                                                                                                                                                                                                  [ ok ]
+</span><span class='line'> * Starting nginx ...                                                                                                                                                                                                                                                                                                  [ ok ]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>nginxをrestartするとこのように<code>http://jira.mazgi.com:80</code>でJIRAに接続できるようになりました！</p>
+
+<p><img src="/images/2012-10-11-installing-jira/20121011_setup_01.png"></p>
+
+<h1>JIRAの設定</h1>
+
+<p>Web上でJIRAの設定を行います。<br/>
+先立って<a href="https://my.atlassian.com/signup/index">Atlassianのユーザー登録ページ</a>でユーザー登録し、ログインしておくことをおすすめします。</p>
+
+<p>言語は英語に設定しました。<br/>
+DBはMySQLを使うので<em>External</em>を選択し、MySQLサーバーの接続ポートやJIRA用MySQLユーザー名を入力します。<br/>
+<em>Test Connection</em>ボタンを押すとDB接続を確認できます。<br/>
+<img src="/images/2012-10-11-installing-jira/20121011_setup_02.png"></p>
+
+<p><em>Application Title</em>を適当に設定します。<br/>
+JIRAのユーザー作成を自分でコントロールしたいので、<em>Mode</em>は<em>Private</em>にします。<br/>
+Atlassianにログインした状態で<em>Generate an evaluation key for me</em>をクリックすると評価ライセンスの発行ページに飛べます。<br/>
+<img src="/images/2012-10-11-installing-jira/20121011_setup_03.png">
+<em>ライセンスの生成</em>ボタンをクリックすると評価ライセンスが作られます。<br/>
+<img src="/images/2012-10-11-installing-jira/20121011_setup_05.png">
+<img src="/images/2012-10-11-installing-jira/20121011_setup_06.png">
+なぜか<em>Application Title</em>が消えたりしますが、再度入力して<em>Next</em>ボタンを押します。<br/>
+<img src="/images/2012-10-11-installing-jira/20121011_setup_08.png">
+管理アカウントのユーザー名やパスワードを入力します。<br/>
+<img src="/images/2012-10-11-installing-jira/20121011_setup_09.png">
+メールの設定はあとで行うことにします。<br/>
+<img src="/images/2012-10-11-installing-jira/20121011_setup_10.png">
+以上でJIRAの設定が完了しました！
+<img src="/images/2012-10-11-installing-jira/20121011_setup_11.png"></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1162,6 +2459,18 @@ Makefileの書き方次第ではパッチにゴミが混じることがあるよ
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/10/15/jira-mysql-error/">jira_mysql_error</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/13/pythonbrew/">pythonbrew</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/11/installing-jira/">さくらVPSにJIRAをインストールしてみました</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2012/09/22/debian-dojo/">「第0回Debianパッケージング道場」に行ってきました</a>

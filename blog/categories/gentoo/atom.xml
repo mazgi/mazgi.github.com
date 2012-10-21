@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Gentoo | log++]]></title>
+  <link href="http://mazgi.github.com/blog/categories/gentoo/atom.xml" rel="self"/>
+  <link href="http://mazgi.github.com/"/>
+  <updated>2012-10-22T00:41:51+09:00</updated>
+  <id>http://mazgi.github.com/</id>
+  <author>
+    <name><![CDATA[mazgi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[さくらVPSにJIRAをインストールしてみました]]></title>
+    <link href="http://mazgi.github.com/blog/2012/10/11/installing-jira/"/>
+    <updated>2012-10-11T22:28:00+09:00</updated>
+    <id>http://mazgi.github.com/blog/2012/10/11/installing-jira</id>
+    <content type="html"><![CDATA[<p>自分用のJIRAがほしくなったので、体験版をさくらVPSに入れてみました。<br/>
+x86_64なGentoo Linux+MySQLな環境にJIRAをインストールして、nginxのうしろで動かすまでのメモです。</p>
+
+<p><img src="/images/2012-10-11-installing-jira/20121011_setup_12.png"></p>
+
+<h1>MySQLの設定</h1>
+
+<p>今回はDBにMySQLを使います。<br/>
+お仕事だと<a href="http://www.percona.com/software/percona-server">Percona Server with XtraDB</a>とか使ってるのですが、プライベートですし性能も必要ないので普通のMySQL5.1です。</p>
+
+<h2>MySQLの設定確認</h2>
+
+<p>バージョンとUSEフラグくらいをさっくり確認しておきます。</p>
+
+<p>```
+[root@bangdoll] # emerge -pv mysql</p>
+
+<p>These are the packages that would be merged, in order:</p>
+
+<p>Calculating dependencies... done!
+[ebuild   R    ] dev-db/mysql-5.1.62-r1  USE="berkdb community perl ssl -big-tables -cluster -debug -embedded -extraengine -latin1 -max-idx-128 -minimal -pbxt -profiling (-selinux) -static -test -xtradb" 0 kB</p>
+
+<p>Total: 1 package (1 reinstall), Size of downloads: 0 kB
+<code>``
+JIRA用のデータファイルは分けたいので</code>innodb_file_per_table<code>がセットされていることを確認します。  
+</code>datadir`のpathも確認しておきます。</p>
+
+<p><code>
+[root@bangdoll] # grep innodb_file_per_table /etc/mysql/my.cnf
+innodb_file_per_table
+[root@bangdoll] # grep datadir /etc/mysql/my.cnf
+datadir                     = /var/lib/mysql
+</code></p>
+
+<h2>JIRA用LV作成</h2>
+
+<p>筋が良い方法かは自信がないですが、JIRAのデータを1カ所に集めておきたいので専用にLVMのLV(<strong>L</strong><em>ogical</em><strong>V</strong><em>olume</em>)を作ってそこにセットアップすることにします。</p>
+
+<p>JIRAという名前のLVを作ってXFSでフォーマットします。<br/>
+XFSの場合、サイズは後からでもmountしたまま拡張できるので適当です。ただし、(unmountしても)縮小はできないのであまり大きくはしないようにします。</p>
+
+<p><code>
+[root@bangdoll] # lvcreate -nJIRA -L4G VG00
+  Logical volume "JIRA" created
+[root@bangdoll] # mkfs.xfs /dev/VG00/JIRA
+…
+</code>
+つくったLVは<code>/opt/JIRA</code>にマウントすることにします。<br/>
+マウントポイントとなるディレクトリを作って<code>/etc/fstab</code>に行を追加します。<br/>
+<code>mount -a</code>を実行してみて正しくマウントできることを確認します。</p>
+
+<p><code>
+[root@bangdoll] # mkdir -p /opt/JIRA
+[root@bangdoll] # vi /etc/fstab
+[root@bangdoll] # grep /dev/VG00/JIRA /etc/fstab
+/dev/VG00/JIRA      /opt/JIRA   xfs     noatime     0 1
+[root@bangdoll] # mount -a
+[root@bangdoll] # mount | grep /opt/JIRA
+/dev/mapper/VG00-JIRA on /opt/JIRA type xfs (rw,noatime)
+</code></p>
+
+<h2>JIRA用データファイルの作成</h2>
+
+<p>JIRA用のLVがマウントできたので、その中にデータファイルを作り配置します。</p>
+
+<p>まずデータファイルディレクトリ(<code>/opt/JIRA/mysql</code>)を作ります。一緒にJIRAのインストールディレクトリ(<code>/opt/JIRA/jira_5.1.6</code>)も作りました。</p>
+
+<p>次にMySQLのデータディレクトリである<code>/var/lib/mysql</code>に移動して、作ったJIRA用データファイルディレクトリのシンボリックリンクを張ります。
+このシンボリックリンク名はMySQL上のデータベース名になります。</p>
+
+<p>ここでちょっと問題が発生しました…。<br/>
+MySQLのデータディレクトリにディレクトリ(シンボリックリンク含む)を作るとデータベースとして認識はされます。
+しかし、<code>db.opt</code>ファイルがないため正常なデータベースとは見なされないようでテーブルを作ることもできません。</p>
+
+<p>今回はムリヤリ<code>db.opt</code>ファイルを作ってしまったのですがなんかいい方法ないですかね。。</p>
+
+<p><code>
+[root@bangdoll] # mkdir -p /opt/JIRA/jira_5.1.6 /opt/JIRA/mysql
+[root@bangdoll] # cd /var/lib/mysql
+[root@bangdoll] # ln -s /opt/JIRA/mysql jira
+[root@bangdoll] # ls -l /var/lib/mysql/jira
+lrwxrwxrwx 1 root root 15 Oct 12 03:16 /var/lib/mysql/jira -&gt; /opt/JIRA/mysql/
+[root@bangdoll] # cat&lt;&lt;EOF&gt;jira/db.opt
+heredoc&gt; default-character-set=utf8
+heredoc&gt; default-collation=utf8_general_ci
+heredoc&gt; EOF
+[root@bangdoll] # chown -R mysql:mysql /opt/JIRA/mysql
+[root@bangdoll] # ls -ld /opt/JIRA/mysql
+drwxr-xr-x 2 mysql mysql 19 Oct 12 04:33 /opt/JIRA/mysql/
+[root@bangdoll] # ls -lR /opt/JIRA/mysql
+/opt/JIRA/mysql:
+total 4
+-rw-r--r-- 1 mysql mysql 61 Oct 12 04:30 db.opt
+</code>
+ともあれJIRA用のデータベース(<code>jira</code>)ができたのでMySQLのシェルで確認してみます。</p>
+
+<p>そしてJIRA用のMySQLユーザーとして<code>jira</code>を作り、<code>jira</code>データベースへの全権限を与えます。</p>
+
+<p>```
+[root@bangdoll] # mysql -uroot -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 7
+Server version: 5.1.62-log Gentoo Linux mysql-5.1.62-r1</p>
+
+<p>Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.</p>
+
+<p>Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.</p>
+
+<p>Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.</p>
+
+<p>mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| jira               |
++--------------------+
+4 rows in set (0.02 sec)</p>
+
+<p>mysql> grant all on jira.<em> to 'jira'@'localhost' identified by '</em>*******';
+Query OK, 0 rows affected (0.10 sec)</p>
+
+<p>mysql> flush privileges;
+Query OK, 0 rows affected (0.00 sec)</p>
+
+<p>mysql> quit
+Bye
+```</p>
+
+<h1>JIRAインストール</h1>
+
+<p>データの置き場所が決まったのでJIRA本体をインストールします。</p>
+
+<h2>JIRAインストーラのダウンロード</h2>
+
+<p>Linux用のインストーラをダウンロードします。<br/>
+<a href="http://www.atlassian.com/software/jira/download">JIRAインストーラのダウンロードページ</a>はJIRAの開発元である<a href="http://www.atlassian.com/">Atlassian</a>のサイトにあります。<br/>
+<em>Trial Download</em>と書かれていますが製品版との違いは登録するライセンスキーだけなので、製品版をインストールしたい場合でもインストーラ自体は同じものを使います。</p>
+
+<p><img src="/images/2012-10-11-installing-jira/20121011_download_site.png"></p>
+
+<p>今回は<code>curl</code>コマンドを使って<code>/tmp</code>にダウンロードします。<br/>
+インストーラをダウンロードしたら実行可能属性を付けておきます。</p>
+
+<p><code>
+[root@bangdoll] # cd /tmp
+[root@bangdoll] # curl -LO http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-5.1.6-x64.bin
+...
+[root@bangdoll] # ls -l atlassian-jira-5.1.6-x64.bin
+-rw-r--r-- 1 root  root  158706257 Oct 12 02:47 atlassian-jira-5.1.6-x64.bin
+[root@bangdoll] # chmod a+x atlassian-jira-5.1.6-x64.bin
+</code></p>
+
+<h3>ユーザーの作成(不要)</h3>
+
+<p>インストーラが使ってくれることを期待して<code>jira</code>という名前のユーザーを作っておいたのですが…使ってくれませんでした。インストール前に作る意味はありません。<br/>
+後述する実行ユーザー変更の伏線として残してあります。</p>
+
+<p><code>
+[root@bangdoll] # groupadd -g50000 jira
+[root@bangdoll] # useradd -u 50001 -g jira -s /bin/bash -d /opt/JIRA/home -m -c "Atlassian JIRA" jira
+[root@bangdoll] # grep jira /etc/passwd
+jira:x:50001:50000:Atlassian JIRA:/opt/JIRA/home:/bin/bash
+[root@bangdoll] # grep jira /etc/group
+jira:x:50000:
+[root@bangdoll] # ls -al /opt/JIRA/home
+total 12
+drwxr-xr-x 3 jira jira  70 Oct 12 03:33 ./
+drwxr-xr-x 5 root root  46 Oct 12 03:33 ../
+-rw-r--r-- 1 jira jira 551 Aug 21 03:27 .bashrc
+-rw-r--r-- 1 jira jira 127 Aug 21 03:27 .bash_logout
+-rw-r--r-- 1 jira jira 193 Aug 21 03:27 .bash_profile
+drwx------ 2 jira jira   6 Jun 21 21:09 .ssh/
+</code></p>
+
+<h2>JIRAインストーラの実行</h2>
+
+<p>いよいよJIRA本体をインストールします。<br/>
+インストーラを実行するとウィザード形式で質問してくるので答えるとインストールが完了します。今回は以下のように答えました。</p>
+
+<ul>
+<li><code>This will install JIRA 5.1.6 on your computer.</code><br/>
+もちろんインストールするので<code>[o, Enter]</code>を選びます。</li>
+<li><code>Choose the appropriate installation or upgrade option.</code><br/>
+<code>Custom Install</code>したいので<code>2</code>を選びます。</li>
+<li><code>Where should JIRA 5.1.6 be installed?</code><br/>
+インストールディレクトリとして作った<code>/opt/JIRA/jira_5.1.6/jira</code>を入力します。</li>
+<li><code>Default location for JIRA data</code><br/>
+<code>/opt/JIRA/jira_5.1.6/application-data</code>を入力します。<br/>
+インストールディレクトリと同じ階層に<code>application-data</code>というディレクトリ名でアプリケーションデータを置きます。</li>
+<li><code>JIRA requires two TCP ports that are not being used by any other applications on this machine. …</code><br/>
+JIRAはHTTPリクエスト用とコントロール用にTCPポートを2つ使うようです。ポート番号をカスタマイズしたいので<code>2</code>を選びます。
+
+<ul>
+<li><code>HTTP Port Number</code><br/>
+50000番台をJIRAで使うことにして<code>50080</code>と入力します。</li>
+<li><code>Control Port Number</code><br/>
+<code>50005</code>と入力します。</li>
+</ul>
+</li>
+<li><code>You may choose to run JIRA as a service, which means it will start automatically whenever the computer restarts.</code><br/>
+サービスとしてインストールしたいので<code>y</code>を入力します。</li>
+</ul>
+
+
+<p>```
+[root@bangdoll] # cd /tmp
+[root@bangdoll] # ls -l atlassian-jira-5.1.6-x64.bin
+-rwxr-xr-x 1 root root 158706257 Oct 12 02:47 atlassian-jira-5.1.6-x64.bin*
+[root@bangdoll] # ./atlassian-jira-5.1.6-x64.bin
+Unpacking JRE ...
+Starting Installer ...</p>
+
+<p>This will install JIRA 5.1.6 on your computer.
+OK [o, Enter], Cancel [c]
+o
+Choose the appropriate installation or upgrade option.
+Please choose one of the following:
+Express Install (use default settings) [1], Custom Install (recommended for advanced users) [2], Upgrade an existing JIRA installation [3, Enter]
+2</p>
+
+<p>Where should JIRA 5.1.6 be installed?
+[/opt/atlassian/jira]
+/opt/JIRA/jira_5.1.6/jira
+Default location for JIRA data
+[/var/atlassian/application-data/jira]
+/opt/JIRA/jira_5.1.6/application-data
+Configure which ports JIRA will use.
+JIRA requires two TCP ports that are not being used by any other
+applications on this machine. The HTTP port is where you will access JIRA
+through your browser. The Control port is used to Startup and Shutdown JIRA.
+Use default ports (HTTP: 8080, Control: 8005) - Recommended [1, Enter], Set custom value for HTTP and Control ports [2]
+2
+HTTP Port Number
+[8080]
+50080
+Control Port Number
+[8005]
+50005
+JIRA can be run in the background.
+You may choose to run JIRA as a service, which means it will start
+automatically whenever the computer restarts.
+Install JIRA as Service?
+Yes [y, Enter], No [n]
+y</p>
+
+<p>Extracting files ...</p>
+
+<p>Please wait a few moments while JIRA starts up.
+Launching JIRA ...
+Installation of JIRA 5.1.6 is complete
+Your installation of JIRA 5.1.6 is now ready and can be accessed via your
+browser.
+JIRA 5.1.6 can be accessed at http://localhost:50080
+Finishing installation ...
+```
+以上でJIRAがサービスとして起動します。</p>
+
+<h3>JIRA実行ユーザーの確認</h3>
+
+<p>さて問題のユーザーです。<br/>
+てっきり作った<code>jira</code>ユーザーを使ってくれるものと期待したのですが…<br/>
+なんということでしょう！…<code>jira1</code>ユーザーを作られてしまいました。しっかり<code>jira1</code>ユーザーで実行されています…oh。</p>
+
+<p><code>
+[root@bangdoll] # grep jira /etc/passwd
+jira:x:50001:50000:Atlassian JIRA:/opt/JIRA/home:/bin/bash
+jira1:x:50002:50002:Atlassian JIRA:/home/jira1:/bin/bash
+[root@bangdoll] # grep jira /etc/group
+jira:x:50000:
+jira1:x:50002:
+[root@bangdoll] # ps aux | grep jir\[a\]
+jira1     7536  8.2 16.1 2691288 332336 pts/1  Sl   03:37   0:52 /opt/JIRA/jira_5.1.6/jira/jre//bin/java -Djava.util.logging.config.file=/opt/JIRA/jira_5.1.6/jira/conf/logging.properties -XX:MaxPermSize=256m -Xms256m -Xmx768m -Djava.awt.headless=true -Datlassian.standalone=JIRA -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dmail.mime.decodeparameters=true -XX:+PrintGCDateStamps -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/opt/JIRA/jira_5.1.6/jira/endorsed -classpath /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar -Dcatalina.base=/opt/JIRA/jira_5.1.6/jira -Dcatalina.home=/opt/JIRA/jira_5.1.6/jira -Djava.io.tmpdir=/opt/JIRA/jira_5.1.6/jira/temp org.apache.catalina.startup.Bootstrap start
+</code>
+どうにかして<code>jira</code>ユーザーで動いてほしいところです。</p>
+
+<h2>JIRA実行ユーザーを変える</h2>
+
+<p>JIRAを<code>jira</code>ユーザーで動かして微妙なsuffixが付いた<code>jira1</code>ユーザーを消したいのでJIRAの実行ユーザーを変えてみます。</p>
+
+<p>まずはJIRAを止めます。</p>
+
+<p>```
+[root@bangdoll] # /etc/init.d/jira1 stop
+executing using dedicated user</p>
+
+<pre><code>            .....
+      .... .NMMMD.  ...
+    .8MMM.  $MMN,..~MMMO.
+    .?MMM.         .MMM?.
+
+ OMMMMZ.           .,NMMMN~
+ .IMMMMMM. .NMMMN. .MMMMMN,
+   ,MMMMMM$..3MD..ZMMMMMM.
+    =NMMMMMM,. .,MMMMMMD.
+     .MMMMMMMM8MMMMMMM,
+       .ONMMMMMMMMMMZ.
+         ,NMMMMMMM8.
+        .:,.$MMMMMMM
+      .IMMMM..NMMMMMD.
+     .8MMMMM:  :NMMMMN.
+     .MMMMMM.   .MMMMM~.
+     .MMMMMN    .MMMMM?.
+
+  Atlassian JIRA
+  Version : 5.1.6
+</code></pre>
+
+<p>Detecting JVM PermGen support...
+PermGen switch is supported. Setting to 256m</p>
+
+<p>If you encounter issues starting or stopping JIRA, please see the Troubleshooting guide at http://confluence.atlassian.com/display/JIRA/Installation+Troubleshooting+Guide</p>
+
+<p>Server startup logs are located in /opt/JIRA/jira_5.1.6/jira/logs/catalina.out
+Using CATALINA_BASE:   /opt/JIRA/jira_5.1.6/jira
+Using CATALINA_HOME:   /opt/JIRA/jira_5.1.6/jira
+Using CATALINA_TMPDIR: /opt/JIRA/jira_5.1.6/jira/temp
+Using JRE_HOME:        /opt/JIRA/jira_5.1.6/jira/jre/
+Using CLASSPATH:       /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar
+Using CATALINA_PID:    /opt/JIRA/jira_5.1.6/jira/work/catalina.pid
+```
+起動スクリプトの名前を変えます。</p>
+
+<p><code>
+[root@bangdoll] # mv /etc/init.d/jira1 /etc/init.d/jira
+</code>
+インストールディレクトリのownerを確認してみます。ファイル/ディレクトリのownerが<code>root</code>なものと<code>jira1</code>なものがあるようです。<br/>
+ownerが<code>jira1</code>ユーザーであるファイル/ディレクトリのownerを<code>jira</code>ユーザーに変更していきます。</p>
+
+<p><code>
+[root@bangdoll] # cd /opt/JIRA/jira_5.1.6
+[root@bangdoll] # ls -l
+total 4
+drwx------  9 jira1 root   90 Oct 12 03:49 application-data/
+drwxr-xr-x 15 root  root 4096 Oct 12 03:37 jira/
+[root@bangdoll] # ls -l jira
+total 100
+-rw-r--r--  1 root  root   574 Sep 25 10:12 NOTICE
+-rw-r--r--  1 root  root  3749 Sep 25 10:12 README.html
+-rw-r--r--  1 root  root  2043 Sep 25 10:12 README.txt
+drwxr-xr-x 16 root  root  4096 Oct 12 03:37 atlassian-jira/
+drwxr-xr-x  2 root  root  4096 Oct 12 03:45 bin/
+drwxr-xr-x  2 root  root   151 Oct 12 03:37 conf/
+drwxr-xr-x  2 root  root    39 Oct 12 03:37 external-source/
+-rw-r--r--  1 root  root 54642 Oct 12 03:37 install.reg
+drwxr-xr-x  7 root  root  4096 Oct 12 03:36 jre/
+drwxr-xr-x  2 root  root  4096 Oct 12 03:37 lib/
+drwxr-xr-x  2 root  root    24 Oct 12 03:37 licenses/
+drwx------  2 jira1 root  4096 Oct 12 03:37 logs/
+drwx------  2 jira1 root    46 Oct 12 03:37 temp/
+drwxr-xr-x  2 root  root    58 Oct 12 03:37 tomcat-docs/
+-rwx------  1 root  root 11200 Sep 25 10:15 uninstall*
+drwxr-xr-x  2 root  root     6 Sep 25 10:15 webapps/
+drwx------  3 jira1 root    21 Oct 12 03:49 work/
+</code></p>
+
+<p>まずは<code>application-data</code>のownerを<code>jira</code>ユーザー:<code>jira</code>グループに変更します。<br/>
+元はgroupが<code>root</code>ですが<code>jira</code>グループに変えてしまって問題なさそうです。</p>
+
+<p><code>
+[root@bangdoll] # chown -R jira:jira application-data
+[root@bangdoll] # ls -l
+total 4
+drwx------  9 jira jira   90 Oct 12 03:49 application-data/
+drwxr-xr-x 15 root root 4096 Oct 12 03:37 jira/
+</code>
+続いて<code>jira/logs</code>, <code>jira/temp</code>, <code>jira/work</code>の3ディレクトリのownerを<code>jira</code>ユーザー:<code>jira</code>グループに変えます。</p>
+
+<p><code>
+[root@bangdoll] # chown -R jira:jira jira/logs jira/temp jira/work
+[root@bangdoll] # ls -l jira
+total 100
+-rw-r--r--  1 root root   574 Sep 25 10:12 NOTICE
+-rw-r--r--  1 root root  3749 Sep 25 10:12 README.html
+-rw-r--r--  1 root root  2043 Sep 25 10:12 README.txt
+drwxr-xr-x 16 root root  4096 Oct 12 03:37 atlassian-jira/
+drwxr-xr-x  2 root root  4096 Oct 12 03:45 bin/
+drwxr-xr-x  2 root root   151 Oct 12 03:37 conf/
+drwxr-xr-x  2 root root    39 Oct 12 03:37 external-source/
+-rw-r--r--  1 root root 54642 Oct 12 03:37 install.reg
+drwxr-xr-x  7 root root  4096 Oct 12 03:36 jre/
+drwxr-xr-x  2 root root  4096 Oct 12 03:37 lib/
+drwxr-xr-x  2 root root    24 Oct 12 03:37 licenses/
+drwx------  2 jira jira  4096 Oct 12 03:37 logs/
+drwx------  2 jira jira    46 Oct 12 03:37 temp/
+drwxr-xr-x  2 root root    58 Oct 12 03:37 tomcat-docs/
+-rwx------  1 root root 11200 Sep 25 10:15 uninstall*
+drwxr-xr-x  2 root root     6 Sep 25 10:15 webapps/
+drwx------  3 jira jira    21 Oct 12 03:49 work/
+</code></p>
+
+<p>JIRAの実行ユーザー名が書かれている<code>user.sh</code>を編集します。<br/>
+どうやらJIRAの実行ユーザーは<code>JIRA_USER</code>という環境変数で設定されているようです。<em>INSTALLER MAGIC ! DO NOT EDIT !</em>だそうですが気にしないことにします。</p>
+
+<p>```
+[root@bangdoll] # cat jira/bin/user.sh</p>
+
+<h1>START INSTALLER MAGIC ! DO NOT EDIT !</h1>
+
+<p>JIRA_USER="jira1" # user created by installer</p>
+
+<h1>END INSTALLER MAGIC ! DO NOT EDIT !</h1>
+
+<p>export JIRA_USER
+[root@bangdoll] # vi jira/bin/user.sh
+[root@bangdoll] # cat jira/bin/user.sh</p>
+
+<h1>START INSTALLER MAGIC ! DO NOT EDIT !</h1>
+
+<p>JIRA_USER="jira" # user created by installer</p>
+
+<h1>END INSTALLER MAGIC ! DO NOT EDIT !</h1>
+
+<p>export JIRA_USER
+```</p>
+
+<p>JIRAを起動してみます。</p>
+
+<p>```
+[root@bangdoll] # /etc/init.d/jira start</p>
+
+<p>To run JIRA in the foreground, start the server with start-jira.sh -fg
+executing using dedicated user: jira</p>
+
+<pre><code>            .....
+      .... .NMMMD.  ...
+    .8MMM.  $MMN,..~MMMO.
+    .?MMM.         .MMM?.
+
+ OMMMMZ.           .,NMMMN~
+ .IMMMMMM. .NMMMN. .MMMMMN,
+   ,MMMMMM$..3MD..ZMMMMMM.
+    =NMMMMMM,. .,MMMMMMD.
+     .MMMMMMMM8MMMMMMM,
+       .ONMMMMMMMMMMZ.
+         ,NMMMMMMM8.
+        .:,.$MMMMMMM
+      .IMMMM..NMMMMMD.
+     .8MMMMM:  :NMMMMN.
+     .MMMMMM.   .MMMMM~.
+     .MMMMMN    .MMMMM?.
+
+  Atlassian JIRA
+  Version : 5.1.6
+</code></pre>
+
+<p>Detecting JVM PermGen support...
+PermGen switch is supported. Setting to 256m</p>
+
+<p>If you encounter issues starting or stopping JIRA, please see the Troubleshooting guide at http://confluence.atlassian.com/display/JIRA/Installation+Troubleshooting+Guide</p>
+
+<p>Server startup logs are located in /opt/JIRA/jira_5.1.6/jira/logs/catalina.out
+Using CATALINA_BASE:   /opt/JIRA/jira_5.1.6/jira
+Using CATALINA_HOME:   /opt/JIRA/jira_5.1.6/jira
+Using CATALINA_TMPDIR: /opt/JIRA/jira_5.1.6/jira/temp
+Using JRE_HOME:        /opt/JIRA/jira_5.1.6/jira/jre/
+Using CLASSPATH:       /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar
+Using CATALINA_PID:    /opt/JIRA/jira_5.1.6/jira/work/catalina.pid
+[root@bangdoll] # ps aux | grep jir[a]
+jira      7849  136 15.8 2690072 325976 pts/1  Sl   03:59   0:31 /opt/JIRA/jira_5.1.6/jira/jre//bin/java -Djava.util.logging.config.file=/opt/JIRA/jira_5.1.6/jira/conf/logging.properties -XX:MaxPermSize=256m -Xms256m -Xmx768m -Djava.awt.headless=true -Datlassian.standalone=JIRA -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dmail.mime.decodeparameters=true -XX:+PrintGCDateStamps -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/opt/JIRA/jira_5.1.6/jira/endorsed -classpath /opt/JIRA/jira_5.1.6/jira/bin/bootstrap.jar -Dcatalina.base=/opt/JIRA/jira_5.1.6/jira -Dcatalina.home=/opt/JIRA/jira_5.1.6/jira -Djava.io.tmpdir=/opt/JIRA/jira_5.1.6/jira/temp org.apache.catalina.startup.Bootstrap start
+<code>``
+無事</code>jira`ユーザーで起動しました！</p>
+
+<p>最後に<code>jira1</code>ユーザーと<code>jira1</code>グループを消しておきます。</p>
+
+<p><code>
+[root@bangdoll] # userdel -r jira1
+userdel: jira1 home directory (/home/jira1) not found
+[root@bangdoll] # groupdel jira1
+groupdel: group 'jira1' does not exist
+</code></p>
+
+<h1>nginxの設定</h1>
+
+<p>HTTPサーバーとしてnginxを使っているので、JIRAもnginx経由でアクセスするように設定します。<br/>
+またJIRAのHTTPポートである50080番はiptablesでdropします。</p>
+
+<p>JIRAをホストするnginxですが、<code>/etc/nginx/sites.enabled</code>以下の設定ファイルをincludeする設定になっています。
+また<code>/etc/nginx/sites.enabled/*</code>は<code>/etc/nginx/sites.availables</code>以下の設定ファイルのうち、公開したいもののみシンボリックリンクを張っています。</p>
+
+<p>JIRAサイト用の設定ファイルを<code>jira.mazgi.com</code>という名前で作ります。<br/>
+設定内容はおおむね以下です。</p>
+
+<ul>
+<li><code>upstream</code>ディレクティブの設定内容
+
+<ul>
+<li>自ホストの50080番をbackendにします。</li>
+</ul>
+</li>
+<li><code>server</code>ディレクティブの設定内容
+
+<ul>
+<li>Hostヘッダが<code>jira.mazgi.com</code>のリクエストをJIRAに転送します。</li>
+<li><code>access_log</code>と<code>error_log</code>はそれぞれ専用のディレクトリに出力します。</li>
+<li>JIRAに転送される際、Hostヘッダに<code>$http_host</code>がセットされるようにします。</li>
+<li><code>jira.mazgi.com</code>のすべてのpathへのリクエストをbackendに転送します。</li>
+</ul>
+</li>
+</ul>
+
+
+<p>```
+[root@bangdoll] # cd /etc/nginx/sites.availables
+[root@bangdoll] # vi jira.mazgi.com
+[root@bangdoll] # cat jira.mazgi.com
+upstream jira.mazgi.com.backend {</p>
+
+<pre><code>server 127.0.0.1:50080;
+</code></pre>
+
+<p>}</p>
+
+<p>server {</p>
+
+<pre><code>listen 0.0.0.0:80;
+server_name jira.mazgi.com;
+
+access_log /var/log/nginx/jira.mazgi.com/access_log main;
+error_log /var/log/nginx/jira.mazgi.com/error_log info;
+
+proxy_set_header Host $http_host;
+
+location / {
+    proxy_pass http://jira.mazgi.com.backend;
+}
+</code></pre>
+
+<p>}
+```
+ログ出力先のディレクトリを作ります。</p>
+
+<p><code>
+[root@bangdoll] # mkdir -p /var/log/nginx/jira.mazgi.com
+</code>
+JIRAサイトを公開するために<code>sites.availables</code>から<code>sites.enabled</code>にシンボリックリンクを張り、nginxをrestartします。</p>
+
+<p><code>
+[root@bangdoll] # cd /etc/nginx/sites.enabled
+[root@bangdoll] # ln -s ../sites.availables/jira.mazgi.com .
+[root@bangdoll] # ls -l jira.mazgi.com
+lrwxrwxrwx 1 root root 34 Oct 12 04:10 jira.mazgi.com -&gt; ../sites.availables/jira.mazgi.com
+[root@bangdoll] # /etc/init.d/nginx restart
+ * Checking nginx' configuration ...                                                                                                                                                                                                                                                                                   [ ok ]
+ * Stopping nginx ...                                                                                                                                                                                                                                                                                                  [ ok ]
+ * Starting nginx ...                                                                                                                                                                                                                                                                                                  [ ok ]
+</code>
+nginxをrestartするとこのように<code>http://jira.mazgi.com:80</code>でJIRAに接続できるようになりました！</p>
+
+<p><img src="/images/2012-10-11-installing-jira/20121011_setup_01.png"></p>
+
+<h1>JIRAの設定</h1>
+
+<p>Web上でJIRAの設定を行います。<br/>
+先立って<a href="https://my.atlassian.com/signup/index">Atlassianのユーザー登録ページ</a>でユーザー登録し、ログインしておくことをおすすめします。</p>
+
+<p>言語は英語に設定しました。<br/>
+DBはMySQLを使うので<em>External</em>を選択し、MySQLサーバーの接続ポートやJIRA用MySQLユーザー名を入力します。<br/>
+<em>Test Connection</em>ボタンを押すとDB接続を確認できます。<br/>
+<img src="/images/2012-10-11-installing-jira/20121011_setup_02.png"></p>
+
+<p><em>Application Title</em>を適当に設定します。<br/>
+JIRAのユーザー作成を自分でコントロールしたいので、<em>Mode</em>は<em>Private</em>にします。<br/>
+Atlassianにログインした状態で<em>Generate an evaluation key for me</em>をクリックすると評価ライセンスの発行ページに飛べます。<br/>
+<img src="/images/2012-10-11-installing-jira/20121011_setup_03.png">
+<em>ライセンスの生成</em>ボタンをクリックすると評価ライセンスが作られます。<br/>
+<img src="/images/2012-10-11-installing-jira/20121011_setup_05.png">
+<img src="/images/2012-10-11-installing-jira/20121011_setup_06.png">
+なぜか<em>Application Title</em>が消えたりしますが、再度入力して<em>Next</em>ボタンを押します。<br/>
+<img src="/images/2012-10-11-installing-jira/20121011_setup_08.png">
+管理アカウントのユーザー名やパスワードを入力します。<br/>
+<img src="/images/2012-10-11-installing-jira/20121011_setup_09.png">
+メールの設定はあとで行うことにします。<br/>
+<img src="/images/2012-10-11-installing-jira/20121011_setup_10.png">
+以上でJIRAの設定が完了しました！
+<img src="/images/2012-10-11-installing-jira/20121011_setup_11.png"></p>
+]]></content>
+  </entry>
+  
+</feed>
