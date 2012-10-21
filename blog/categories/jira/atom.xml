@@ -4,7 +4,7 @@
   <title><![CDATA[Category: JIRA | log++]]></title>
   <link href="http://mazgi.github.com/blog/categories/jira/atom.xml" rel="self"/>
   <link href="http://mazgi.github.com/"/>
-  <updated>2012-10-22T00:41:51+09:00</updated>
+  <updated>2012-10-22T00:44:26+09:00</updated>
   <id>http://mazgi.github.com/</id>
   <author>
     <name><![CDATA[mazgi]]></name>
@@ -12,78 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[jira_mysql_error]]></title>
-    <link href="http://mazgi.github.com/blog/2012/10/15/jira-mysql-error/"/>
-    <updated>2012-10-15T08:02:00+09:00</updated>
-    <id>http://mazgi.github.com/blog/2012/10/15/jira-mysql-error</id>
-    <content type="html"><![CDATA[<p>```
-[mazgi@bangdoll] $ grep binlog /etc/mysql/my.cnf
-[mazgi@bangdoll] $ mysql -uroot -p
-Enter password:
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 46
-Server version: 5.1.62-log Gentoo Linux mysql-5.1.62-r1</p>
-
-<p>Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.</p>
-
-<p>Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.</p>
-
-<p>Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.</p>
-
-<p>mysql> show variables like 'binlog_format';
-+---------------+-----------+
-| Variable_name | Value     |
-+---------------+-----------+
-| binlog_format | STATEMENT |
-+---------------+-----------+
-1 row in set (0.00 sec)</p>
-
-<p>mysql> quit
-Bye
-```</p>
-
-<p><code>
-[root@bangdoll] # grep binlog /etc/mysql/my.cnf
-[root@bangdoll] # vi /etc/mysql/my.cnf
-[root@bangdoll] # grep binlog /etc/mysql/my.cnf
-binlog-format=ROW
-[root@bangdoll] # /etc/init.d/mysql restart
- * Stopping mysql ...                                                                                                                                                                                                                  [ ok ]
- * Starting mysql ...                                                                                                                                                                                                                  [ ok ]
-</code></p>
-
-<p>```
-[mazgi@bangdoll] $ mysql -uroot -p
-Enter password:
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 1
-Server version: 5.1.62-log Gentoo Linux mysql-5.1.62-r1</p>
-
-<p>Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.</p>
-
-<p>Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.</p>
-
-<p>Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.</p>
-
-<p>mysql> show variables like 'binlog_format';
-+---------------+-------+
-| Variable_name | Value |
-+---------------+-------+
-| binlog_format | ROW   |
-+---------------+-------+
-1 row in set (0.01 sec)</p>
-
-<p>mysql> quit
-Bye
-```</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[さくらVPSにJIRAをインストールしてみました]]></title>
